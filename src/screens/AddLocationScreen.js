@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -12,6 +12,7 @@ import {
   FlatList
 } from 'react-native';
 import LocationService from '../services/LocationService';
+import GroupService from '../services/GroupService';
 import { styles } from '../styles/AddLocationScreen.styles';
 import { WindguruModels } from '../constants/Models';
 
@@ -19,8 +20,27 @@ const AddLocationScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [spotId, setSpotId] = useState('');
   const [modelId, setModelId] = useState('100'); // Default to GFS
+  const [groupId, setGroupId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(false);
+  const [showGroupSelector, setShowGroupSelector] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [newGroupName, setNewGroupName] = useState('');
+  const [showNewGroupInput, setShowNewGroupInput] = useState(false);
+
+  // Load groups when component mounts
+  useEffect(() => {
+    loadGroups();
+  }, []);
+
+  const loadGroups = async () => {
+    try {
+      const loadedGroups = await GroupService.getGroups();
+      setGroups(loadedGroups);
+    } catch (error) {
+      console.error('Error loading groups:', error);
+    }
+  };
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -39,7 +59,7 @@ const AddLocationScreen = ({ navigation }) => {
       setIsSubmitting(true);
       
       // Add new location
-      await LocationService.addLocation(name.trim(), spotId.trim(), modelId);
+      await LocationService.addLocation(name.trim(), spotId.trim(), modelId, undefined, groupId);
       
       // Navigate back to home screen
       navigation.goBack();
@@ -49,6 +69,37 @@ const AddLocationScreen = ({ navigation }) => {
       console.error(error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Handle new group creation
+  const handleCreateGroup = async () => {
+    if (!newGroupName.trim()) {
+      Alert.alert('Error', 'Please enter a group name');
+      return;
+    }
+
+    // Check for duplicate group names
+    const trimmedName = newGroupName.trim();
+    const isDuplicate = groups.some(group => 
+      group.name.toLowerCase() === trimmedName.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      Alert.alert('Error', 'A group with this name already exists');
+      return;
+    }
+
+    try {
+      const newGroup = await GroupService.addGroup(trimmedName);
+      setGroups(prev => [...prev, newGroup]);
+      setGroupId(newGroup.id);
+      setNewGroupName('');
+      setShowNewGroupInput(false);
+      setShowGroupSelector(false);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to create group');
+      console.error(error);
     }
   };
 
@@ -65,6 +116,18 @@ const AddLocationScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  const renderGroupItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.groupItem}
+      onPress={() => {
+        setGroupId(item.id);
+        setShowGroupSelector(false);
+      }}
+    >
+      <Text style={styles.groupName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
   return (
     <KeyboardAvoidingView 
       style={styles.container}
@@ -73,6 +136,12 @@ const AddLocationScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <Text style={styles.title}>Add New Spot</Text>
+          <TouchableOpacity 
+            style={styles.closeButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Text style={styles.closeButtonText}>Cancel</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.formContainer}>
@@ -118,51 +187,120 @@ const AddLocationScreen = ({ navigation }) => {
             </Text>
           </View>
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={[styles.button, styles.cancelButton]}
-              onPress={() => navigation.goBack()}
-              disabled={isSubmitting}
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Group</Text>
+            <TouchableOpacity 
+              style={styles.groupSelector}
+              onPress={() => setShowGroupSelector(true)}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity
-              style={[styles.button, styles.submitButton, isSubmitting && styles.disabledButton]}
-              onPress={handleSubmit}
-              disabled={isSubmitting}
-            >
-              <Text style={styles.submitButtonText}>
-                {isSubmitting ? 'Adding...' : 'Add Location'}
+              <Text style={styles.groupSelectorText}>
+                {groupId ? groups.find(g => g.id === groupId)?.name : 'No Group'}
               </Text>
             </TouchableOpacity>
           </View>
+
+          <TouchableOpacity 
+            style={[styles.submitButton, isSubmitting && styles.submitButtonDisabled]}
+            onPress={handleSubmit}
+            disabled={isSubmitting}
+          >
+            <Text style={styles.submitButtonText}>
+              {isSubmitting ? 'Adding...' : 'Add Location'}
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
 
+      {/* Model Selector Modal */}
       <Modal
         visible={showModelSelector}
-        animationType="slide"
         transparent={true}
+        animationType="slide"
         onRequestClose={() => setShowModelSelector(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Select Forecast Model</Text>
-              <TouchableOpacity 
-                style={styles.closeButton}
-                onPress={() => setShowModelSelector(false)}
-              >
-                <Text style={styles.closeButtonText}>Close</Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.modalTitle}>Select Forecast Model</Text>
             <FlatList
               data={Object.values(WindguruModels)}
               renderItem={renderModelItem}
               keyExtractor={item => item.id}
-              contentContainerStyle={styles.modelList}
+              style={styles.modalList}
             />
+            <TouchableOpacity 
+              style={styles.modalCloseButton}
+              onPress={() => setShowModelSelector(false)}
+            >
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Group Selector Modal */}
+      <Modal
+        visible={showGroupSelector}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowGroupSelector(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Select Group</Text>
+            
+            {showNewGroupInput ? (
+              <View style={styles.newGroupContainer}>
+                <TextInput
+                  style={styles.input}
+                  value={newGroupName}
+                  onChangeText={setNewGroupName}
+                  placeholder="Enter new group name"
+                  placeholderTextColor="#999"
+                  autoFocus
+                />
+                <View style={styles.newGroupButtons}>
+                  <TouchableOpacity 
+                    style={[styles.newGroupButton, styles.cancelButton]}
+                    onPress={() => {
+                      setShowNewGroupInput(false);
+                      setNewGroupName('');
+                    }}
+                  >
+                    <Text style={styles.cancelButtonText}>Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[styles.newGroupButton, styles.createButton]}
+                    onPress={handleCreateGroup}
+                  >
+                    <Text style={styles.createButtonText}>Create</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : (
+              <>
+                <FlatList
+                  data={groups}
+                  renderItem={renderGroupItem}
+                  keyExtractor={item => item.id}
+                  style={styles.modalList}
+                  ListHeaderComponent={() => (
+                    <TouchableOpacity 
+                      style={styles.newGroupButton}
+                      onPress={() => setShowNewGroupInput(true)}
+                    >
+                      <Text style={styles.newGroupButtonText}>+ Create New Group</Text>
+                    </TouchableOpacity>
+                  )}
+                />
+              </>
+            )}
+            
+            <TouchableOpacity 
+              style={styles.modalCloseButton}
+              onPress={() => setShowGroupSelector(false)}
+            >
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>

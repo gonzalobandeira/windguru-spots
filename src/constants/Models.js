@@ -97,4 +97,6 @@ export const getModelName = (modelId) => {
 export const getModelDescription = (modelId) => {
   const model = Object.values(WindguruModels).find(m => m.id === modelId);
   return model ? model.description : '';
-}; 
+};
+
+export const DEFAULT_WINDGURU_PARAMS = "WINDSPD,GUST,SMER,TMPE,CDC,APCP1s,RATING"; 

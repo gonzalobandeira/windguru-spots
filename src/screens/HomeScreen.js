@@ -10,6 +10,7 @@ import {
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
+import GroupService from '../services/GroupService';
 import WindguruWidget from '../components/WindguruWidget';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
@@ -26,32 +27,32 @@ function getTimeAgo(date) {
 
 const HomeScreen = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-  const [lastRefresh, setLastRefresh] = useState(null);
+  const [expandedGroups, setExpandedGroups] = useState({});
   const isFocused = useIsFocused();
 
-  // Load locations when screen is focused
+  // Load locations and groups when screen is focused
   useEffect(() => {
     if (isFocused) {
-      loadLocationsAndSetTime();
+      loadData();
     }
   }, [isFocused]);
 
-  // Load locations from storage and update last refresh time
-  const loadLocationsAndSetTime = async () => {
-    await loadLocations();
-    setLastRefresh(new Date());
-  };
-
-  const loadLocations = async () => {
+  // Load locations and groups
+  const loadData = async () => {
     try {
       setLoading(true);
-      const savedLocations = await LocationService.getLocations();
+      const [savedLocations, savedGroups] = await Promise.all([
+        LocationService.getLocations(),
+        GroupService.getGroups()
+      ]);
       setLocations(savedLocations);
+      setGroups(savedGroups);
     } catch (error) {
-      Alert.alert('Error', 'Failed to load locations');
+      Alert.alert('Error', 'Failed to load data');
       console.error(error);
     } finally {
       setLoading(false);
@@ -62,8 +63,7 @@ const HomeScreen = ({ navigation }) => {
   const onRefresh = async () => {
     setRefreshing(true);
     setRefreshKey(prev => prev + 1); // Force widgets to reload
-    await loadLocations();
-    setLastRefresh(new Date());
+    await loadData();
     setRefreshing(false);
   };
 
@@ -91,10 +91,52 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
+  // Delete a group
+  const handleDeleteGroup = (groupId) => {
+    Alert.alert(
+      'Delete Group',
+      'Are you sure you want to delete this group? All spots in this group will be ungrouped.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Delete', 
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const [updatedGroups, updatedLocations] = await Promise.all([
+                GroupService.deleteGroup(groupId),
+                LocationService.getLocations()
+              ]);
+              setGroups(updatedGroups);
+              setLocations(updatedLocations);
+            } catch (error) {
+              Alert.alert('Error', 'Failed to delete group');
+              console.error(error);
+            }
+          }
+        }
+      ]
+    );
+  };
+
+  // Toggle group expansion
+  const toggleGroup = (groupId) => {
+    setExpandedGroups(prev => ({
+      ...prev,
+      [groupId]: !prev[groupId]
+    }));
+  };
+
   // Save new order to storage
   const handleDragEnd = async ({ data }) => {
     setLocations(data);
     await LocationService.saveLocations(data);
+  };
+
+  // Save new group order to storage
+  const handleGroupDragEnd = async ({ data }) => {
+    setGroups(data);
+    await GroupService.saveGroups(data);
   };
 
   // Render each location item
@@ -135,6 +177,85 @@ const HomeScreen = ({ navigation }) => {
     </ScaleDecorator>
   );
 
+  // Render each group item
+  const renderGroupItem = ({ item, drag, isActive }) => {
+    const groupLocations = locations.filter(loc => loc.groupId === item.id);
+    const isExpanded = expandedGroups[item.id];
+
+    return (
+      <ScaleDecorator>
+        <View style={styles.groupItem}>
+          <TouchableOpacity
+            onLongPress={drag}
+            disabled={isActive}
+            style={[
+              styles.groupHeader,
+              isActive && { opacity: 0.8, transform: [{ scale: 1.05 }] }
+            ]}
+            onPress={() => toggleGroup(item.id)}
+          >
+            <View style={styles.groupInfo}>
+              <Text style={styles.groupName}>{item.name}</Text>
+              <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
+            </View>
+            <View style={styles.groupActions}>
+              <TouchableOpacity 
+                style={styles.expandButton}
+                onPress={() => toggleGroup(item.id)}
+              >
+                <Text style={styles.expandButtonText}>
+                  {isExpanded ? '▼' : '▶'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => handleDeleteGroup(item.id)}
+              >
+                <Text style={styles.deleteButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+          
+          {isExpanded && (
+            <View style={styles.groupContent}>
+              <DraggableFlatList
+                data={groupLocations}
+                renderItem={renderLocationItem}
+                keyExtractor={item => item.id}
+                onDragEnd={handleDragEnd}
+                activationDistance={20}
+                dragItemOverflow={true}
+                contentContainerStyle={styles.listContainer}
+              />
+            </View>
+          )}
+        </View>
+      </ScaleDecorator>
+    );
+  };
+
+  // Render ungrouped locations
+  const renderUngroupedLocations = () => {
+    const ungroupedLocations = locations.filter(loc => !loc.groupId);
+    
+    if (ungroupedLocations.length === 0) return null;
+
+    return (
+      <View style={styles.ungroupedSection}>
+        <Text style={styles.ungroupedTitle}>Ungrouped Spots</Text>
+        <DraggableFlatList
+          data={ungroupedLocations}
+          renderItem={renderLocationItem}
+          keyExtractor={item => item.id}
+          onDragEnd={handleDragEnd}
+          activationDistance={20}
+          dragItemOverflow={true}
+          contentContainerStyle={styles.listContainer}
+        />
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -143,15 +264,8 @@ const HomeScreen = ({ navigation }) => {
           style={styles.addButton}
           onPress={() => navigation.navigate('AddLocation')}
         >
-          <Text style={styles.addButtonText}>+ Add</Text>
+          <Text style={styles.addButtonText}>+ Add Spot</Text>
         </TouchableOpacity>
-      </View>
-
-      {/* Last refreshed indicator */}
-      <View style={styles.lastRefreshContainer}>
-        <Text style={styles.lastRefreshText}>
-          Last refreshed: {getTimeAgo(lastRefresh)}
-        </Text>
       </View>
 
       {loading ? (
@@ -162,18 +276,21 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.emptySubText}>Tap the + Add button to add your first sailing spot</Text>
         </View>
       ) : (
-        <DraggableFlatList
-          data={locations}
-          renderItem={renderLocationItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.listContainer}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          onDragEnd={handleDragEnd}
-          activationDistance={20}
-          dragItemOverflow={true}
-        />
+        <View style={styles.content}>
+          <DraggableFlatList
+            data={groups}
+            renderItem={renderGroupItem}
+            keyExtractor={item => item.id}
+            onDragEnd={handleGroupDragEnd}
+            activationDistance={20}
+            dragItemOverflow={true}
+            ListFooterComponent={renderUngroupedLocations}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            contentContainerStyle={styles.listContainer}
+          />
+        </View>
       )}
 
       <View style={styles.footer}>
