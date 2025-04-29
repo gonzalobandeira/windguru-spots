@@ -1,0 +1,78 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Location from '../models/Location';
+
+const LOCATIONS_STORAGE_KEY = '@SailingSpots:locations';
+
+class LocationService {
+  // Get all saved locations
+  async getLocations() {
+    try {
+      const locationsJson = await AsyncStorage.getItem(LOCATIONS_STORAGE_KEY);
+      if (locationsJson) {
+        return JSON.parse(locationsJson);
+      }
+      return [];
+    } catch (error) {
+      console.error('Error loading locations:', error);
+      return [];
+    }
+  }
+
+  // Add a new location
+  async addLocation(name, spotId, modelId = '100', params = "WINDSPD,GUST,SMER,TMPE,FLHGT,CDC,APCP1s,RATING") {
+    try {
+      const locations = await this.getLocations();
+      
+      // Create a unique ID
+      const id = Date.now().toString();
+      
+      // Create new location object
+      const newLocation = new Location(id, name, spotId, modelId, params);
+      
+      // Add to locations array
+      const updatedLocations = [...locations, newLocation];
+      
+      // Save to storage
+      await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
+      
+      return newLocation;
+    } catch (error) {
+      console.error('Error adding location:', error);
+      throw error;
+    }
+  }
+
+  // Delete a location by ID
+  async deleteLocation(locationId) {
+    try {
+      const locations = await this.getLocations();
+      const updatedLocations = locations.filter(location => location.id !== locationId);
+      
+      await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
+      
+      return updatedLocations;
+    } catch (error) {
+      console.error('Error deleting location:', error);
+      throw error;
+    }
+  }
+
+  // Update a location
+  async updateLocation(locationId, updatedData) {
+    try {
+      const locations = await this.getLocations();
+      const updatedLocations = locations.map(location => 
+        location.id === locationId ? { ...location, ...updatedData } : location
+      );
+      
+      await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
+      
+      return updatedLocations;
+    } catch (error) {
+      console.error('Error updating location:', error);
+      throw error;
+    }
+  }
+}
+
+export default new LocationService();
