@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
-  FlatList, 
   TouchableOpacity, 
   Alert,
   ActivityIndicator,
   RefreshControl
 } from 'react-native';
+import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
 import WindguruWidget from '../components/WindguruWidget';
@@ -91,33 +91,48 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
+  // Save new order to storage
+  const handleDragEnd = async ({ data }) => {
+    setLocations(data);
+    await LocationService.saveLocations(data);
+  };
+
   // Render each location item
-  const renderLocationItem = ({ item }) => (
-    <View style={styles.locationItem}>
-      <View style={styles.locationHeader}>
-        <View style={styles.locationInfo}>
-          <Text style={styles.locationName}>{item.name}</Text>
-          <View style={styles.locationDetails}>
-            <Text style={styles.locationSpotId}>Spot ID: {item.spotId}</Text>
-            <Text style={styles.locationModel}>Model: {getModelName(item.modelId)}</Text>
+  const renderLocationItem = ({ item, drag, isActive }) => (
+    <ScaleDecorator>
+      <TouchableOpacity
+        onLongPress={drag}
+        disabled={isActive}
+        style={[
+          styles.locationItem,
+          isActive && { opacity: 0.8, transform: [{ scale: 1.05 }] }
+        ]}
+      >
+        <View style={styles.locationHeader}>
+          <View style={styles.locationInfo}>
+            <Text style={styles.locationName}>{item.name}</Text>
+            <View style={styles.locationDetails}>
+              <Text style={styles.locationSpotId}>Spot ID: {item.spotId}</Text>
+              <Text style={styles.locationModel}>Model: {getModelName(item.modelId)}</Text>
+            </View>
           </View>
+          <TouchableOpacity 
+            style={styles.deleteButton}
+            onPress={() => handleDeleteLocation(item.id)}
+          >
+            <Text style={styles.deleteButtonText}>Delete</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity 
-          style={styles.deleteButton}
-          onPress={() => handleDeleteLocation(item.id)}
-        >
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.widgetContainer}>
-        <WindguruWidget 
-          key={`${item.id}-${refreshKey}`}
-          spotId={item.spotId} 
-          modelId={item.modelId} 
-          params={item.params} 
-        />
-      </View>
-    </View>
+        <View style={styles.widgetContainer}>
+          <WindguruWidget 
+            key={`${item.id}-${refreshKey}`}
+            spotId={item.spotId} 
+            modelId={item.modelId} 
+            params={item.params} 
+          />
+        </View>
+      </TouchableOpacity>
+    </ScaleDecorator>
   );
 
   return (
@@ -147,7 +162,7 @@ const HomeScreen = ({ navigation }) => {
           <Text style={styles.emptySubText}>Tap the + Add button to add your first sailing spot</Text>
         </View>
       ) : (
-        <FlatList
+        <DraggableFlatList
           data={locations}
           renderItem={renderLocationItem}
           keyExtractor={item => item.id}
@@ -155,6 +170,9 @@ const HomeScreen = ({ navigation }) => {
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
+          onDragEnd={handleDragEnd}
+          activationDistance={20}
+          dragItemOverflow={true}
         />
       )}
 

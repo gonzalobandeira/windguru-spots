@@ -73,6 +73,16 @@ class LocationService {
       throw error;
     }
   }
+
+  // Save the full locations array (for reordering)
+  async saveLocations(locations) {
+    try {
+      await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(locations));
+    } catch (error) {
+      console.error('Error saving locations:', error);
+      throw error;
+    }
+  }
 }
 
 export default new LocationService();
