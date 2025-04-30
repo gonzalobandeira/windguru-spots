@@ -3,11 +3,12 @@ import { View, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { styles } from '../styles/WindguruWidget.styles';
 import { DEFAULT_WINDGURU_PARAMS } from '../constants/Models';
+import { WindguruLimits } from '../constants/Limits';
 
 const WindguruWidget = ({ spotId, modelId, params }) => {
   // Default parameters if not provided
-  const spot = spotId || '48743';
-  const model = modelId || '100';
+  const spot = spotId || WindguruLimits.DEFAULT_SPOT_ID;
+  const model = modelId || WindguruLimits.DEFAULT_MODEL_ID;
   const uid = `wg_fwdg_${spot}_${model}_${Date.now()}`;
   const parameters = params || DEFAULT_WINDGURU_PARAMS;
 
@@ -45,10 +46,10 @@ const WindguruWidget = ({ spotId, modelId, params }) => {
                   "tj=c",
                   "waj=m",
                   "tij=cm",
-                  "odh=0",
-                  "doh=24",
-                  "fhours=240",
-                  "hrsm=2",
+                  "odh=${WindguruLimits.DEFAULT_OFFSET_HOURS}",
+                  "doh=${WindguruLimits.DEFAULT_OFFSET_DAYS}",
+                  "fhours=${WindguruLimits.FORECAST_HOURS}",
+                  "hrsm=${WindguruLimits.HOURS_STEP}",
                   "vt=forecasts",
                   "lng=en",
                   "idbs=1",

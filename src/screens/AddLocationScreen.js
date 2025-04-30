@@ -17,13 +17,14 @@ import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
 import { styles } from '../styles/AddLocationScreen.styles';
 import { WindguruModels } from '../constants/Models';
+import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const AddLocationScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [spotId, setSpotId] = useState('');
-  const [modelId, setModelId] = useState('100'); // Default to GFS
+  const [modelId, setModelId] = useState(WindguruLimits.DEFAULT_MODEL_ID); // Default to WG model
   const [groupId, setGroupId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(false);
@@ -69,7 +70,11 @@ const AddLocationScreen = ({ navigation }) => {
       navigation.goBack();
       
     } catch (error) {
-      Alert.alert('Error', 'Failed to add location');
+      if (error.message === `Maximum number of spots (${MAX_SPOTS}) reached`) {
+        Alert.alert('Maximum Spots Reached', `You have reached the maximum limit of ${MAX_SPOTS} spots. Please delete some spots before adding new ones.`);
+      } else {
+        Alert.alert('Error', 'Failed to add location');
+      }
       console.error(error);
     } finally {
       setIsSubmitting(false);
@@ -166,13 +171,13 @@ const AddLocationScreen = ({ navigation }) => {
               style={styles.input}
               value={spotId}
               onChangeText={setSpotId}
-              placeholder="Enter Windguru spot ID (e.g., 48743)"
+              placeholder={`Enter Windguru spot ID (e.g., ${WindguruLimits.DEFAULT_SPOT_ID})`}
               placeholderTextColor="#999"
               keyboardType="number-pad"
             />
             <Text style={styles.helpText}>
               You can find the spot ID in the URL of the Windguru forecast page
-              (e.g., https://www.windguru.cz/48743)
+              (e.g., https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID})
             </Text>
           </View>
 

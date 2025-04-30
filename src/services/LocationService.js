@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Location from '../models/Location';
 import { DEFAULT_WINDGURU_PARAMS } from '../constants/Models';
+import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
 
 const LOCATIONS_STORAGE_KEY = '@SailingSpots:locations';
 
@@ -31,9 +32,14 @@ class LocationService {
   }
 
   // Add a new location
-  async addLocation(name, spotId, modelId = '100', params = DEFAULT_WINDGURU_PARAMS, groupId = null) {
+  async addLocation(name, spotId, modelId = WindguruLimits.DEFAULT_MODEL_ID, params = DEFAULT_WINDGURU_PARAMS, groupId = null) {
     try {
       const locations = await this.getLocations();
+      
+      // Check if we've reached the maximum number of spots
+      if (locations.length >= MAX_SPOTS) {
+        throw new Error(`Maximum number of spots (${MAX_SPOTS}) reached`);
+      }
       
       // Create a unique ID
       const id = Date.now().toString();
