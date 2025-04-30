@@ -56,5 +56,5 @@ We may update our privacy policy from time to time. We will notify you of any ch
 ## Contact Us
 
 If you have any questions about this privacy policy, please contact us at:
-- Email: [gonzalobandeira@gmail.com](mailto:gonzalobandeira@gmail.com)
+- Email: gonzalobandeira@gmail.com
 - GitHub Issues: [Report a privacy concern](https://github.com/gonzalobandeira/windguru-spots/issues) 
