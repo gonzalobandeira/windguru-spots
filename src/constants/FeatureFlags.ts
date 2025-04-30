@@ -1,5 +1,5 @@
 export const FeatureFlags = {
-  DONATE_FEATURE: true, // Set to false to disable the donate feature
+  DONATE_FEATURE: false, // Set to false to disable the donate feature
 } as const;
 
 export type FeatureFlagKey = keyof typeof FeatureFlags;
