@@ -18,13 +18,16 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.gbe.windguruspots",
       "buildNumber": "3",
+      "icon": "./assets/images/icon.png",
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["mailto"],
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": ["mailto"]
           }
-        ]
+        ],
+        "CFBundleIconName": "AppIcon",
+        "UILaunchStoryboardName": "SplashScreen"
       }
     },
     "android": {
