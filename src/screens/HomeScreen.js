@@ -153,7 +153,7 @@ const HomeScreen = ({ navigation }) => {
         disabled={isActive}
         style={[
           styles.locationItem,
-          isActive && { opacity: 0.8, transform: [{ scale: 1.05 }] }
+          isActive && { opacity: 0.8 }
         ]}
       >
         <View style={styles.locationHeader}>
@@ -196,7 +196,7 @@ const HomeScreen = ({ navigation }) => {
             disabled={isActive}
             style={[
               styles.groupHeader,
-              isActive && { opacity: 0.8, transform: [{ scale: 1.05 }] }
+              isActive && { opacity: 0.8 }
             ]}
             onPress={() => toggleGroup(item.id)}
           >
