@@ -17,7 +17,15 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.gbe.windguruspots",
-      "buildNumber": "3"
+      "buildNumber": "3",
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["mailto"],
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": ["mailto"]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -42,6 +50,8 @@
         "projectId": "f60a1e17-5377-4b43-b2de-0b42c5aa0c42"
       }
     },
-    "owner": "gonzalobandeira"
+    "owner": "gonzalobandeira",
+    "supportUrl": "https://gonzalobandeira.github.io/windguru-spots/SUPPORT.html",
+    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/PRIVACY.html"
   }
 }
