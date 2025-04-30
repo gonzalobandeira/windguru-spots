@@ -1,6 +1,8 @@
+import { WindguruLimits } from './Limits';
+
 // Enum-like object for model IDs
 export const ModelId = {
-  WG: '100',
+  WG: WindguruLimits.DEFAULT_MODEL_ID,
   GFS: '3',
   AROME: '52',
   HARM_DK: '109',
