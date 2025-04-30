@@ -23,16 +23,37 @@ export const styles = StyleSheet.create({
   },
   headerButtons: {
     flexDirection: 'row',
-    gap: 8,
+    gap: Spacing.sm,
   },
-  addButton: {
-    backgroundColor: Colors.primary,
+  iconButton: {
+    backgroundColor: Colors.secondary,
+    width: ButtonHeight.md,
+    height: ButtonHeight.md,
+    borderRadius: BorderRadius.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  exportButton: {
+    backgroundColor: Colors.secondary,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.xs,
     borderRadius: BorderRadius.sm,
   },
+  exportButtonText: {
+    color: Colors.text.white,
+    fontWeight: FontWeight.bold,
+  },
+  addButton: {
+    backgroundColor: Colors.primary,
+    height: ButtonHeight.md,
+    paddingHorizontal: Spacing.md,
+    borderRadius: BorderRadius.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   addButtonText: {
     color: Colors.text.white,
+    fontSize: FontSize.md,
     fontWeight: FontWeight.bold,
   },
   content: {
@@ -83,9 +104,11 @@ export const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: Colors.error,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
+    width: ButtonHeight.sm,
+    height: ButtonHeight.sm,
     borderRadius: BorderRadius.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   deleteButtonText: {
     color: Colors.text.white,
@@ -109,6 +132,14 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
+  expandButton: {
+    padding: Spacing.xs,
+    marginRight: Spacing.sm,
+  },
+  expandButtonText: {
+    fontSize: FontSize.md,
+    color: Colors.text.secondary,
+  },
   groupInfo: {
     flex: 1,
   },
@@ -125,14 +156,6 @@ export const styles = StyleSheet.create({
   groupActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
-  },
-  expandButton: {
-    padding: Spacing.sm,
-  },
-  expandButtonText: {
-    fontSize: FontSize.md,
-    color: Colors.text.secondary,
   },
   groupContent: {
     padding: Spacing.lg,
@@ -174,9 +197,57 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.border,
   },
+  footerContent: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: Spacing.md,
+  },
   footerText: {
     fontSize: FontSize.xs,
     color: Colors.text.secondary,
-    textAlign: 'center',
+  },
+  footerSeparator: {
+    fontSize: FontSize.xs,
+    color: Colors.text.secondary,
+    marginHorizontal: Spacing.xs,
+  },
+  donateButton: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: Spacing.md,
+    paddingVertical: Spacing.xs,
+    borderRadius: BorderRadius.sm,
+  },
+  donateButtonText: {
+    color: Colors.text.white,
+    fontSize: FontSize.xs,
+    fontWeight: FontWeight.bold,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.lg,
+    width: '90%',
+    maxWidth: 400,
+    padding: Spacing.lg,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: Spacing.lg,
+  },
+  modalTitle: {
+    fontSize: FontSize.lg,
+    fontWeight: FontWeight.bold,
+    color: Colors.text.primary,
+  },
+  closeButton: {
+    padding: Spacing.xs,
   },
 }); 

@@ -1,4 +1,4 @@
-# Sailing Spots App
+# Windguru Spots App
 
 A React Native application built with Expo that allows users to check their preferred sailing/surf spots in one place using Windguru forecasts.
 
@@ -24,7 +24,7 @@ A React Native application built with Expo that allows users to check their pref
 1. Clone the repository
 ```
 git clone <repository-url>
-cd sailing-spots-app
+cd windguru-spots
 ```
 
 2. Install dependencies
@@ -95,6 +95,86 @@ To build for web deployment:
 ```
 npm run web:build
 ```
+
+## Deploying to TestFlight
+
+### Prerequisites
+
+- Apple Developer Account ($99/year)
+- Xcode installed on your Mac
+- iOS device for testing
+
+### Steps to Deploy
+
+1. **Configure EAS Build**:
+   Make sure your `eas.json` is properly configured:
+   ```json
+   {
+     "cli": {
+       "version": ">= 5.9.1",
+       "appVersionSource": "remote"
+     },
+     "build": {
+       "development": {
+         "developmentClient": true,
+         "distribution": "internal"
+       },
+       "preview": {
+         "distribution": "internal"
+       },
+       "production": {
+         "distribution": "store",
+         "ios": {
+           "resourceClass": "m-medium"
+         }
+       }
+     },
+     "submit": {
+       "production": {
+         "ios": {
+           "appleId": "YOUR_APPLE_ID",
+           "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
+           "appleTeamId": "YOUR_APPLE_TEAM_ID"
+         }
+       }
+     }
+   }
+   ```
+
+2. **Build the App**:
+   ```bash
+   # Clean and rebuild
+   rm -rf node_modules
+   npm install
+   npx expo prebuild --clean
+   eas build --platform ios --profile production
+   ```
+
+3. **Submit to TestFlight**:
+   ```bash
+   eas submit --platform ios
+   ```
+
+4. **Set Up TestFlight**:
+   - Wait for Apple to process your build (5-10 minutes)
+   - Go to [App Store Connect](https://appstoreconnect.apple.com)
+   - Navigate to your app's TestFlight section
+   - Add test information and notes
+   - Configure test groups (internal/external)
+   - Add testers via email or public link
+
+5. **Testing Process**:
+   - Testers will receive an email invitation
+   - They need to install the TestFlight app from the App Store
+   - They can then install and test your app
+   - Feedback can be provided directly through TestFlight
+
+### Troubleshooting TestFlight Deployment
+
+- If the build fails, check the EAS build logs
+- Ensure all required assets (icons, splash screens) are present
+- Verify your Apple Developer account has the necessary permissions
+- Check that your bundle identifier matches in both `app.json` and App Store Connect
 
 ## Customization
 

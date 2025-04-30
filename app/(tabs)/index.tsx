@@ -1,11 +1,25 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, Platform, TouchableOpacity, Linking } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { isFeatureEnabled } from '../../src/constants/FeatureFlags';
+
+const PAYPAL_ME_URL = 'https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES';
 
 export default function HomeScreen() {
+  const isDonateEnabled = isFeatureEnabled('DONATE_FEATURE');
+  console.log('Donate feature enabled in HomeScreen:', isDonateEnabled);
+
+  const handleDonate = async () => {
+    try {
+      await Linking.openURL(PAYPAL_ME_URL);
+    } catch (error) {
+      console.error('Error opening PayPal.Me:', error);
+    }
+  };
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -50,6 +64,13 @@ export default function HomeScreen() {
           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
         </ThemedText>
       </ThemedView>
+      {isDonateEnabled && (
+        <ThemedView style={styles.donateContainer}>
+          <TouchableOpacity style={styles.donateButton} onPress={handleDonate}>
+            <ThemedText style={styles.donateButtonText}>Support WindGuru Spots</ThemedText>
+          </TouchableOpacity>
+        </ThemedView>
+      )}
     </ParallaxScrollView>
   );
 }
@@ -70,5 +91,29 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     position: 'absolute',
+  },
+  donateContainer: {
+    marginTop: 20,
+    marginBottom: 40,
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 10,
+  },
+  donateButton: {
+    backgroundColor: '#0070BA',
+    paddingHorizontal: 30,
+    paddingVertical: 15,
+    borderRadius: 25,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  donateButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });

@@ -5,8 +5,10 @@ import {
   TouchableOpacity, 
   Alert,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
+  Linking
 } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
@@ -14,6 +16,10 @@ import GroupService from '../services/GroupService';
 import WindguruWidget from '../components/WindguruWidget';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
+import { Colors } from '../constants/Styles';
+import { isFeatureEnabled } from '../constants/FeatureFlags';
+
+const PAYPAL_ME_URL = 'https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES';
 
 function getTimeAgo(date) {
   if (!date) return '';
@@ -162,7 +168,7 @@ const HomeScreen = ({ navigation }) => {
             style={styles.deleteButton}
             onPress={() => handleDeleteLocation(item.id)}
           >
-            <Text style={styles.deleteButtonText}>Delete</Text>
+            <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
           </TouchableOpacity>
         </View>
         <View style={styles.widgetContainer}>
@@ -194,24 +200,24 @@ const HomeScreen = ({ navigation }) => {
             ]}
             onPress={() => toggleGroup(item.id)}
           >
+            <TouchableOpacity 
+              style={styles.expandButton}
+              onPress={() => toggleGroup(item.id)}
+            >
+              <Text style={styles.expandButtonText}>
+                {isExpanded ? '▼' : '▶'}
+              </Text>
+            </TouchableOpacity>
             <View style={styles.groupInfo}>
               <Text style={styles.groupName}>{item.name}</Text>
               <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
             </View>
             <View style={styles.groupActions}>
               <TouchableOpacity 
-                style={styles.expandButton}
-                onPress={() => toggleGroup(item.id)}
-              >
-                <Text style={styles.expandButtonText}>
-                  {isExpanded ? '▼' : '▶'}
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity 
                 style={styles.deleteButton}
                 onPress={() => handleDeleteGroup(item.id)}
               >
-                <Text style={styles.deleteButtonText}>Delete</Text>
+                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -256,16 +262,33 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
+  const handleDonate = async () => {
+    try {
+      await Linking.openURL(PAYPAL_ME_URL);
+    } catch (error) {
+      Alert.alert('Error', 'Could not open PayPal.Me link');
+      console.error('Error opening PayPal.Me:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Windguru Spots</Text>
-        <TouchableOpacity 
-          style={styles.addButton}
-          onPress={() => navigation.navigate('AddLocation')}
-        >
-          <Text style={styles.addButtonText}>+ Add Spot</Text>
-        </TouchableOpacity>
+        <View style={styles.headerButtons}>
+          <TouchableOpacity 
+            style={styles.iconButton}
+            onPress={() => navigation.navigate('ExportImport')}
+          >
+            <MaterialIcons name="import-export" size={24} color={Colors.text.white} />
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.addButton}
+            onPress={() => navigation.navigate('AddLocation')}
+          >
+            <Text style={styles.addButtonText}>+ Add Spot</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {loading ? (
@@ -294,7 +317,18 @@ const HomeScreen = ({ navigation }) => {
       )}
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Powered by Windguru</Text>
+        <View style={styles.footerContent}>
+          <Text style={styles.footerText}>Powered by Windguru</Text>
+          <Text style={styles.footerSeparator}>|</Text>
+          {isFeatureEnabled('DONATE_FEATURE') && (
+            <TouchableOpacity 
+              style={styles.donateButton}
+              onPress={handleDonate}
+            >
+              <Text style={styles.donateButtonText}>Support Us</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );

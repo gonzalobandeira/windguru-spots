@@ -9,12 +9,16 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
-  FlatList
+  FlatList,
+  StyleSheet,
+  StatusBar
 } from 'react-native';
 import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
 import { styles } from '../styles/AddLocationScreen.styles';
 import { WindguruModels } from '../constants/Models';
+import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const AddLocationScreen = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -133,17 +137,17 @@ const AddLocationScreen = ({ navigation }) => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Add New Spot</Text>
-          <TouchableOpacity 
-            style={styles.closeButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.closeButtonText}>Cancel</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.header}>
+        <Text style={styles.title}>Add New Spot</Text>
+        <TouchableOpacity 
+          style={styles.closeButton}
+          onPress={() => navigation.goBack()}
+        >
+          <MaterialIcons name="close" size={24} color={Colors.primary} />
+        </TouchableOpacity>
+      </View>
 
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.formContainer}>
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Location Name</Text>

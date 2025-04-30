@@ -7,9 +7,13 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { isFeatureEnabled } from '../../src/constants/FeatureFlags';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const isDonateEnabled = isFeatureEnabled('DONATE_FEATURE');
+  
+  console.log('Donate feature enabled:', isDonateEnabled);
 
   return (
     <Tabs
@@ -40,6 +44,15 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
       />
+      {isDonateEnabled && (
+        <Tabs.Screen
+          name="donate"
+          options={{
+            title: 'Support',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="heart.fill" color={color} />,
+          }}
+        />
+      )}
     </Tabs>
   );
 }

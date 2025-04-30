@@ -19,19 +19,22 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
-    marginBottom: Spacing.xxl,
   },
   title: {
-    fontSize: FontSize.xxl,
+    fontSize: FontSize.xl,
     fontWeight: FontWeight.bold,
     color: Colors.text.primary,
   },
   closeButton: {
-    padding: Spacing.sm,
+    width: ButtonHeight.md,
+    height: ButtonHeight.md,
+    borderRadius: BorderRadius.sm,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   closeButtonText: {
-    color: Colors.primary,
     fontSize: FontSize.md,
+    color: Colors.primary,
     fontWeight: FontWeight.bold,
   },
   formContainer: {

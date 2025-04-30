@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -16,14 +16,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.windguruspots.app"
+      "bundleIdentifier": "com.gbe.windguruspots",
+      "buildNumber": "3"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.windguruspots.app"
+      "package": "com.gbe.windguruspots"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -32,6 +33,15 @@
       "expo-router"
     ],
     "description": "An app to check your preferred sailing and surf spots using Windguru forecasts",
-    "newArchEnabled": true
+    "newArchEnabled": true,
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f60a1e17-5377-4b43-b2de-0b42c5aa0c42"
+      }
+    },
+    "owner": "gonzalobandeira"
   }
 }
