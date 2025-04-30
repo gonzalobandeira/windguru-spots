@@ -39,19 +39,15 @@ export const BorderRadius = {
 
 // Font Sizes
 export const FontSize = {
-  xs: 12,
   sm: 14,
   md: 16,
   lg: 18,
   xl: 20,
-  xxl: 24,
 };
 
 // Font Weights
 export const FontWeight = {
-  regular: '400',
-  medium: '500',
-  semibold: '600',
+  normal: 'normal',
   bold: 'bold',
 };
 
