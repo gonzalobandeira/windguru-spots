@@ -1,13 +1,17 @@
-# Windguru Spots App
+# Windguru Spots
 
-A React Native application built with Expo that allows users to check their preferred sailing/surf spots in one place using Windguru forecasts.
+A React Native application built with Expo that allows users to check their preferred sailing/surf spots in one place using Windguru forecasts. This app is designed for sailors and surfers who want to quickly check conditions at their favorite spots without having to visit multiple websites or remember different spot IDs.
 
 ## Features
 
 - View Windguru forecasts for your favorite sailing/surf spots
+- Organize spots into custom groups
+- Drag and drop to reorder spots and groups
 - Add new locations with custom names and Windguru spot IDs
-- Delete locations you no longer need
-- Cross-platform support for iOS, Android, and Web
+- Choose from different forecast models
+- Delete locations and groups
+- Export and import your spots and groups
+- Cross-platform support for iOS and Android (on the roadmap)
 
 ## Getting Started
 
@@ -22,26 +26,25 @@ A React Native application built with Expo that allows users to check their pref
 ### Installation
 
 1. Clone the repository
-```
-git clone <repository-url>
+```bash
+git clone https://github.com/gonzalobandeira/windguru-spots.git
 cd windguru-spots
 ```
 
 2. Install dependencies
-```
+```bash
 npm install
 ```
 
 3. Start the development server
-```
+```bash
 npm start
 ```
 
 4. Run on your preferred platform
-```
+```bash
 npm run ios     # for iOS
 npm run android # for Android
-npm run web     # for Web
 ```
 
 ## How to Use
@@ -52,140 +55,85 @@ npm run web     # for Web
 2. Enter a name for your location (e.g., "My Favorite Beach")
 3. Enter the Windguru spot ID
    - You can find this in the URL of the Windguru forecast page (e.g., https://www.windguru.cz/48743 where 48743 is the spot ID)
-4. Optionally, customize the model ID (default is 100)
-5. Tap "Add Location" to save
+4. Select a forecast model (default is WG)
+5. Optionally, add the spot to a group
+6. Tap "Add Location" to save
 
-### Viewing a Forecast
+### Managing Groups
 
-1. Tap on any location from your list on the home screen
-2. The Windguru forecast will load in a full-screen view
-3. Tap "← Back" to return to your locations list
+1. When adding a new spot, you can:
+   - Select an existing group
+   - Create a new group
+2. Groups can be:
+   - Expanded/collapsed to show/hide spots
+   - Reordered via drag and drop
+   - Deleted (spots will also be deleted)
 
-### Deleting a Location
+### Viewing Forecasts
 
-1. On the home screen, find the location you want to remove
-2. Tap the "Delete" button next to the location
-3. Confirm deletion when prompted
+1. Your spots are organized in groups and ungrouped spots
+2. Each spot shows a Windguru forecast widget
+3. Pull to refresh to update forecasts
+4. Tap on a group to expand/collapse it
+
+### Exporting and Importing
+
+1. Tap the import/export icon in the header
+2. To export:
+   - Tap "Export" to save your spots and groups
+   - Share the exported file
+3. To import:
+   - Tap "Import" and select an export file
+   - Confirm to replace current data
 
 ## Project Structure
 
-- `src/components/WindguruWidget.js`: WebView component for displaying Windguru forecasts
-- `src/models/Location.js`: Data model for sailing/surf spots
-- `src/services/LocationService.js`: Handles storing and retrieving locations
-- `src/screens/`: Contains all UI screens (Home, AddLocation, LocationDetail)
-- `src/navigation/AppNavigator.js`: Manages navigation between screens
+- `src/components/`: Reusable UI components
+  - `WindguruWidget.js`: WebView component for displaying Windguru forecasts
+- `src/constants/`: App-wide constants and configurations
+  - `Models.js`: Available forecast models
+  - `Styles.js`: UI styling constants
+  - `Limits.js`: App limits and restrictions
+- `src/hooks/`: Custom React hooks
+- `src/models/`: Data models
+  - `Location.js`: Spot data model
+  - `Group.js`: Group data model
+- `src/navigation/`: Navigation configuration
+- `src/screens/`: UI screens
+  - `HomeScreen.js`: Main screen with spots and groups
+  - `AddLocationScreen.js`: Add new spots
+  - `ExportImportScreen.js`: Data backup and restore
+- `src/services/`: Data management
+  - `LocationService.js`: Spot data operations
+  - `GroupService.js`: Group data operations
+- `src/styles/`: Screen-specific styles
 
-## Building for Production
+## Known Issues and Limitations
 
-### iOS/Android
+- The app currently supports iOS and Android only
+- There's a limit of 20 spots per user (to follow Windguru limitations)
+- Widget loading might be slow on poor internet connections
 
-To build standalone apps for iOS and Android, you can use EAS Build:
+## Contributing
 
-```
-npm install -g eas-cli
-eas build:configure
-eas build --platform ios
-eas build --platform android
-```
+Contributions are welcome! If you find a bug or have an idea for a new feature, please:
 
-### Web
+1. Check if there's already an open issue about it
+2. If not, create a new issue describing the bug or feature
+3. Fork the repository
+4. Create a new branch for your changes
+5. Make your changes
+6. Submit a pull request
 
-To build for web deployment:
+You can also report issues and bugs directly to gonzalobandeira@gmail.com
 
-```
-npm run web:build
-```
+### Development Guidelines
 
-## Deploying to TestFlight
-
-### Prerequisites
-
-- Apple Developer Account ($99/year)
-- Xcode installed on your Mac
-- iOS device for testing
-
-### Steps to Deploy
-
-1. **Configure EAS Build**:
-   Make sure your `eas.json` is properly configured:
-   ```json
-   {
-     "cli": {
-       "version": ">= 5.9.1",
-       "appVersionSource": "remote"
-     },
-     "build": {
-       "development": {
-         "developmentClient": true,
-         "distribution": "internal"
-       },
-       "preview": {
-         "distribution": "internal"
-       },
-       "production": {
-         "distribution": "store",
-         "ios": {
-           "resourceClass": "m-medium"
-         }
-       }
-     },
-     "submit": {
-       "production": {
-         "ios": {
-           "appleId": "YOUR_APPLE_ID",
-           "ascAppId": "YOUR_APP_STORE_CONNECT_APP_ID",
-           "appleTeamId": "YOUR_APPLE_TEAM_ID"
-         }
-       }
-     }
-   }
-   ```
-
-2. **Build the App**:
-   ```bash
-   # Clean and rebuild
-   rm -rf node_modules
-   npm install
-   npx expo prebuild --clean
-   eas build --platform ios --profile production
-   ```
-
-3. **Submit to TestFlight**:
-   ```bash
-   eas submit --platform ios
-   ```
-
-4. **Set Up TestFlight**:
-   - Wait for Apple to process your build (5-10 minutes)
-   - Go to [App Store Connect](https://appstoreconnect.apple.com)
-   - Navigate to your app's TestFlight section
-   - Add test information and notes
-   - Configure test groups (internal/external)
-   - Add testers via email or public link
-
-5. **Testing Process**:
-   - Testers will receive an email invitation
-   - They need to install the TestFlight app from the App Store
-   - They can then install and test your app
-   - Feedback can be provided directly through TestFlight
-
-### Troubleshooting TestFlight Deployment
-
-- If the build fails, check the EAS build logs
-- Ensure all required assets (icons, splash screens) are present
-- Verify your Apple Developer account has the necessary permissions
-- Check that your bundle identifier matches in both `app.json` and App Store Connect
-
-## Customization
-
-### Changing Default Parameters
-
-You can modify the default Windguru widget parameters in the `WindguruWidget.js` component:
-
-- Wind speed units (knots, m/s, etc.)
-- Temperature units (Celsius, Fahrenheit)
-- Displayed forecast parameters
-- Forecast hours
+- Follow the existing code style
+- Add comments for complex logic
+- Update documentation if needed
+- Test your changes on both iOS and Android
+- Keep pull requests focused and small
 
 ## Troubleshooting
 
@@ -194,8 +142,18 @@ If you encounter any issues:
 1. Make sure all dependencies are installed correctly
 2. Check that you have the correct Windguru spot ID
 3. Ensure you have an active internet connection
-4. For web version issues, try clearing your browser cache
+4. If groups or spots aren't saving, check your device's storage permissions
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Supporting the Project
+
+If you find this app useful and want to support its development, you can:
+
+- Star the repository on GitHub
+- Share it with other sailors and surfers
+- Report bugs and suggest improvements
+- Contribute code through pull requests
+- Make a donation through [PayPal](https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES)
