@@ -88,6 +88,11 @@ npm run android # for Android
 
 ## Project Structure
 
+- `docs/`: Documentation files
+  - `LICENSE`: MIT License file
+  - `PRIVACY.md` and `PRIVACY.html`: Privacy policy
+  - `SUPPORT.md` and `SUPPORT.html`: Support information
+  - `TERMS_OF_USE.md` and `TERMS_OF_USE.html`: Terms of use
 - `src/components/`: Reusable UI components
   - `WindguruWidget.js`: WebView component for displaying Windguru forecasts
 - `src/constants/`: App-wide constants and configurations
