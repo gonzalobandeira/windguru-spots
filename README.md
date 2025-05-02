@@ -161,4 +161,4 @@ If you find this app useful and want to support its development, you can:
 - Share it with other sailors and surfers
 - Report bugs and suggest improvements
 - Contribute code through pull requests
-- Make a donation through [PayPal](https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES)
+- Make a donation through [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES)

@@ -60,10 +60,23 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     color: Colors.text.primary,
   },
+  helpContainer: {
+    marginTop: Spacing.xs,
+  },
   helpText: {
     fontSize: FontSize.sm,
     color: Colors.text.secondary,
     marginTop: Spacing.xs,
+  },
+  helpLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Spacing.xs,
+  },
+  helpLinkText: {
+    fontSize: FontSize.sm,
+    color: Colors.primary,
+    marginRight: Spacing.xs,
   },
   modelSelector: {
     borderWidth: 1,
@@ -200,32 +213,5 @@ export const styles = StyleSheet.create({
     color: Colors.text.white,
     fontSize: FontSize.md,
     fontWeight: FontWeight.bold,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  button: {
-    flex: 1,
-    padding: 14,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  disabledButton: {
-    opacity: 0.7,
-  },
-  // Modal styles
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: Spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  modelList: {
-    padding: Spacing.lg,
   },
 }); 

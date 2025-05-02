@@ -11,7 +11,8 @@ import {
   Modal,
   FlatList,
   StyleSheet,
-  StatusBar
+  StatusBar,
+  Linking
 } from 'react-native';
 import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
@@ -24,7 +25,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 const AddLocationScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [spotId, setSpotId] = useState('');
-  const [modelId, setModelId] = useState(WindguruLimits.DEFAULT_MODEL_ID); // Default to WG model
+  const [modelId, setModelId] = useState(WindguruLimits.DEFAULT_MODEL_ID);
   const [groupId, setGroupId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(false);
@@ -175,10 +176,19 @@ const AddLocationScreen = ({ navigation }) => {
               placeholderTextColor="#999"
               keyboardType="number-pad"
             />
-            <Text style={styles.helpText}>
-              You can find the spot ID in the URL of the Windguru forecast page
-              (e.g., https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID})
-            </Text>
+            <View style={styles.helpContainer}>
+              <Text style={styles.helpText}>
+                You can find the spot ID in the URL of the Windguru forecast page
+                (e.g., https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID})
+              </Text>
+              <TouchableOpacity 
+                style={styles.helpLink}
+                onPress={() => Linking.openURL('https://www.windguru.cz/')}
+              >
+                <Text style={styles.helpLinkText}>Search on Windguru</Text>
+                <MaterialIcons name="open-in-new" size={16} color={Colors.primary} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.inputGroup}>
