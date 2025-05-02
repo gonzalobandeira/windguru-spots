@@ -2,7 +2,7 @@
   "expo": {
     "name": "Windguru Spots",
     "slug": "windguru-spots-app",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "light",
@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.gbe.windguruspots",
-      "buildNumber": "3",
+      "buildNumber": "111",
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "LSApplicationQueriesSchemes": ["mailto"],
@@ -54,7 +54,7 @@
       }
     },
     "owner": "gonzalobandeira",
-    "supportUrl": "https://gonzalobandeira.github.io/windguru-spots/SUPPORT.html",
-    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/PRIVACY.html"
+    "supportUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/SUPPORT.html",
+    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/PRIVACY.html"
   }
 }

@@ -9,6 +9,7 @@ import {
   Linking
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
@@ -19,7 +20,7 @@ import { getModelName } from '../constants/Models';
 import { Colors } from '../constants/Styles';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
 
-const PAYPAL_ME_URL = 'https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES';
+const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 
 function getTimeAgo(date) {
   if (!date) return '';
@@ -262,12 +263,12 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
-  const handleDonate = async () => {
+  const handleGithubPress = async () => {
     try {
-      await Linking.openURL(PAYPAL_ME_URL);
+      await Linking.openURL(GITHUB_REPO_URL);
     } catch (error) {
-      Alert.alert('Error', 'Could not open PayPal.Me link');
-      console.error('Error opening PayPal.Me:', error);
+      Alert.alert('Error', 'Could not open GitHub repository');
+      console.error('Error opening GitHub:', error);
     }
   };
 
@@ -320,14 +321,9 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.footerContent}>
           <Text style={styles.footerText}>Powered by Windguru</Text>
           <Text style={styles.footerSeparator}>|</Text>
-          {isFeatureEnabled('DONATE_FEATURE') && (
-            <TouchableOpacity 
-              style={styles.donateButton}
-              onPress={handleDonate}
-            >
-              <Text style={styles.donateButtonText}>Support Us</Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={handleGithubPress}>
+            <FontAwesome name="github" size={16} color="#000000" />
+          </TouchableOpacity>
         </View>
       </View>
     </View>

@@ -212,17 +212,6 @@ export const styles = StyleSheet.create({
     color: Colors.text.secondary,
     marginHorizontal: Spacing.xs,
   },
-  donateButton: {
-    backgroundColor: Colors.primary,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.xs,
-    borderRadius: BorderRadius.sm,
-  },
-  donateButtonText: {
-    color: Colors.text.white,
-    fontSize: FontSize.xs,
-    fontWeight: FontWeight.bold,
-  },
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
