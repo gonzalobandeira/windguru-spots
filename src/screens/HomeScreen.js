@@ -191,6 +191,8 @@ const HomeScreen = ({ navigation }) => {
                 spotId={item.spotId} 
                 modelId={item.modelId} 
                 params={item.params} 
+                windUnit={item.windUnit || 'knots'}
+                tempUnit={item.tempUnit === 'fahrenheit' ? 'f' : 'c'}
               />
             )}
           </View>
