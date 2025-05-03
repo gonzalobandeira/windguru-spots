@@ -32,7 +32,7 @@ class LocationService {
   }
 
   // Add a new location
-  async addLocation(name, spotId, modelId = WindguruLimits.DEFAULT_MODEL_ID, params = DEFAULT_WINDGURU_PARAMS, groupId = null) {
+  async addLocation(name, spotId, modelId = WindguruLimits.DEFAULT_MODEL_ID, params = DEFAULT_WINDGURU_PARAMS, groupId = null, windUnit = 'knots', tempUnit = 'celsius') {
     try {
       const locations = await this.getLocations();
       
@@ -45,7 +45,7 @@ class LocationService {
       const id = Date.now().toString();
       
       // Create new location object
-      const newLocation = new Location(id, name, spotId, modelId, params, groupId);
+      const newLocation = new Location(id, name, spotId, modelId, params, groupId, windUnit, tempUnit);
       
       // Add to locations array
       const updatedLocations = [...locations, newLocation];

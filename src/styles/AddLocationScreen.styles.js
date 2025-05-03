@@ -214,4 +214,18 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: FontWeight.bold,
   },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    width: 120,
+    marginBottom: 12,
+    alignSelf: 'flex-start',
+    overflow: 'hidden',
+  },
+  picker: {
+    height: 44,
+    color: Colors.text.primary,
+  },
 }); 
