@@ -22,6 +22,23 @@ import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
+const WINDGURU_PARAMS_LIST = [
+  { label: 'Wind speed', value: 'WINDSPD' },
+  { label: 'Wind gusts', value: 'GUST' },
+  { label: 'Wind direction', value: 'SMER' },
+  { label: 'Temperature', value: 'TMP' },
+  { label: '*Temperature', value: 'TMPE' },
+  { label: 'Wind chill', value: 'WCHILL' },
+  { label: '*0° isotherm (m)', value: 'FLHGT' },
+  { label: 'Cloud cover (%) high / mid / low', value: 'CDC' },
+  { label: 'Cloud cover (%)', value: 'TCDC' },
+  { label: '*Precip. (mm/1h)', value: 'APCP1s' },
+  { label: '*Pressure (hPa)', value: 'SLP' },
+  { label: 'Humidity (%)', value: 'RH' },
+  { label: 'Windguru rating', value: 'RATING' },
+];
+import { DEFAULT_WINDGURU_PARAMS } from '../constants/Models';
+
 const AddLocationScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [spotId, setSpotId] = useState('');
@@ -33,6 +50,8 @@ const AddLocationScreen = ({ navigation }) => {
   const [groups, setGroups] = useState([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showNewGroupInput, setShowNewGroupInput] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [params, setParams] = useState(DEFAULT_WINDGURU_PARAMS.split(','));
 
   // Load groups when component mounts
   useEffect(() => {
@@ -63,9 +82,10 @@ const AddLocationScreen = ({ navigation }) => {
 
     try {
       setIsSubmitting(true);
+      console.log('Submitting params to LocationService:', params.join(','));
       
       // Add new location
-      await LocationService.addLocation(name.trim(), spotId.trim(), modelId, undefined, groupId);
+      await LocationService.addLocation(name.trim(), spotId.trim(), modelId, params.join(','), groupId);
       
       // Navigate back to home screen
       navigation.goBack();
@@ -111,6 +131,16 @@ const AddLocationScreen = ({ navigation }) => {
       Alert.alert('Error', 'Failed to create group');
       console.error(error);
     }
+  };
+
+  const handleParamToggle = (param) => {
+    setParams((prev) => {
+      const updated = prev.includes(param)
+        ? prev.filter((p) => p !== param)
+        : [...prev, param];
+      console.log('Params after toggle:', updated);
+      return updated;
+    });
   };
 
   const renderModelItem = ({ item }) => (
@@ -216,6 +246,43 @@ const AddLocationScreen = ({ navigation }) => {
                 {groupId ? groups.find(g => g.id === groupId)?.name : 'No Group'}
               </Text>
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <TouchableOpacity onPress={() => setShowAdvanced((prev) => !prev)}>
+              <Text style={[styles.label, { color: Colors.primary }]}>Advanced Configuration {showAdvanced ? '▲' : '▼'}</Text>
+            </TouchableOpacity>
+            {showAdvanced && (
+              <View style={{ marginTop: 8 }}>
+                <Text style={styles.label}>Variables</Text>
+                {WINDGURU_PARAMS_LIST.map((param) => (
+                  <TouchableOpacity
+                    key={param.value}
+                    style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}
+                    onPress={() => handleParamToggle(param.value)}
+                  >
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 4,
+                        borderWidth: 1,
+                        borderColor: Colors.primary,
+                        backgroundColor: params.includes(param.value) ? Colors.primary : '#fff',
+                        marginRight: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {params.includes(param.value) && (
+                        <MaterialIcons name="check" size={16} color="#fff" />
+                      )}
+                    </View>
+                    <Text style={{ color: Colors.text.primary }}>{param.label}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
 
           <TouchableOpacity 

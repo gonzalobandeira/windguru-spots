@@ -22,6 +22,8 @@ import { isFeatureEnabled } from '../constants/FeatureFlags';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 
+const WIDGET_FIXED_HEIGHT = 320;
+
 function getTimeAgo(date) {
   if (!date) return '';
   const now = new Date();
@@ -147,42 +149,55 @@ const HomeScreen = ({ navigation }) => {
   };
 
   // Render each location item
-  const renderLocationItem = ({ item, drag, isActive }) => (
-    <ScaleDecorator>
-      <TouchableOpacity
-        onLongPress={drag}
-        disabled={isActive}
-        style={[
-          styles.locationItem,
-          isActive && { opacity: 0.8 }
-        ]}
-      >
-        <View style={styles.locationHeader}>
-          <View style={styles.locationInfo}>
-            <Text style={styles.locationName}>{item.name}</Text>
-            <View style={styles.locationDetails}>
-              <Text style={styles.locationSpotId}>Spot ID: {item.spotId}</Text>
-              <Text style={styles.locationModel}>Model: {getModelName(item.modelId)}</Text>
+  const renderLocationItem = ({ item, drag, isActive }) => {
+    const paramList = item.params ? item.params.split(',').filter(Boolean) : [];
+    const noParamsSelected = paramList.length === 0;
+
+    return (
+      <ScaleDecorator>
+        <TouchableOpacity
+          onLongPress={drag}
+          disabled={isActive}
+          style={[
+            styles.locationItem,
+            isActive && { opacity: 0.8 }
+          ]}
+        >
+          <View style={styles.locationHeader}>
+            <View style={styles.locationInfo}>
+              <Text style={styles.locationName}>{item.name}</Text>
+              <View style={styles.locationDetails}>
+                <Text style={styles.locationSpotId}>Spot ID: {item.spotId}</Text>
+                <Text style={styles.locationModel}>Model: {getModelName(item.modelId)}</Text>
+              </View>
             </View>
+            <TouchableOpacity 
+              style={styles.deleteButton}
+              onPress={() => handleDeleteLocation(item.id)}
+            >
+              <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity 
-            style={styles.deleteButton}
-            onPress={() => handleDeleteLocation(item.id)}
-          >
-            <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.widgetContainer}>
-          <WindguruWidget 
-            key={`${item.id}-${refreshKey}`}
-            spotId={item.spotId} 
-            modelId={item.modelId} 
-            params={item.params} 
-          />
-        </View>
-      </TouchableOpacity>
-    </ScaleDecorator>
-  );
+          <View style={[styles.widgetContainer, { height: WIDGET_FIXED_HEIGHT }]}> 
+            {noParamsSelected ? (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: Colors.text.secondary, fontStyle: 'italic' }}>
+                  No variables selected. Please edit this spot to choose at least one variable.
+                </Text>
+              </View>
+            ) : (
+              <WindguruWidget 
+                key={`${item.id}-${refreshKey}`}
+                spotId={item.spotId} 
+                modelId={item.modelId} 
+                params={item.params} 
+              />
+            )}
+          </View>
+        </TouchableOpacity>
+      </ScaleDecorator>
+    );
+  };
 
   // Render each group item
   const renderGroupItem = ({ item, drag, isActive }) => {
