@@ -5,7 +5,7 @@ import { styles } from '../styles/WindguruWidget.styles';
 import { DEFAULT_WINDGURU_PARAMS } from '../constants/Models';
 import { WindguruLimits } from '../constants/Limits';
 
-const WindguruWidget = ({ spotId, modelId, params }) => {
+const WindguruWidget = ({ spotId, modelId, params, windUnit = 'knots', tempUnit = 'c' }) => {
   // Default parameters if not provided
   const spot = spotId || WindguruLimits.DEFAULT_SPOT_ID;
   const model = modelId || WindguruLimits.DEFAULT_MODEL_ID;
@@ -42,8 +42,8 @@ const WindguruWidget = ({ spotId, modelId, params }) => {
                   "s=${spot}",
                   "m=${model}",
                   "uid=${uid}",
-                  "wj=knots",
-                  "tj=c",
+                  "wj=${windUnit}",
+                  "tj=${tempUnit}",
                   "waj=m",
                   "tij=cm",
                   "odh=${WindguruLimits.DEFAULT_OFFSET_HOURS}",

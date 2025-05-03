@@ -21,6 +21,38 @@ import { WindguruModels } from '../constants/Models';
 import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Picker } from '@react-native-picker/picker';
+import ModalSelector from 'react-native-modal-selector';
+
+const WINDGURU_PARAMS_LIST = [
+  { label: 'Wind speed', value: 'WINDSPD' },
+  { label: 'Wind gusts', value: 'GUST' },
+  { label: 'Wind direction', value: 'SMER' },
+  { label: 'Temperature', value: 'TMP' },
+  { label: '*Temperature', value: 'TMPE' },
+  { label: 'Wind chill', value: 'WCHILL' },
+  { label: '*0° isotherm (m)', value: 'FLHGT' },
+  { label: 'Cloud cover (%) high / mid / low', value: 'CDC' },
+  { label: 'Cloud cover (%)', value: 'TCDC' },
+  { label: '*Precip. (mm/1h)', value: 'APCP1s' },
+  { label: '*Pressure (hPa)', value: 'SLP' },
+  { label: 'Humidity (%)', value: 'RH' },
+  { label: 'Windguru rating', value: 'RATING' },
+];
+import { DEFAULT_WINDGURU_PARAMS } from '../constants/Models';
+
+const windUnitOptions = [
+  { key: 'knots', label: 'knots' },
+  { key: 'ms', label: 'm/s' },
+  { key: 'ms01', label: 'm/s (0.1)' },
+  { key: 'kmh', label: 'kmh' },
+  { key: 'mph', label: 'mph' },
+  { key: 'bft', label: 'Bft' },
+];
+const tempUnitOptions = [
+  { key: 'celsius', label: 'Celsius' },
+  { key: 'fahrenheit', label: 'Fahrenheit' },
+];
 
 const AddLocationScreen = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -33,6 +65,10 @@ const AddLocationScreen = ({ navigation }) => {
   const [groups, setGroups] = useState([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showNewGroupInput, setShowNewGroupInput] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [params, setParams] = useState(DEFAULT_WINDGURU_PARAMS.split(','));
+  const [windUnit, setWindUnit] = useState('knots');
+  const [tempUnit, setTempUnit] = useState('celsius');
 
   // Load groups when component mounts
   useEffect(() => {
@@ -63,9 +99,10 @@ const AddLocationScreen = ({ navigation }) => {
 
     try {
       setIsSubmitting(true);
+      console.log('Submitting params to LocationService:', params.join(','));
       
       // Add new location
-      await LocationService.addLocation(name.trim(), spotId.trim(), modelId, undefined, groupId);
+      await LocationService.addLocation(name.trim(), spotId.trim(), modelId, params.join(','), groupId, windUnit, tempUnit);
       
       // Navigate back to home screen
       navigation.goBack();
@@ -111,6 +148,15 @@ const AddLocationScreen = ({ navigation }) => {
       Alert.alert('Error', 'Failed to create group');
       console.error(error);
     }
+  };
+
+  const handleParamToggle = (param) => {
+    setParams((prev) => {
+      const updated = prev.includes(param)
+        ? prev.filter((p) => p !== param)
+        : [...prev, param];
+      return updated;
+    });
   };
 
   const renderModelItem = ({ item }) => (
@@ -216,6 +262,63 @@ const AddLocationScreen = ({ navigation }) => {
                 {groupId ? groups.find(g => g.id === groupId)?.name : 'No Group'}
               </Text>
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.inputGroup}>
+            <TouchableOpacity onPress={() => setShowAdvanced((prev) => !prev)}>
+              <Text style={[styles.label, { color: Colors.primary }]}>Advanced Configuration {showAdvanced ? '▲' : '▼'}</Text>
+            </TouchableOpacity>
+            {showAdvanced && (
+              <View style={{ marginTop: 8 }}>
+                <Text style={styles.label}>Variables</Text>
+                {WINDGURU_PARAMS_LIST.map((param) => (
+                  <TouchableOpacity
+                    key={param.value}
+                    style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}
+                    onPress={() => handleParamToggle(param.value)}
+                  >
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 4,
+                        borderWidth: 1,
+                        borderColor: Colors.primary,
+                        backgroundColor: params.includes(param.value) ? Colors.primary : '#fff',
+                        marginRight: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {params.includes(param.value) && (
+                        <MaterialIcons name="check" size={16} color="#fff" />
+                      )}
+                    </View>
+                    <Text style={{ color: Colors.text.primary }}>{param.label}</Text>
+                  </TouchableOpacity>
+                ))}
+                {/* Wind Unit Selector */}
+                <Text style={styles.label}>Wind units</Text>
+                <ModalSelector
+                  data={windUnitOptions}
+                  initValue={windUnitOptions.find(o => o.key === windUnit)?.label}
+                  onChange={option => setWindUnit(option.key)}
+                  style={{ width: 160, marginBottom: 12 }}
+                  initValueTextStyle={{ fontSize: 16, color: '#222' }}
+                  selectTextStyle={{ fontSize: 16, color: '#222' }}
+                />
+                {/* Temperature Unit Selector */}
+                <Text style={styles.label}>Temperature units</Text>
+                <ModalSelector
+                  data={tempUnitOptions}
+                  initValue={tempUnitOptions.find(o => o.key === tempUnit)?.label}
+                  onChange={option => setTempUnit(option.key)}
+                  style={{ width: 160, marginBottom: 12 }}
+                  initValueTextStyle={{ fontSize: 16, color: '#222' }}
+                  selectTextStyle={{ fontSize: 16, color: '#222' }}
+                />
+              </View>
+            )}
           </View>
 
           <TouchableOpacity 
