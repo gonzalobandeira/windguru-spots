@@ -5,14 +5,13 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  StyleSheet,
   Platform,
   Dimensions,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Colors, Spacing, FontSize, FontWeight, BorderRadius } from '../constants/Styles';
 import windguruSpots from '../data/windguru_spots.json';
 import { Portal } from '@gorhom/portal';
+import styles from '../styles/SpotSearch.styles';
 
 const SpotSearch = ({ onSpotSelect }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -89,7 +88,7 @@ const SpotSearch = ({ onSpotSelect }) => {
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
-        <MaterialIcons name="search" size={20} color={Colors.text.secondary} />
+        <MaterialIcons name="search" size={20} color={styles.searchInput?.color || '#888'} />
         <TextInput
           ref={searchInputRef}
           style={styles.searchInput}
@@ -100,7 +99,7 @@ const SpotSearch = ({ onSpotSelect }) => {
             setShowResults(true);
           }}
           placeholder="Search for a spot..."
-          placeholderTextColor={Colors.text.secondary}
+          placeholderTextColor={styles.searchInput?.color || '#888'}
           onFocus={handleFocus}
         />
         {searchQuery ? (
@@ -110,7 +109,7 @@ const SpotSearch = ({ onSpotSelect }) => {
               setSearchResults([]);
             }}
           >
-            <MaterialIcons name="close" size={20} color={Colors.text.secondary} />
+            <MaterialIcons name="close" size={20} color={styles.searchInput?.color || '#888'} />
           </TouchableOpacity>
         ) : null}
       </View>
@@ -142,69 +141,5 @@ const SpotSearch = ({ onSpotSelect }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    zIndex: 1,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: BorderRadius.sm,
-    padding: Spacing.sm,
-    backgroundColor: '#f5f5f5',
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: Spacing.sm,
-    fontSize: FontSize.md,
-    color: Colors.text.primary,
-  },
-  resultsContainer: {
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.sm,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    maxHeight: 300,
-    ...Platform.select({
-      ios: {
-        shadowColor: Colors.shadow,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
-  },
-  resultsList: {
-    maxHeight: 300,
-  },
-  spotItem: {
-    padding: Spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  spotInfo: {
-    marginBottom: Spacing.xs,
-  },
-  spotName: {
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.medium,
-    color: Colors.text.primary,
-  },
-  spotLocation: {
-    fontSize: FontSize.sm,
-    color: Colors.text.secondary,
-  },
-  spotId: {
-    fontSize: FontSize.sm,
-    color: Colors.primary,
-  },
-});
 
 export default SpotSearch; 

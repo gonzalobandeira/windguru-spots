@@ -235,7 +235,7 @@ const AddLocationScreen = ({ navigation }) => {
             />
             <View style={styles.helpContainer}>
               <Text style={styles.helpText}>
-                Use search box to automaticall fill in the id or you can find the spot ID in the URL of the Windguru forecast page
+                Use search box to automatically fill in the spot Id, or you can find the spot ID in the URL of the Windguru forecast page
                 (e.g., https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID})
               </Text>
             </View>
