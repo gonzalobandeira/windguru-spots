@@ -8,17 +8,16 @@ export const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    padding: Spacing.lg,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     padding: Spacing.lg,
     paddingTop: Platform.OS === 'ios' ? 50 : StatusBar.currentHeight + Spacing.lg,
-    backgroundColor: Colors.white,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
+    backgroundColor: Colors.white,
   },
   title: {
     fontSize: FontSize.xl,
@@ -32,16 +31,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  closeButtonText: {
-    fontSize: FontSize.md,
-    color: Colors.primary,
-    fontWeight: FontWeight.bold,
-  },
   formContainer: {
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.md,
+    flex: 1,
     padding: Spacing.lg,
-    ...Shadow.small,
   },
   inputGroup: {
     marginBottom: Spacing.lg,
@@ -59,6 +51,7 @@ export const styles = StyleSheet.create({
     padding: Spacing.md,
     fontSize: FontSize.md,
     color: Colors.text.primary,
+    backgroundColor: Colors.white,
   },
   helpContainer: {
     marginTop: Spacing.xs,
@@ -66,7 +59,6 @@ export const styles = StyleSheet.create({
   helpText: {
     fontSize: FontSize.sm,
     color: Colors.text.secondary,
-    marginTop: Spacing.xs,
   },
   helpLink: {
     flexDirection: 'row',
@@ -118,27 +110,36 @@ export const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   modalContent: {
     backgroundColor: Colors.white,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.lg,
-    width: Modal.width,
-    maxHeight: Modal.maxHeight,
+    borderTopLeftRadius: BorderRadius.lg,
+    borderTopRightRadius: BorderRadius.lg,
+    padding: Spacing.md,
+    maxHeight: '80%',
   },
   modalTitle: {
-    fontSize: FontSize.xl,
+    fontSize: FontSize.lg,
     fontWeight: FontWeight.bold,
     color: Colors.text.primary,
-    marginBottom: Spacing.lg,
+    marginBottom: Spacing.md,
   },
   modalList: {
-    maxHeight: Modal.listMaxHeight,
+    maxHeight: '70%',
+  },
+  modalCloseButton: {
+    marginTop: Spacing.md,
+    padding: Spacing.sm,
+    alignItems: 'center',
+  },
+  modalCloseButtonText: {
+    color: Colors.primary,
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.medium,
   },
   modelItem: {
-    padding: Spacing.lg,
+    padding: Spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
@@ -153,7 +154,7 @@ export const styles = StyleSheet.create({
     marginTop: Spacing.xs,
   },
   groupItem: {
-    padding: Spacing.lg,
+    padding: Spacing.md,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },
@@ -161,58 +162,36 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     color: Colors.text.primary,
   },
-  modalCloseButton: {
-    backgroundColor: Colors.primary,
-    padding: Spacing.md,
-    borderRadius: BorderRadius.sm,
-    alignItems: 'center',
-    marginTop: Spacing.lg,
-  },
-  modalCloseButtonText: {
-    color: Colors.text.white,
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
-  },
   newGroupContainer: {
-    padding: Spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    padding: Spacing.md,
   },
   newGroupButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: Spacing.lg,
-    gap: Spacing.sm,
+    justifyContent: 'flex-end',
+    marginTop: Spacing.md,
   },
   newGroupButton: {
-    flex: 1,
-    height: ButtonHeight.md,
-    borderRadius: BorderRadius.sm,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  newGroupButtonText: {
-    color: Colors.primary,
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
+    padding: Spacing.sm,
+    marginLeft: Spacing.sm,
   },
   cancelButton: {
-    backgroundColor: Colors.background,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  cancelButtonText: {
-    color: Colors.text.primary,
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
+    backgroundColor: Colors.error,
   },
   createButton: {
     backgroundColor: Colors.primary,
   },
-  createButtonText: {
-    color: Colors.text.white,
+  cancelButtonText: {
+    color: Colors.white,
     fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
+  },
+  createButtonText: {
+    color: Colors.white,
+    fontSize: FontSize.md,
+  },
+  newGroupButtonText: {
+    color: Colors.primary,
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.medium,
   },
   pickerContainer: {
     borderWidth: 1,
