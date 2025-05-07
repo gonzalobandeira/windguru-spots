@@ -238,21 +238,6 @@ const AddLocationScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Forecast Model</Text>
-            <TouchableOpacity 
-              style={styles.modelSelector}
-              onPress={() => setShowModelSelector(true)}
-            >
-              <Text style={styles.modelSelectorText}>
-                {WindguruModels[Object.keys(WindguruModels).find(key => WindguruModels[key].id === modelId)]?.name}
-              </Text>
-            </TouchableOpacity>
-            <Text style={styles.helpText}>
-              {WindguruModels[Object.keys(WindguruModels).find(key => WindguruModels[key].id === modelId)]?.description}
-            </Text>
-          </View>
-
-          <View style={styles.inputGroup}>
             <Text style={styles.label}>Group</Text>
             <TouchableOpacity 
               style={styles.groupSelector}
@@ -270,53 +255,74 @@ const AddLocationScreen = ({ navigation }) => {
             </TouchableOpacity>
             {showAdvanced && (
               <View style={{ marginTop: 8 }}>
-                <Text style={styles.label}>Variables</Text>
-                {WINDGURU_PARAMS_LIST.map((param) => (
-                  <TouchableOpacity
-                    key={param.value}
-                    style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}
-                    onPress={() => handleParamToggle(param.value)}
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={styles.label}>Forecast Model</Text>
+                  <TouchableOpacity 
+                    style={styles.modelSelector}
+                    onPress={() => setShowModelSelector(true)}
                   >
-                    <View
-                      style={{
-                        width: 20,
-                        height: 20,
-                        borderRadius: 4,
-                        borderWidth: 1,
-                        borderColor: Colors.primary,
-                        backgroundColor: params.includes(param.value) ? Colors.primary : '#fff',
-                        marginRight: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {params.includes(param.value) && (
-                        <MaterialIcons name="check" size={16} color="#fff" />
-                      )}
-                    </View>
-                    <Text style={{ color: Colors.text.primary }}>{param.label}</Text>
+                    <Text style={styles.modelSelectorText}>
+                      {WindguruModels[Object.keys(WindguruModels).find(key => WindguruModels[key].id === modelId)]?.name}
+                    </Text>
                   </TouchableOpacity>
-                ))}
-                {/* Wind Unit Selector */}
-                <Text style={styles.label}>Wind units</Text>
-                <ModalSelector
-                  data={windUnitOptions}
-                  initValue={windUnitOptions.find(o => o.key === windUnit)?.label}
-                  onChange={option => setWindUnit(option.key)}
-                  style={{ width: 160, marginBottom: 12 }}
-                  initValueTextStyle={{ fontSize: 16, color: '#222' }}
-                  selectTextStyle={{ fontSize: 16, color: '#222' }}
-                />
-                {/* Temperature Unit Selector */}
-                <Text style={styles.label}>Temperature units</Text>
-                <ModalSelector
-                  data={tempUnitOptions}
-                  initValue={tempUnitOptions.find(o => o.key === tempUnit)?.label}
-                  onChange={option => setTempUnit(option.key)}
-                  style={{ width: 160, marginBottom: 12 }}
-                  initValueTextStyle={{ fontSize: 16, color: '#222' }}
-                  selectTextStyle={{ fontSize: 16, color: '#222' }}
-                />
+                  <Text style={styles.helpText}>
+                    {WindguruModels[Object.keys(WindguruModels).find(key => WindguruModels[key].id === modelId)]?.description}
+                  </Text>
+                </View>
+
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={styles.label}>Variables</Text>
+                  {WINDGURU_PARAMS_LIST.map((param) => (
+                    <TouchableOpacity
+                      key={param.value}
+                      style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}
+                      onPress={() => handleParamToggle(param.value)}
+                    >
+                      <View
+                        style={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: 4,
+                          borderWidth: 1,
+                          borderColor: Colors.primary,
+                          backgroundColor: params.includes(param.value) ? Colors.primary : '#fff',
+                          marginRight: 10,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}
+                      >
+                        {params.includes(param.value) && (
+                          <MaterialIcons name="check" size={16} color="#fff" />
+                        )}
+                      </View>
+                      <Text style={{ color: Colors.text.primary }}>{param.label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={styles.label}>Wind units</Text>
+                  <ModalSelector
+                    data={windUnitOptions}
+                    initValue={windUnitOptions.find(o => o.key === windUnit)?.label}
+                    onChange={option => setWindUnit(option.key)}
+                    style={{ width: 160, marginBottom: 12 }}
+                    initValueTextStyle={{ fontSize: 16, color: '#222' }}
+                    selectTextStyle={{ fontSize: 16, color: '#222' }}
+                  />
+                </View>
+
+                <View style={{ marginBottom: 20 }}>
+                  <Text style={styles.label}>Temperature units</Text>
+                  <ModalSelector
+                    data={tempUnitOptions}
+                    initValue={tempUnitOptions.find(o => o.key === tempUnit)?.label}
+                    onChange={option => setTempUnit(option.key)}
+                    style={{ width: 160, marginBottom: 12 }}
+                    initValueTextStyle={{ fontSize: 16, color: '#222' }}
+                    selectTextStyle={{ fontSize: 16, color: '#222' }}
+                  />
+                </View>
               </View>
             )}
           </View>
