@@ -3,16 +3,21 @@ import requests
 from typing import Dict, Any
 from pathlib import Path
 
+WINDGURU_SPOTS_PATH = Path("src/data/windguru_spots.json")
+WINDGURU_BASE_URL = "http://old.windguru.cz/int/ajax/wg_ajax_json_select.php"
+
 def fetch_region_data(region_id: int) -> Dict[str, Any]:
 	"""Fetch data for a specific region."""
-	region_req_url = f'http://old.windguru.cz/int/ajax/wg_ajax_json_select.php?q=zeme&id_georegion={region_id}&exist_spots=1&id_model=0'
+	region_req_url = f'{WINDGURU_BASE_URL}?q=zeme&id_georegion={region_id}&exist_spots=1&id_model=0'
 	response = requests.get(region_req_url)
 	response.raise_for_status()
 	return response.json()
 
 def fetch_area_spots(area_id: int, region_id: int) -> Dict[str, int]:
 	"""Fetch spots for a specific area."""
-	area_req_url = f'http://old.windguru.cz/int/ajax/wg_ajax_json_select.php?q=spots&id_zeme={area_id}&id_region=0&id_georegion={region_id}&cats=4'
+	area_req_url = f'{WINDGURU_BASE_URL}?q=spots&id_zeme={area_id}&id_region=0&id_georegion={region_id}'
+	# Remove cats=4 to get all spots as we don't know what this category filter is doing
+	# area_req_url = f'http://old.windguru.cz/int/ajax/wg_ajax_json_select.php?q=spots&id_zeme={area_id}&id_region=0&id_georegion={region_id}&cats=4'
 	response = requests.get(area_req_url)
 	response.raise_for_status()
 	return response.json()
@@ -93,8 +98,7 @@ def main() -> None:
 		print(f"Region {region}: {len(areas)} areas")
 
 	# Save results to file
-	output_path = Path("windguru_spots.json")
-	output_path.write_text(
+	WINDGURU_SPOTS_PATH.write_text(
 		json.dumps(results, ensure_ascii=False, sort_keys=True, indent=4),
 		encoding='utf-8'
 	)
