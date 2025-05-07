@@ -96,10 +96,11 @@ export const styles = StyleSheet.create({
   locationSpotId: {
     fontSize: FontSize.sm,
     color: Colors.text.secondary,
+    fontWeight: FontWeight.medium,
   },
   locationModel: {
     fontSize: FontSize.sm,
-    color: Colors.primary,
+    color: Colors.text.secondary,
     fontWeight: FontWeight.medium,
   },
   deleteButton: {
