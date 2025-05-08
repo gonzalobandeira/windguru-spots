@@ -1,4 +1,5 @@
 # Windguru Spots
+<img src="assets/images/icon.png" alt="Windguru Spots Icon" width="100" height="100" />
 
 A React Native application built with Expo that allows users to check their preferred sailing/surf spots in one place using Windguru forecasts. This app is designed for sailors and surfers who want to quickly check conditions at their favorite spots without having to visit multiple websites or remember different spot IDs.
 
@@ -46,6 +47,17 @@ npm start
 npm run ios     # for iOS
 npm run android # for Android
 ```
+
+## Download the App
+
+Get Windguru Spots on your device:
+
+<p>
+  <a href="https://apps.apple.com/es/app/windguruspots/id6745230519?l=en-GB">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width="150" height="45" alt="Download on the App Store" />
+  </a>
+  </span>
+</p>
 
 ## How to Use
 
