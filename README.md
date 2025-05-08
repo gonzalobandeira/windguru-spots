@@ -14,6 +14,67 @@ A React Native application built with Expo that allows users to check their pref
 - Export and import your spots and groups
 - Cross-platform support for iOS and Android (on the roadmap)
 
+## Download the App
+
+Get Windguru Spots on your device:
+
+<p>
+  <a href="https://apps.apple.com/es/app/windguruspots/id6745230519?l=en-GB">
+    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width="150" height="45" alt="Download on the App Store" />
+  </a>
+  </span>
+</p>
+
+## How to Use
+
+### Adding a New Location
+
+1. Open the app and tap the "+ Add" button on the home screen
+2. Enter a name for your location (e.g., "My Favorite Beach")
+3. Enter the Windguru spot ID
+   - You can find this in the URL of the Windguru forecast page (e.g., https://www.windguru.cz/48743 where 48743 is the spot ID)
+   - Alternatively, use the search tool to find and select your spot from Windguru's database
+4. Select a forecast model (default is WG)
+5. Optionally, add the spot to a group
+6. Tap "Add Location" to save
+
+### Managing Groups
+
+1. When adding a new spot, you can:
+   - Select an existing group
+   - Create a new group
+2. Groups can be:
+   - Expanded/collapsed to show/hide spots
+   - Reordered via drag and drop
+   - Deleted (spots will also be deleted)
+
+### Viewing Forecasts
+
+1. Your spots are organized in groups and ungrouped spots
+2. Each spot shows a Windguru forecast widget
+3. Pull to refresh to update forecasts
+4. Tap on a group to expand/collapse it
+
+### Exporting and Importing
+
+1. Tap the import/export icon in the header
+2. To export:
+   - Tap "Export" to save your spots and groups
+   - Share the exported file
+3. To import:
+   - Tap "Import" and select an export file
+   - Confirm to replace current data
+
+## Supporting the Project
+
+If you find this app useful and want to support its development, you can:
+
+- Star the repository on GitHub
+- Share it with other sailors and surfers
+- Report bugs and suggest improvements
+- Contribute code through pull requests
+- Make a donation through [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES)
+
 ## Getting Started
 
 ### Prerequisites
@@ -48,56 +109,6 @@ npm run ios     # for iOS
 npm run android # for Android
 ```
 
-## Download the App
-
-Get Windguru Spots on your device:
-
-<p>
-  <a href="https://apps.apple.com/es/app/windguruspots/id6745230519?l=en-GB">
-    <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" width="150" height="45" alt="Download on the App Store" />
-  </a>
-  </span>
-</p>
-
-## How to Use
-
-### Adding a New Location
-
-1. Open the app and tap the "+ Add" button on the home screen
-2. Enter a name for your location (e.g., "My Favorite Beach")
-3. Enter the Windguru spot ID
-   - You can find this in the URL of the Windguru forecast page (e.g., https://www.windguru.cz/48743 where 48743 is the spot ID)
-4. Select a forecast model (default is WG)
-5. Optionally, add the spot to a group
-6. Tap "Add Location" to save
-
-### Managing Groups
-
-1. When adding a new spot, you can:
-   - Select an existing group
-   - Create a new group
-2. Groups can be:
-   - Expanded/collapsed to show/hide spots
-   - Reordered via drag and drop
-   - Deleted (spots will also be deleted)
-
-### Viewing Forecasts
-
-1. Your spots are organized in groups and ungrouped spots
-2. Each spot shows a Windguru forecast widget
-3. Pull to refresh to update forecasts
-4. Tap on a group to expand/collapse it
-
-### Exporting and Importing
-
-1. Tap the import/export icon in the header
-2. To export:
-   - Tap "Export" to save your spots and groups
-   - Share the exported file
-3. To import:
-   - Tap "Import" and select an export file
-   - Confirm to replace current data
-
 ## Project Structure
 
 - `docs/`: Documentation files
@@ -107,10 +118,16 @@ Get Windguru Spots on your device:
   - `TERMS_OF_USE.md` and `TERMS_OF_USE.html`: Terms of use
 - `src/components/`: Reusable UI components
   - `WindguruWidget.js`: WebView component for displaying Windguru forecasts
+  - `SpotSearch.js`: Search component for finding Windguru spots
+  - `HapticTab.tsx`: Tab component with haptic feedback
+  - `ParallaxScrollView.tsx`: Custom scroll view with parallax effect
+  - `ThemedText.tsx`: Themed text component
+  - `ThemedView.tsx`: Themed view component
 - `src/constants/`: App-wide constants and configurations
   - `Models.js`: Available forecast models
   - `Styles.js`: UI styling constants
   - `Limits.js`: App limits and restrictions
+- `src/data/`: Data management and storage
 - `src/hooks/`: Custom React hooks
 - `src/models/`: Data models
   - `Location.js`: Spot data model
@@ -164,13 +181,3 @@ If you encounter any issues:
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Supporting the Project
-
-If you find this app useful and want to support its development, you can:
-
-- Star the repository on GitHub
-- Share it with other sailors and surfers
-- Report bugs and suggest improvements
-- Contribute code through pull requests
-- Make a donation through [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/gonzalobandeira?country.x=ES&locale.x=es_ES)
