@@ -89,7 +89,7 @@ const AddLocationScreen = ({ navigation }) => {
   const handleSubmit = async () => {
     // Validate inputs
     if (!name.trim()) {
-      Alert.alert('Error', 'Please enter a location name');
+      Alert.alert('Error', 'Please enter a spot name');
       return;
     }
 
@@ -212,12 +212,12 @@ const AddLocationScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Location Name</Text>
+            <Text style={styles.label}>Spot Name</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder="Enter a custom name for this location"
+              placeholder="Enter a custom name for this spot"
               placeholderTextColor="#999"
             />
           </View>
@@ -235,8 +235,15 @@ const AddLocationScreen = ({ navigation }) => {
             />
             <View style={styles.helpContainer}>
               <Text style={styles.helpText}>
-                Use search box to automatically fill in the spot Id, or you can find the spot ID in the URL of the Windguru forecast page
-                (e.g., https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID})
+                Use search box to automatically fill in the spot ID, or you can find the spot ID in the URL of the Windguru forecast page
+                (e.g.,{' '}
+                <Text 
+                  style={{ color: Colors.primary, textDecorationLine: 'underline' }}
+                  onPress={() => Linking.openURL(`https://www.windguru.cz/${WindguruLimits.DEFAULT_SPOT_ID}`)}
+                >
+                  https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID}
+                </Text>
+                )
               </Text>
             </View>
           </View>
@@ -337,7 +344,7 @@ const AddLocationScreen = ({ navigation }) => {
             disabled={isSubmitting}
           >
             <Text style={styles.submitButtonText}>
-              {isSubmitting ? 'Adding...' : 'Add Location'}
+              {isSubmitting ? 'Adding...' : 'Add Spot'}
             </Text>
           </TouchableOpacity>
         </View>
