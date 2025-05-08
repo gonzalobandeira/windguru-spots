@@ -23,6 +23,7 @@ import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } fro
 import { MaterialIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import ModalSelector from 'react-native-modal-selector';
+import SpotSearch from '../components/SpotSearch';
 
 const WINDGURU_PARAMS_LIST = [
   { label: 'Wind speed', value: 'WINDSPD' },
@@ -88,7 +89,7 @@ const AddLocationScreen = ({ navigation }) => {
   const handleSubmit = async () => {
     // Validate inputs
     if (!name.trim()) {
-      Alert.alert('Error', 'Please enter a location name');
+      Alert.alert('Error', 'Please enter a spot name');
       return;
     }
 
@@ -184,6 +185,11 @@ const AddLocationScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  const handleSpotSelect = (spot) => {
+    setName(spot.name);
+    setSpotId(spot.id);
+  };
+
   return (
     <KeyboardAvoidingView 
       style={styles.container}
@@ -202,12 +208,16 @@ const AddLocationScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.formContainer}>
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Location Name</Text>
+            <SpotSearch onSpotSelect={handleSpotSelect} />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Spot Name</Text>
             <TextInput
               style={styles.input}
               value={name}
               onChangeText={setName}
-              placeholder="Enter a custom name for this location"
+              placeholder="Enter a custom name for this spot"
               placeholderTextColor="#999"
             />
           </View>
@@ -221,19 +231,20 @@ const AddLocationScreen = ({ navigation }) => {
               placeholder={`Enter Windguru spot ID (e.g., ${WindguruLimits.DEFAULT_SPOT_ID})`}
               placeholderTextColor="#999"
               keyboardType="number-pad"
+              editable={false}
             />
             <View style={styles.helpContainer}>
               <Text style={styles.helpText}>
-                You can find the spot ID in the URL of the Windguru forecast page
-                (e.g., https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID})
+                Use search box to automatically fill in the spot ID, or you can find the spot ID in the URL of the Windguru forecast page
+                (e.g.,{' '}
+                <Text 
+                  style={{ color: Colors.primary, textDecorationLine: 'underline' }}
+                  onPress={() => Linking.openURL(`https://www.windguru.cz/${WindguruLimits.DEFAULT_SPOT_ID}`)}
+                >
+                  https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID}
+                </Text>
+                )
               </Text>
-              <TouchableOpacity 
-                style={styles.helpLink}
-                onPress={() => Linking.openURL('https://www.windguru.cz/')}
-              >
-                <Text style={styles.helpLinkText}>Search on Windguru</Text>
-                <MaterialIcons name="open-in-new" size={16} color={Colors.primary} />
-              </TouchableOpacity>
             </View>
           </View>
 
@@ -333,7 +344,7 @@ const AddLocationScreen = ({ navigation }) => {
             disabled={isSubmitting}
           >
             <Text style={styles.submitButtonText}>
-              {isSubmitting ? 'Adding...' : 'Add Location'}
+              {isSubmitting ? 'Adding...' : 'Add Spot'}
             </Text>
           </TouchableOpacity>
         </View>

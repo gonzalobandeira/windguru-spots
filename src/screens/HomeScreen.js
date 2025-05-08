@@ -21,6 +21,7 @@ import { Colors } from '../constants/Styles';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
+const WINDGURU_URL = 'https://www.windguru.cz';
 
 const WIDGET_FIXED_HEIGHT = 320;
 
@@ -289,6 +290,15 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+  const handleWindguruPress = async () => {
+    try {
+      await Linking.openURL(WINDGURU_URL);
+    } catch (error) {
+      Alert.alert('Error', 'Could not open Windguru website');
+      console.error('Error opening Windguru:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -336,7 +346,9 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.footer}>
         <View style={styles.footerContent}>
-          <Text style={styles.footerText}>Powered by Windguru</Text>
+          <TouchableOpacity onPress={handleWindguruPress}>
+            <Text style={styles.footerText}>Powered by Windguru</Text>
+          </TouchableOpacity>
           <Text style={styles.footerSeparator}>|</Text>
           <TouchableOpacity onPress={handleGithubPress}>
             <FontAwesome name="github" size={16} color="#000000" />
