@@ -15,6 +15,7 @@ import GroupService from '../services/GroupService';
 import LocationService from '../services/LocationService';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import { styles } from '../styles/ExportImportScreen.styles';
 
 const ExportImportScreen = ({ navigation }) => {
   const [isExporting, setIsExporting] = useState(false);
@@ -86,10 +87,40 @@ const ExportImportScreen = ({ navigation }) => {
         throw new Error('Invalid export file format');
       }
 
+      // Get current groups and locations
+      const [currentGroups, currentLocations] = await Promise.all([
+        GroupService.getGroups(),
+        LocationService.getLocations()
+      ]);
+
+      // Merge groups: keep existing groups that don't have name conflicts
+      const mergedGroups = [...currentGroups];
+      const importedGroupNames = new Set(importData.groups.map(g => g.name.toLowerCase()));
+      
+      // Remove groups that have name conflicts with imported groups
+      const filteredGroups = mergedGroups.filter(group => 
+        !importedGroupNames.has(group.name.toLowerCase())
+      );
+
+      // Add imported groups
+      const finalGroups = [...filteredGroups, ...importData.groups];
+
+      // Update locations to match new group IDs
+      const updatedLocations = importData.locations.map(location => {
+        // Find the corresponding group in the final groups array
+        const matchingGroup = finalGroups.find(g => 
+          g.name.toLowerCase() === importData.groups.find(ig => ig.id === location.groupId)?.name.toLowerCase()
+        );
+        return {
+          ...location,
+          groupId: matchingGroup?.id || null
+        };
+      });
+
       // Confirm import
       Alert.alert(
         'Import Data',
-        'This will replace all your current groups and spots. Are you sure?',
+        'This will merge the imported groups with your existing groups. Groups with the same name will be replaced. Are you sure?',
         [
           { text: 'Cancel', style: 'cancel' },
           {
@@ -97,10 +128,10 @@ const ExportImportScreen = ({ navigation }) => {
             style: 'destructive',
             onPress: async () => {
               try {
-                // Save groups and locations
+                // Save merged groups and updated locations
                 await Promise.all([
-                  GroupService.saveGroups(importData.groups),
-                  LocationService.saveLocations(importData.locations)
+                  GroupService.saveGroups(finalGroups),
+                  LocationService.saveLocations(updatedLocations)
                 ]);
 
                 Alert.alert('Success', 'Data imported successfully');
@@ -158,57 +189,5 @@ const ExportImportScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: Spacing.lg,
-    paddingTop: Platform.OS === 'ios' ? 50 : StatusBar.currentHeight + Spacing.lg,
-    backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  title: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.text.primary,
-  },
-  closeButton: {
-    width: ButtonHeight.md,
-    height: ButtonHeight.md,
-    borderRadius: BorderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    fontSize: FontSize.md,
-    color: Colors.primary,
-    fontWeight: FontWeight.bold,
-  },
-  content: {
-    padding: Spacing.lg,
-  },
-  button: {
-    backgroundColor: Colors.primary,
-    padding: Spacing.lg,
-    borderRadius: BorderRadius.sm,
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-  },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    color: Colors.text.white,
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
-  },
-});
 
 export default ExportImportScreen; 
