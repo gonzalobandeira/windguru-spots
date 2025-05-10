@@ -15,6 +15,7 @@ import GroupService from '../services/GroupService';
 import LocationService from '../services/LocationService';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import { styles } from '../styles/ExportImportScreen.styles';
 
 const ExportImportScreen = ({ navigation }) => {
   const [isExporting, setIsExporting] = useState(false);
@@ -86,10 +87,75 @@ const ExportImportScreen = ({ navigation }) => {
         throw new Error('Invalid export file format');
       }
 
+      // Get current groups and locations
+      const [currentGroups, currentLocations] = await Promise.all([
+        GroupService.getGroups(),
+        LocationService.getLocations()
+      ]);
+
+      // Create a map of existing group names to their IDs
+      const existingGroupMap = new Map(
+        currentGroups.map(group => [group.name.toLowerCase(), group])
+      );
+
+      // Process imported groups
+      const finalGroups = [...currentGroups];
+      const importedGroupsMap = new Map();
+
+      importData.groups.forEach(importedGroup => {
+        const existingGroup = existingGroupMap.get(importedGroup.name.toLowerCase());
+        if (existingGroup) {
+          // Update existing group
+          const index = finalGroups.findIndex(g => g.id === existingGroup.id);
+          if (index !== -1) {
+            finalGroups[index] = { ...importedGroup, id: existingGroup.id };
+          }
+        } else {
+          // Add new group
+          finalGroups.push(importedGroup);
+        }
+        importedGroupsMap.set(importedGroup.id, importedGroup);
+      });
+
+      // Process locations
+      const finalLocations = [...currentLocations];
+      
+      importData.locations.forEach(importedLocation => {
+        // Find the corresponding group in the final groups array
+        const originalGroup = importedGroupsMap.get(importedLocation.groupId);
+        if (originalGroup) {
+          const matchingGroup = finalGroups.find(g => 
+            g.name.toLowerCase() === originalGroup.name.toLowerCase()
+          );
+          
+          if (matchingGroup) {
+            // Check if location already exists
+            const existingLocationIndex = finalLocations.findIndex(
+              loc => loc.spotId === importedLocation.spotId
+            );
+
+            if (existingLocationIndex !== -1) {
+              // Update existing location
+              finalLocations[existingLocationIndex] = {
+                ...importedLocation,
+                id: finalLocations[existingLocationIndex].id,
+                groupId: matchingGroup.id
+              };
+            } else {
+              // Add new location
+              finalLocations.push({
+                ...importedLocation,
+                groupId: matchingGroup.id
+              });
+            }
+          }
+        }
+      });
+
       // Confirm import
       Alert.alert(
         'Import Data',
-        'This will replace all your current groups and spots. Are you sure?',
+        'This will merge the imported groups with your existing groups. Groups with the same name will be replaced. Are you sure?',
         [
           { text: 'Cancel', style: 'cancel' },
           {
@@ -97,10 +163,10 @@ const ExportImportScreen = ({ navigation }) => {
             style: 'destructive',
             onPress: async () => {
               try {
-                // Save groups and locations
+                // Save merged groups and updated locations
                 await Promise.all([
-                  GroupService.saveGroups(importData.groups),
-                  LocationService.saveLocations(importData.locations)
+                  GroupService.saveGroups(finalGroups),
+                  LocationService.saveLocations(finalLocations)
                 ]);
 
                 Alert.alert('Success', 'Data imported successfully');
@@ -158,57 +224,5 @@ const ExportImportScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: Spacing.lg,
-    paddingTop: Platform.OS === 'ios' ? 50 : StatusBar.currentHeight + Spacing.lg,
-    backgroundColor: Colors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  title: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.text.primary,
-  },
-  closeButton: {
-    width: ButtonHeight.md,
-    height: ButtonHeight.md,
-    borderRadius: BorderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  closeButtonText: {
-    fontSize: FontSize.md,
-    color: Colors.primary,
-    fontWeight: FontWeight.bold,
-  },
-  content: {
-    padding: Spacing.lg,
-  },
-  button: {
-    backgroundColor: Colors.primary,
-    padding: Spacing.lg,
-    borderRadius: BorderRadius.sm,
-    alignItems: 'center',
-    marginBottom: Spacing.md,
-  },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    color: Colors.text.white,
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.bold,
-  },
-});
 
 export default ExportImportScreen; 
