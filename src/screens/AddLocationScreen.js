@@ -100,7 +100,6 @@ const AddLocationScreen = ({ navigation }) => {
 
     try {
       setIsSubmitting(true);
-      console.log('Submitting params to LocationService:', params.join(','));
       
       // Add new location
       await LocationService.addLocation(name.trim(), spotId.trim(), modelId, params.join(','), groupId, windUnit, tempUnit);

@@ -93,28 +93,63 @@ const ExportImportScreen = ({ navigation }) => {
         LocationService.getLocations()
       ]);
 
-      // Merge groups: keep existing groups that don't have name conflicts
-      const mergedGroups = [...currentGroups];
-      const importedGroupNames = new Set(importData.groups.map(g => g.name.toLowerCase()));
-      
-      // Remove groups that have name conflicts with imported groups
-      const filteredGroups = mergedGroups.filter(group => 
-        !importedGroupNames.has(group.name.toLowerCase())
+      // Create a map of existing group names to their IDs
+      const existingGroupMap = new Map(
+        currentGroups.map(group => [group.name.toLowerCase(), group])
       );
 
-      // Add imported groups
-      const finalGroups = [...filteredGroups, ...importData.groups];
+      // Process imported groups
+      const finalGroups = [...currentGroups];
+      const importedGroupsMap = new Map();
 
-      // Update locations to match new group IDs
-      const updatedLocations = importData.locations.map(location => {
+      importData.groups.forEach(importedGroup => {
+        const existingGroup = existingGroupMap.get(importedGroup.name.toLowerCase());
+        if (existingGroup) {
+          // Update existing group
+          const index = finalGroups.findIndex(g => g.id === existingGroup.id);
+          if (index !== -1) {
+            finalGroups[index] = { ...importedGroup, id: existingGroup.id };
+          }
+        } else {
+          // Add new group
+          finalGroups.push(importedGroup);
+        }
+        importedGroupsMap.set(importedGroup.id, importedGroup);
+      });
+
+      // Process locations
+      const finalLocations = [...currentLocations];
+      
+      importData.locations.forEach(importedLocation => {
         // Find the corresponding group in the final groups array
-        const matchingGroup = finalGroups.find(g => 
-          g.name.toLowerCase() === importData.groups.find(ig => ig.id === location.groupId)?.name.toLowerCase()
-        );
-        return {
-          ...location,
-          groupId: matchingGroup?.id || null
-        };
+        const originalGroup = importedGroupsMap.get(importedLocation.groupId);
+        if (originalGroup) {
+          const matchingGroup = finalGroups.find(g => 
+            g.name.toLowerCase() === originalGroup.name.toLowerCase()
+          );
+          
+          if (matchingGroup) {
+            // Check if location already exists
+            const existingLocationIndex = finalLocations.findIndex(
+              loc => loc.spotId === importedLocation.spotId
+            );
+
+            if (existingLocationIndex !== -1) {
+              // Update existing location
+              finalLocations[existingLocationIndex] = {
+                ...importedLocation,
+                id: finalLocations[existingLocationIndex].id,
+                groupId: matchingGroup.id
+              };
+            } else {
+              // Add new location
+              finalLocations.push({
+                ...importedLocation,
+                groupId: matchingGroup.id
+              });
+            }
+          }
+        }
       });
 
       // Confirm import
@@ -131,7 +166,7 @@ const ExportImportScreen = ({ navigation }) => {
                 // Save merged groups and updated locations
                 await Promise.all([
                   GroupService.saveGroups(finalGroups),
-                  LocationService.saveLocations(updatedLocations)
+                  LocationService.saveLocations(finalLocations)
                 ]);
 
                 Alert.alert('Success', 'Data imported successfully');
