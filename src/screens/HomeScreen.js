@@ -269,7 +269,6 @@ const HomeScreen = ({ navigation }) => {
 
     return (
       <View style={styles.ungroupedSection}>
-        <Text style={styles.ungroupedTitle}>Ungrouped Spots</Text>
         <DraggableFlatList
           data={ungroupedLocations}
           renderItem={renderLocationItem}
