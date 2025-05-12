@@ -19,6 +19,7 @@ import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
 import { Colors } from '../constants/Styles';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
+import Constants from 'expo-constants';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 const WINDGURU_URL = 'https://www.windguru.cz';
@@ -353,6 +354,8 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity onPress={handleGithubPress}>
             <FontAwesome name="github" size={16} color="#000000" />
           </TouchableOpacity>
+          <Text style={styles.footerSeparator}>|</Text>
+          <Text style={styles.footerText}>v{Constants.expoConfig.version}</Text>
         </View>
       </View>
     </View>
