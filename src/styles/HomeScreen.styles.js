@@ -27,8 +27,8 @@ export const styles = StyleSheet.create({
   },
   iconButton: {
     backgroundColor: Colors.secondary,
-    width: ButtonHeight.md,
-    height: ButtonHeight.md,
+    width: ButtonHeight.sm,
+    height: ButtonHeight.sm,
     borderRadius: BorderRadius.sm,
     justifyContent: 'center',
     alignItems: 'center',
@@ -45,15 +45,15 @@ export const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: Colors.primary,
-    height: ButtonHeight.md,
-    paddingHorizontal: Spacing.md,
+    height: ButtonHeight.sm,
+    paddingHorizontal: Spacing.sm,
     borderRadius: BorderRadius.sm,
     justifyContent: 'center',
     alignItems: 'center',
   },
   addButtonText: {
     color: Colors.text.white,
-    fontSize: FontSize.md,
+    fontSize: FontSize.sm,
     fontWeight: FontWeight.bold,
   },
   content: {
@@ -200,13 +200,21 @@ export const styles = StyleSheet.create({
   },
   footerContent: {
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    gap: Spacing.md,
+    justifyContent: 'center',
+  },
+  footerLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  footerIcon: {
+    width: 16,
+    height: 16,
+    marginRight: 4,
   },
   footerText: {
-    fontSize: FontSize.xs,
-    color: Colors.text.secondary,
+    fontSize: 12,
+    color: '#666',
   },
   footerSeparator: {
     fontSize: FontSize.xs,

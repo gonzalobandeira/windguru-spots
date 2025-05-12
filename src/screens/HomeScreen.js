@@ -6,7 +6,8 @@ import {
   Alert,
   ActivityIndicator,
   RefreshControl,
-  Linking
+  Linking,
+  Image
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -347,15 +348,20 @@ const HomeScreen = ({ navigation }) => {
 
       <View style={styles.footer}>
         <View style={styles.footerContent}>
-          <TouchableOpacity onPress={handleWindguruPress}>
+          <TouchableOpacity onPress={handleWindguruPress} style={styles.footerLink}>
+            <Image 
+              source={require('../../assets/images/windguru-icon.png')} 
+              style={styles.footerIcon}
+              resizeMode="contain"
+            />
             <Text style={styles.footerText}>Powered by Windguru</Text>
           </TouchableOpacity>
+          <Text style={styles.footerSeparator}>|</Text>
+          <Text style={styles.footerText}>v{Constants.expoConfig.version}</Text>
           <Text style={styles.footerSeparator}>|</Text>
           <TouchableOpacity onPress={handleGithubPress}>
             <FontAwesome name="github" size={16} color="#000000" />
           </TouchableOpacity>
-          <Text style={styles.footerSeparator}>|</Text>
-          <Text style={styles.footerText}>v{Constants.expoConfig.version}</Text>
         </View>
       </View>
     </View>
