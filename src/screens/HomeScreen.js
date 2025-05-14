@@ -23,6 +23,7 @@ import { Colors } from '../constants/Styles';
 import Constants from 'expo-constants';
 import { track } from '@amplitude/analytics-react-native';
 import { SHARE_FORECAST_MESSAGE } from '../constants/Messages';
+import { isFeatureEnabled } from '../constants/FeatureFlags';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 const WINDGURU_URL = 'https://www.windguru.cz';
@@ -48,6 +49,7 @@ const HomeScreen = ({ navigation }) => {
   const [expandedGroups, setExpandedGroups] = useState({});
   const [error, setError] = useState(null);
   const isFocused = useIsFocused();
+  const isForecastSharingEnabled = isFeatureEnabled('ForecastSharing');
 
   // Load locations and groups when screen is focused
   useEffect(() => {
@@ -208,12 +210,14 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
             <View style={styles.locationActions}>
-              <TouchableOpacity 
-                style={styles.shareButton}
-                onPress={() => handleShare(item)}
-              >
-                <MaterialIcons name="share" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
+              {isForecastSharingEnabled && (
+                <TouchableOpacity 
+                  style={styles.shareButton}
+                  onPress={() => handleShare(item)}
+                >
+                  <MaterialIcons name="share" size={20} color={Colors.text.white} />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity 
                 style={styles.deleteButton}
                 onPress={() => handleDeleteLocation(item.id)}
