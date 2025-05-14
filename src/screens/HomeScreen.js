@@ -20,9 +20,9 @@ import WindguruWidget from '../components/WindguruWidget';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
 import { Colors } from '../constants/Styles';
-import { isFeatureEnabled } from '../constants/FeatureFlags';
 import Constants from 'expo-constants';
 import { track } from '@amplitude/analytics-react-native';
+import { SHARE_FORECAST_MESSAGE } from '../constants/Messages';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 const WINDGURU_URL = 'https://www.windguru.cz';
@@ -158,7 +158,7 @@ const HomeScreen = ({ navigation }) => {
 
   const handleShare = async (item) => {
     try {
-      const message = `Look how this forecast is looking!\n\nCheck it out on Windguru: https://www.windguru.cz/${item.spotId}\n\nFound using Windguru Spots 📲\nDownload: https://apps.apple.com/es/app/windguruspots/id6745230519?l=en-GB`;
+      const message = SHARE_FORECAST_MESSAGE(item.spotId);
       const result = await Share.share({
         message,
         title: `Windguru Forecast - ${item.name}`
