@@ -7,9 +7,9 @@ import AppNavigator from './src/navigation/AppNavigator';
 import { initAmplitude } from './src/utils/amplitude';
 
 export default function App() {
-  useEffect(() => {
-    initAmplitude();
-  }, []);
+  // useEffect(() => {
+  //   initAmplitude();
+  // }, []);
 
   return (
     <SafeAreaProvider>
