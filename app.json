@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.gbe.windguruspots",
-      "buildNumber": "111",
+      "buildNumber": "114",
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "CFBundleIconName": "AppIcon",
