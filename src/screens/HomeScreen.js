@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   RefreshControl,
   Linking,
-  Image
+  Image,
+  Share,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -19,8 +20,10 @@ import WindguruWidget from '../components/WindguruWidget';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
 import { Colors } from '../constants/Styles';
-import { isFeatureEnabled } from '../constants/FeatureFlags';
 import Constants from 'expo-constants';
+import { track } from '@amplitude/analytics-react-native';
+import { SHARE_FORECAST_MESSAGE } from '../constants/Messages';
+import { isFeatureEnabled } from '../constants/FeatureFlags';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 const WINDGURU_URL = 'https://www.windguru.cz';
@@ -46,6 +49,7 @@ const HomeScreen = ({ navigation }) => {
   const [expandedGroups, setExpandedGroups] = useState({});
   const [error, setError] = useState(null);
   const isFocused = useIsFocused();
+  const isForecastSharingEnabled = isFeatureEnabled('ForecastSharing');
 
   // Load locations and groups when screen is focused
   useEffect(() => {
@@ -154,6 +158,34 @@ const HomeScreen = ({ navigation }) => {
     await GroupService.saveGroups(data);
   };
 
+  const handleShare = async (item) => {
+    try {
+      const message = SHARE_FORECAST_MESSAGE(item.spotId);
+      const result = await Share.share({
+        message,
+        title: `Windguru Forecast - ${item.name}`
+      });
+      
+      // Track successful share
+      track('forecast_shared', {
+        spot_id: item.spotId,
+        timestamp: new Date().toISOString(),
+        action: result.action,
+        activity_type: result.activityType
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Could not share the forecast');
+      console.error('Error sharing:', error);
+      
+      // Track failed share
+      track('forecast_share_failed', {
+        spot_id: item.spotId,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      });
+    }
+  };
+
   // Render each location item
   const renderLocationItem = ({ item, drag, isActive }) => {
     const paramList = item.params ? item.params.split(',').filter(Boolean) : [];
@@ -177,12 +209,22 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.locationModel}>Model: {getModelName(item.modelId)}</Text>
               </View>
             </View>
-            <TouchableOpacity 
-              style={styles.deleteButton}
-              onPress={() => handleDeleteLocation(item.id)}
-            >
-              <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-            </TouchableOpacity>
+            <View style={styles.locationActions}>
+              {isForecastSharingEnabled && (
+                <TouchableOpacity 
+                  style={styles.shareButton}
+                  onPress={() => handleShare(item)}
+                >
+                  <MaterialIcons name="share" size={20} color={Colors.text.white} />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => handleDeleteLocation(item.id)}
+              >
+                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={[styles.widgetContainer, { height: WIDGET_FIXED_HEIGHT }]}> 
             {noParamsSelected ? (
