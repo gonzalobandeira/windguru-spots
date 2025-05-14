@@ -20,16 +20,6 @@
       "buildNumber": "111",
       "icon": "./assets/images/icon.png",
       "infoPlist": {
-        "LSApplicationQueriesSchemes": [
-          "mailto"
-        ],
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLSchemes": [
-              "mailto"
-            ]
-          }
-        ],
         "CFBundleIconName": "AppIcon",
         "UILaunchStoryboardName": "SplashScreen"
       }
@@ -45,21 +35,23 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
       "expo-localization"
     ],
     "description": "An app to check your preferred sailing and surf spots using Windguru forecasts",
     "newArchEnabled": true,
     "extra": {
-      "router": {
-        "origin": false
-      },
       "eas": {
         "projectId": "f60a1e17-5377-4b43-b2de-0b42c5aa0c42"
       }
     },
     "owner": "gonzalobandeira",
     "supportUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/SUPPORT.html",
-    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/PRIVACY.html"
+    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/PRIVACY.html",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f60a1e17-5377-4b43-b2de-0b42c5aa0c42"
+    }
   }
 }

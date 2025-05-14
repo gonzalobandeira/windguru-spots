@@ -44,6 +44,7 @@ const HomeScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
   const [expandedGroups, setExpandedGroups] = useState({});
+  const [error, setError] = useState(null);
   const isFocused = useIsFocused();
 
   // Load locations and groups when screen is focused
@@ -57,6 +58,7 @@ const HomeScreen = ({ navigation }) => {
   const loadData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const [savedLocations, savedGroups] = await Promise.all([
         LocationService.getLocations(),
         GroupService.getGroups()
@@ -64,8 +66,9 @@ const HomeScreen = ({ navigation }) => {
       setLocations(savedLocations);
       setGroups(savedGroups);
     } catch (error) {
-      Alert.alert('Error', 'Failed to load data');
-      console.error(error);
+      console.error('Error loading data:', error);
+      setError('Failed to load data. Please try again.');
+      Alert.alert('Error', 'Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -321,7 +324,17 @@ const HomeScreen = ({ navigation }) => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size="large" color="#0066cc" style={styles.loader} />
+        <ActivityIndicator size="large" color={Colors.primary} style={styles.loader} />
+      ) : error ? (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+          <TouchableOpacity 
+            style={styles.retryButton}
+            onPress={loadData}
+          >
+            <Text style={styles.retryButtonText}>Retry</Text>
+          </TouchableOpacity>
+        </View>
       ) : locations.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyText}>No locations added yet</Text>
