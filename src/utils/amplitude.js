@@ -21,7 +21,7 @@ export const initAmplitude = async () => {
       version: true,
     },
     trackingSessionEvents: true,
-    serverUrl: 'https://api.eu.amplitude.com/2/httpapi', // EU data center
+    serverZone: 'EU', // EU data center
   };
   try {
     init(AMPLITUDE_API_KEY, null, config);

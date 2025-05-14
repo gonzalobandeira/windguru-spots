@@ -46,12 +46,6 @@
     },
     "owner": "gonzalobandeira",
     "supportUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/SUPPORT.html",
-    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/PRIVACY.html",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/f60a1e17-5377-4b43-b2de-0b42c5aa0c42"
-    }
+    "privacyUrl": "https://gonzalobandeira.github.io/windguru-spots/docs/PRIVACY.html"
   }
 }
