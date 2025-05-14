@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   RefreshControl,
   Linking,
-  Image
+  Image,
+  Share
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -154,6 +155,19 @@ const HomeScreen = ({ navigation }) => {
     await GroupService.saveGroups(data);
   };
 
+  const handleShare = async (item) => {
+    try {
+      const message = `Look how this forecast is looking!\n\nCheck it out on Windguru: https://www.windguru.cz/${item.spotId}\n\nFound using Windguru Spots 📲\nDownload: https://apps.apple.com/es/app/windguruspots/id6745230519?l=en-GB`;
+      await Share.share({
+        message,
+        title: `Windguru Forecast - ${item.name}`
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Could not share the forecast');
+      console.error('Error sharing:', error);
+    }
+  };
+
   // Render each location item
   const renderLocationItem = ({ item, drag, isActive }) => {
     const paramList = item.params ? item.params.split(',').filter(Boolean) : [];
@@ -177,12 +191,20 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.locationModel}>Model: {getModelName(item.modelId)}</Text>
               </View>
             </View>
-            <TouchableOpacity 
-              style={styles.deleteButton}
-              onPress={() => handleDeleteLocation(item.id)}
-            >
-              <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-            </TouchableOpacity>
+            <View style={styles.locationActions}>
+              <TouchableOpacity 
+                style={styles.shareButton}
+                onPress={() => handleShare(item)}
+              >
+                <MaterialIcons name="share" size={20} color={Colors.text.white} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.deleteButton}
+                onPress={() => handleDeleteLocation(item.id)}
+              >
+                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={[styles.widgetContainer, { height: WIDGET_FIXED_HEIGHT }]}> 
             {noParamsSelected ? (
