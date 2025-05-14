@@ -52,8 +52,7 @@ const ExportImportScreen = ({ navigation }) => {
       // Share file
       await Share.share({
         url: Platform.OS === 'ios' ? filePath : `file://${filePath}`,
-        title: 'Windguru Spots Export',
-        message: 'Here is my Windguru Spots export file'
+        title: 'Windguru Spots Export'
       });
 
     } catch (error) {
