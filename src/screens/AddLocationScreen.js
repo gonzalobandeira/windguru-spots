@@ -230,7 +230,6 @@ const AddLocationScreen = ({ navigation }) => {
               placeholder={`Enter Windguru spot ID (e.g., ${WindguruLimits.DEFAULT_SPOT_ID})`}
               placeholderTextColor="#999"
               keyboardType="number-pad"
-              editable={false}
             />
             <View style={styles.helpContainer}>
               <Text style={styles.helpText}>
