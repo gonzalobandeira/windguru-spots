@@ -109,6 +109,40 @@ npm run ios     # for iOS
 npm run android # for Android
 ```
 
+### Environment Configuration
+
+To set up your environment:
+
+1. Create a `.env` file in the root directory
+2. Add your Amplitude API key:
+```bash
+AMPLITUDE_API_KEY=your_api_key_here
+```
+3. Add the file to your `.gitignore` to keep your API key secure:
+```bash
+.env
+```
+
+### Analytics
+
+The app uses Amplitude for analytics tracking. The following events are tracked:
+
+- `app_initialized`: When the app starts
+  - Properties: timestamp, test_event
+
+All events include:
+- App version
+- Platform information
+- Language and region settings
+
+Session tracking is enabled by default and includes:
+- Session start and end events
+- Session duration
+- Time between sessions
+- User engagement metrics
+
+Development mode includes additional logging for debugging purposes.
+
 ## Project Structure
 
 - `docs/`: Documentation files

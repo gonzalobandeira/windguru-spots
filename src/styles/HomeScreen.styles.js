@@ -248,4 +248,26 @@ export const styles = StyleSheet.create({
   closeButton: {
     padding: Spacing.xs,
   },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    color: Colors.error,
+    textAlign: 'center',
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  retryButton: {
+    backgroundColor: Colors.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  retryButtonText: {
+    color: Colors.white,
+    fontSize: 16,
+  },
 }); 
