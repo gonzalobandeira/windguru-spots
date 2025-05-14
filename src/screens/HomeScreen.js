@@ -8,7 +8,7 @@ import {
   RefreshControl,
   Linking,
   Image,
-  Share
+  Share,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -22,6 +22,7 @@ import { getModelName } from '../constants/Models';
 import { Colors } from '../constants/Styles';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
 import Constants from 'expo-constants';
+import { track } from '@amplitude/analytics-react-native';
 
 const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
 const WINDGURU_URL = 'https://www.windguru.cz';
@@ -158,13 +159,28 @@ const HomeScreen = ({ navigation }) => {
   const handleShare = async (item) => {
     try {
       const message = `Look how this forecast is looking!\n\nCheck it out on Windguru: https://www.windguru.cz/${item.spotId}\n\nFound using Windguru Spots 📲\nDownload: https://apps.apple.com/es/app/windguruspots/id6745230519?l=en-GB`;
-      await Share.share({
+      const result = await Share.share({
         message,
         title: `Windguru Forecast - ${item.name}`
+      });
+      
+      // Track successful share
+      track('forecast_shared', {
+        spot_id: item.spotId,
+        timestamp: new Date().toISOString(),
+        action: result.action,
+        activity_type: result.activityType
       });
     } catch (error) {
       Alert.alert('Error', 'Could not share the forecast');
       console.error('Error sharing:', error);
+      
+      // Track failed share
+      track('forecast_share_failed', {
+        spot_id: item.spotId,
+        error: error.message,
+        timestamp: new Date().toISOString()
+      });
     }
   };
 
