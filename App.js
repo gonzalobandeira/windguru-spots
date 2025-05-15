@@ -7,6 +7,7 @@ import { View, Text, ActivityIndicator } from 'react-native';
 import AppNavigator from './src/navigation/AppNavigator';
 import { initAmplitude } from './src/utils/amplitude';
 import { Colors } from './src/constants/Styles';
+import { checkForAppUpdate } from './src/utils/updateChecker';
 
 export default function App() {
   const [isInitializing, setIsInitializing] = useState(true);
@@ -18,6 +19,7 @@ export default function App() {
         // Initialize any required services here
         await initAmplitude();
         setIsInitializing(false);
+        await checkForAppUpdate();
       } catch (error) {
         console.error('Error initializing app:', error);
         setHasError(true);
