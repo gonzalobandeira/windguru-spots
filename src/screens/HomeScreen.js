@@ -17,6 +17,7 @@ import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
 import WindguruWidget from '../components/WindguruWidget';
+import MoreOptionsMenu from '../components/MoreOptionsMenu';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
 import { Colors } from '../constants/Styles';
@@ -193,14 +194,24 @@ const HomeScreen = ({ navigation }) => {
 
     return (
       <ScaleDecorator>
-        <TouchableOpacity
-          onLongPress={drag}
-          disabled={isActive}
+        <View
           style={[
             styles.locationItem,
-            isActive && { opacity: 0.8 }
-          ]}
+            isActive && { opacity: 0.8 }]
+          }
         >
+          {/* Absolutely position the share and menu buttons at the top right of the card */}
+          <View style={{ position: 'absolute', top: 16, right: 16, zIndex: 2000, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+            {isForecastSharingEnabled && (
+              <TouchableOpacity 
+                style={styles.shareButton}
+                onPress={() => handleShare(item)}
+              >
+                <MaterialIcons name="share" size={20} color={Colors.text.white} />
+              </TouchableOpacity>
+            )}
+            <MoreOptionsMenu onDelete={() => handleDeleteLocation(item.id)} />
+          </View>
           <View style={styles.locationHeader}>
             <View style={styles.locationInfo}>
               <Text style={styles.locationName}>{item.name}</Text>
@@ -210,20 +221,7 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
             <View style={styles.locationActions}>
-              {isForecastSharingEnabled && (
-                <TouchableOpacity 
-                  style={styles.shareButton}
-                  onPress={() => handleShare(item)}
-                >
-                  <MaterialIcons name="share" size={20} color={Colors.text.white} />
-                </TouchableOpacity>
-              )}
-              <TouchableOpacity 
-                style={styles.deleteButton}
-                onPress={() => handleDeleteLocation(item.id)}
-              >
-                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
+              {/* Drag handle could go here if needed */}
             </View>
           </View>
           <View style={[styles.widgetContainer, { height: WIDGET_FIXED_HEIGHT }]}> 
@@ -244,7 +242,7 @@ const HomeScreen = ({ navigation }) => {
               />
             )}
           </View>
-        </TouchableOpacity>
+        </View>
       </ScaleDecorator>
     );
   };
@@ -279,12 +277,7 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
             </View>
             <View style={styles.groupActions}>
-              <TouchableOpacity 
-                style={styles.deleteButton}
-                onPress={() => handleDeleteGroup(item.id)}
-              >
-                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
+              <MoreOptionsMenu onDelete={() => handleDeleteGroup(item.id)} />
             </View>
           </TouchableOpacity>
           

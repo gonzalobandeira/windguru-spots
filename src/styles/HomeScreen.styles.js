@@ -68,7 +68,6 @@ export const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.lg,
     ...Shadow.small,
-    overflow: 'hidden',
     transform: [{ scale: 1 }],
   },
   locationHeader: {
@@ -78,6 +77,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
+    position: 'relative',
   },
   locationInfo: {
     flex: 1,
@@ -116,18 +116,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  deleteButton: {
-    backgroundColor: Colors.error,
-    width: ButtonHeight.sm * 0.85,
-    height: ButtonHeight.sm * 0.85,
-    borderRadius: BorderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  deleteButtonText: {
-    color: Colors.text.white,
-    fontWeight: FontWeight.bold,
-  },
   widgetContainer: {
     height: 300,
   },
@@ -136,7 +124,6 @@ export const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.lg,
     ...Shadow.small,
-    overflow: 'hidden',
   },
   groupHeader: {
     flexDirection: 'row',
@@ -145,6 +132,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
+    position: 'relative',
   },
   expandButton: {
     padding: Spacing.xs,
