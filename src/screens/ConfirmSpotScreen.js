@@ -130,7 +130,7 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.formContainer}>
           <TouchableOpacity style={styles.backButton} onPress={() => {
-              navigation.navigate('Home');
+              navigation.goBack();
           }}>
             <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
           </TouchableOpacity>
