@@ -12,6 +12,6 @@ export const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spot
 export const WINDGURU_URL = 'https://www.windguru.cz';
 
 export const SHARE_FORECAST_MESSAGE = (spotId) =>
-  `Take a look at this forecast!\n\nCheck it out on Windguru: ${WINDGURU_URL}/${spotId}\n\nFound using Windguru Spots ${APP_STORE_LINK} 📲`; 
+  `Check out this forecast on Windguru!\n\n${WINDGURU_URL}/${spotId}\n\nFound using Windguru Spots: ${APP_STORE_LINK} 📲`; 
 
 export const UPDATE_APP_AVAILABLE = 'A new version of Windguru Spots is available. Would you like to update now?';
