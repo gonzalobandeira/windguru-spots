@@ -8,7 +8,6 @@ import {
   RefreshControl,
   Linking,
   Image,
-  Share,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -22,8 +21,6 @@ import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
 import { Colors, WidgetHeight } from '../constants/Styles';
 import Constants from 'expo-constants';
-import { track } from '@amplitude/analytics-react-native';
-import { SHARE_FORECAST_MESSAGE, GITHUB_REPO_URL, WINDGURU_URL } from '../constants/Messages';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
 
 const HomeScreen = ({ navigation }) => {
@@ -35,7 +32,6 @@ const HomeScreen = ({ navigation }) => {
   const [expandedGroups, setExpandedGroups] = useState({});
   const [error, setError] = useState(null);
   const isFocused = useIsFocused();
-  const isForecastSharingEnabled = isFeatureEnabled('ForecastSharing');
 
   // Load locations and groups when screen is focused
   useEffect(() => {
@@ -144,34 +140,6 @@ const HomeScreen = ({ navigation }) => {
     await GroupService.saveGroups(data);
   };
 
-  const handleShare = async (item) => {
-    try {
-      const message = SHARE_FORECAST_MESSAGE(item.spotId);
-      const result = await Share.share({
-        message,
-        title: `Windguru Forecast - ${item.name}`
-      });
-      
-      // Track successful share
-      track('forecast_shared', {
-        spot_id: item.spotId,
-        timestamp: new Date().toISOString(),
-        action: result.action,
-        activity_type: result.activityType
-      });
-    } catch (error) {
-      Alert.alert('Error', 'Could not share the forecast');
-      console.error('Error sharing:', error);
-      
-      // Track failed share
-      track('forecast_share_failed', {
-        spot_id: item.spotId,
-        error: error.message,
-        timestamp: new Date().toISOString()
-      });
-    }
-  };
-
   // Render each location item
   const renderLocationItem = ({ item, drag, isActive }) => {
     const paramList = item.params ? item.params.split(',').filter(Boolean) : [];
@@ -187,15 +155,10 @@ const HomeScreen = ({ navigation }) => {
         >
           {/* Absolutely position the share and menu buttons at the top right of the card */}
           <View style={styles.locationButtonsContainer}>
-            {isForecastSharingEnabled && (
-              <TouchableOpacity 
-                style={styles.shareButton}
-                onPress={() => handleShare(item)}
-              >
-                <MaterialIcons name="share" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
-            )}
-            <MoreOptionsMenu onDelete={() => handleDeleteLocation(item.id)} />
+            <MoreOptionsMenu 
+              onDelete={() => handleDeleteLocation(item.id)}
+              item={item}
+            />
           </View>
           <View style={styles.locationHeader}>
             <View style={styles.locationInfo}>

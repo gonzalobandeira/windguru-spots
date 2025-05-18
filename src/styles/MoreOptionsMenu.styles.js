@@ -4,15 +4,22 @@ import { Colors, Spacing, BorderRadius, ButtonHeight, FontSize, FontWeight, Shad
 export const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    zIndex: 1000,
   },
   menuButton: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.white,
     width: ButtonHeight.sm * 0.85,
     height: ButtonHeight.sm * 0.85,
     borderRadius: BorderRadius.sm,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'transparent',
   },
   menuContainer: {
     position: 'absolute',
@@ -23,7 +30,7 @@ export const styles = StyleSheet.create({
     padding: Spacing.xs,
     minWidth: 150,
     ...Shadow.medium,
-    zIndex: 1001,
+    transform: [{ translateY: 0 }],
   },
   menuItem: {
     flexDirection: 'row',

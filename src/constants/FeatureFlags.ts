@@ -1,8 +1,9 @@
-export const FeatureFlags = {
-  ForecastSharing: {
-    enabled: true,
-    description: 'Whether forecast sharing is enabled or not',
-  },
+type FeatureFlag = {
+  enabled: boolean;
+  description: string;
+};
+
+export const FeatureFlags: Record<string, FeatureFlag> = {
 } as const;
 
 export type FeatureFlagKey = keyof typeof FeatureFlags;
