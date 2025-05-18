@@ -320,8 +320,21 @@ const HomeScreen = ({ navigation }) => {
         </View>
       ) : locations.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>No locations added yet</Text>
-          <Text style={styles.emptySubText}>Tap the + Add button to add your first sailing spot</Text>
+          <View style={styles.emptyIconContainer}>
+            <MaterialIcons name="cloud" size={48} color={Colors.primary} />
+          </View>
+          <Text style={styles.emptyText}>
+            No spots added yet
+          </Text>
+          <Text style={styles.emptySubText}>
+            Add your favorite kitesurf spots to track wind conditions and forecasts.
+          </Text>
+          <TouchableOpacity
+            style={[styles.addButton, { marginTop: 28 }]}
+            onPress={() => navigation.navigate('AddLocation')}
+          >
+            <Text style={styles.addButtonText}>+ Add Your First Spot</Text>
+          </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.content}>
