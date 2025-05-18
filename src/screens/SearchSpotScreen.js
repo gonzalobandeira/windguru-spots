@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import SpotSearch from '../components/SpotSearch';
 import { Colors } from '../constants/Styles';
 import AppScreen from '../components/AppScreen';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const SearchSpotScreen = ({ navigation }) => {
   const handleSpotSelect = (spot) => {
@@ -16,6 +17,9 @@ const SearchSpotScreen = ({ navigation }) => {
   return (
     <AppScreen>
       <View style={styles.container}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
+        </TouchableOpacity>
         <Text style={styles.title}>Search a Spot</Text>
         <SpotSearch onSpotSelect={handleSpotSelect} />
         <TouchableOpacity style={styles.manualButton} onPress={handleManualEntry}>
@@ -31,6 +35,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     backgroundColor: '#fff',
+  },
+  backButton: {
+    marginBottom: 8,
+    alignSelf: 'flex-start',
   },
   title: {
     fontSize: 24,
