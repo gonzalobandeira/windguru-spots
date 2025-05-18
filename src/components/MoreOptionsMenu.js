@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal
 import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/Styles';
 import { styles } from '../styles/MoreOptionsMenu.styles';
-import { isFeatureEnabled } from '../constants/FeatureFlags';
 import ShareService from '../services/ShareService';
 
 const MoreOptionsMenu = ({ onDelete, item }) => {
@@ -11,7 +10,6 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
   const menuAnimation = useRef(new Animated.Value(0)).current;
   const buttonRef = useRef(null);
   const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
-  const isForecastSharingEnabled = isFeatureEnabled('ForecastSharing');
   const isSpot = item && 'spotId' in item;
 
   useEffect(() => {
@@ -75,7 +73,7 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                   }
                 ]}
               >
-                {isForecastSharingEnabled && isSpot && (
+                {isSpot && (
                   <TouchableOpacity 
                     style={styles.menuItem}
                     onPress={handleShare}
