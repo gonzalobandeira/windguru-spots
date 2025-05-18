@@ -327,7 +327,7 @@ const HomeScreen = ({ navigation }) => {
             No spots added yet
           </Text>
           <Text style={styles.emptySubText}>
-            Add your favorite kitesurf spots to track wind conditions and forecasts.
+            Add your favorite spots to track wind conditions and forecasts.
           </Text>
           <TouchableOpacity
             style={[styles.addButton, { marginTop: 28 }]}
