@@ -1,3 +1,5 @@
+import { ViewStyle } from 'react-native';
+
 // Colors
 export const Colors = {
   primary: '#0066cc',
@@ -86,10 +88,10 @@ export const Shadow = {
 // Widget Heights
 export const WidgetHeight = {
   fixed: 320,
-};
+}; 
 
 // Tooltip
-export const Tooltip = {
+export const Tooltip: Record<string, ViewStyle> = {
   container: {
     position: 'relative',
   },
