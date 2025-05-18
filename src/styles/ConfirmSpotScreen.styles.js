@@ -1,35 +1,15 @@
-import { StyleSheet, Platform, StatusBar } from 'react-native';
-import { Colors, Spacing, BorderRadius, FontSize, FontWeight, ButtonHeight, Modal, Shadow } from '../constants/Styles';
+import { StyleSheet } from 'react-native';
+import { Colors, Spacing, FontSize, FontWeight, BorderRadius, Form, ModalStyles } from '../constants/Styles';
 
 export const styles = StyleSheet.create({
+  ...Form,
+  ...ModalStyles,
   container: {
     flex: 1,
     backgroundColor: Colors.background,
   },
   scrollContainer: {
     flexGrow: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: Spacing.lg,
-    paddingTop: Platform.OS === 'ios' ? 50 : StatusBar.currentHeight + Spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-    backgroundColor: Colors.white,
-  },
-  title: {
-    fontSize: FontSize.xl,
-    fontWeight: FontWeight.bold,
-    color: Colors.text.primary,
-  },
-  closeButton: {
-    width: ButtonHeight.md,
-    height: ButtonHeight.md,
-    borderRadius: BorderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   formContainer: {
     flex: 1,
@@ -38,11 +18,16 @@ export const styles = StyleSheet.create({
   inputGroup: {
     marginBottom: Spacing.lg,
   },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+    gap: Spacing.xs,
+  },
   label: {
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
     color: Colors.text.primary,
-    marginBottom: Spacing.sm,
   },
   input: {
     borderWidth: 1,
@@ -53,22 +38,10 @@ export const styles = StyleSheet.create({
     color: Colors.text.primary,
     backgroundColor: Colors.white,
   },
-  helpContainer: {
-    marginTop: Spacing.xs,
-  },
   helpText: {
     fontSize: FontSize.sm,
     color: Colors.text.secondary,
-  },
-  helpLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Spacing.xs,
-  },
-  helpLinkText: {
-    fontSize: FontSize.sm,
-    color: Colors.primary,
-    marginRight: Spacing.xs,
+    lineHeight: 20,
   },
   modelSelector: {
     borderWidth: 1,
@@ -193,18 +166,8 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
   },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    width: 120,
-    marginBottom: 12,
+  backButton: {
+    marginBottom: Spacing.sm,
     alignSelf: 'flex-start',
-    overflow: 'hidden',
-  },
-  picker: {
-    height: 44,
-    color: Colors.text.primary,
   },
 }); 
