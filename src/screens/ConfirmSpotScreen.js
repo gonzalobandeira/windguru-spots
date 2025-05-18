@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Platform, Modal, FlatList, Linking } from 'react-native';
 import { styles } from '../styles/AddLocationScreen.styles';
-import { WindguruModels } from '../constants/Models';
+import { WindguruModels, windUnitOptions, tempUnitOptions } from '../constants/Models';
 import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
 import { Colors } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -11,19 +11,6 @@ import GroupService from '../services/GroupService';
 import { Tooltip } from '../components/Tooltip';
 import { DEFAULT_WINDGURU_PARAMS, WINDGURU_PARAMS_LIST } from '../constants/Models';
 import AppScreen from '../components/AppScreen';
-
-const windUnitOptions = [
-  { key: 'knots', label: 'knots' },
-  { key: 'ms', label: 'm/s' },
-  { key: 'ms01', label: 'm/s (0.1)' },
-  { key: 'kmh', label: 'kmh' },
-  { key: 'mph', label: 'mph' },
-  { key: 'bft', label: 'Bft' },
-];
-const tempUnitOptions = [
-  { key: 'celsius', label: 'Celsius' },
-  { key: 'fahrenheit', label: 'Fahrenheit' },
-];
 
 const ConfirmSpotScreen = ({ navigation, route }) => {
   const spot = route.params?.spot;

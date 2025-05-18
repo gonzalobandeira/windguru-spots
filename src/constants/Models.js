@@ -117,4 +117,18 @@ export const WINDGURU_PARAMS_LIST = [
   { label: '*Pressure (hPa)', value: 'SLP' },
   { label: 'Humidity (%)', value: 'RH' },
   { label: 'Windguru rating', value: 'RATING' },
+];
+
+export const windUnitOptions = [
+  { key: 'knots', label: 'knots' },
+  { key: 'ms', label: 'm/s' },
+  { key: 'ms01', label: 'm/s (0.1)' },
+  { key: 'kmh', label: 'kmh' },
+  { key: 'mph', label: 'mph' },
+  { key: 'bft', label: 'Bft' },
+];
+
+export const tempUnitOptions = [
+  { key: 'celsius', label: 'Celsius' },
+  { key: 'fahrenheit', label: 'Fahrenheit' },
 ]; 
