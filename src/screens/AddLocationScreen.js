@@ -24,6 +24,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import ModalSelector from 'react-native-modal-selector';
 import SpotSearch from '../components/SpotSearch';
+import { Tooltip } from '../components/Tooltip';
 
 const WINDGURU_PARAMS_LIST = [
   { label: 'Wind speed', value: 'WINDSPD' },
@@ -222,28 +223,32 @@ const AddLocationScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Windguru Spot ID</Text>
+            <View style={styles.labelContainer}>
+              <Text style={styles.label}>Windguru Spot ID</Text>
+              <Tooltip
+                content={
+                  <Text style={styles.helpText}>
+                    Use search box to automatically fill in the spot ID, or you can find the spot ID in the URL of the Windguru forecast page
+                    (e.g.,{' '}
+                    <Text 
+                      style={{ color: Colors.primary, textDecorationLine: 'underline' }}
+                      onPress={() => Linking.openURL(`https://www.windguru.cz/${WindguruLimits.DEFAULT_SPOT_ID}`)}
+                    >
+                      https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID}
+                    </Text>
+                  </Text>
+                }
+              >
+                <MaterialIcons name="help-outline" size={20} color={Colors.text.secondary} />
+              </Tooltip>
+            </View>
             <TextInput
               style={styles.input}
               value={spotId}
               onChangeText={setSpotId}
-              placeholder={`Enter Windguru spot ID (e.g., ${WindguruLimits.DEFAULT_SPOT_ID})`}
-              placeholderTextColor="#999"
-              keyboardType="number-pad"
+              placeholder="Enter Windguru spot ID"
+              keyboardType="numeric"
             />
-            <View style={styles.helpContainer}>
-              <Text style={styles.helpText}>
-                Use search box to automatically fill in the spot ID, or you can find the spot ID in the URL of the Windguru forecast page
-                (e.g.,{' '}
-                <Text 
-                  style={{ color: Colors.primary, textDecorationLine: 'underline' }}
-                  onPress={() => Linking.openURL(`https://www.windguru.cz/${WindguruLimits.DEFAULT_SPOT_ID}`)}
-                >
-                  https://www.windguru.cz/{WindguruLimits.DEFAULT_SPOT_ID}
-                </Text>
-                )
-              </Text>
-            </View>
           </View>
 
           <View style={styles.inputGroup}>

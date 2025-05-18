@@ -38,11 +38,16 @@ export const styles = StyleSheet.create({
   inputGroup: {
     marginBottom: Spacing.lg,
   },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+    gap: Spacing.xs,
+  },
   label: {
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
     color: Colors.text.primary,
-    marginBottom: Spacing.sm,
   },
   input: {
     borderWidth: 1,
@@ -55,10 +60,13 @@ export const styles = StyleSheet.create({
   },
   helpContainer: {
     marginTop: Spacing.xs,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   helpText: {
     fontSize: FontSize.sm,
     color: Colors.text.secondary,
+    lineHeight: 20,
   },
   helpLink: {
     flexDirection: 'row',
