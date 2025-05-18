@@ -187,15 +187,10 @@ const HomeScreen = ({ navigation }) => {
         >
           {/* Absolutely position the share and menu buttons at the top right of the card */}
           <View style={styles.locationButtonsContainer}>
-            {isForecastSharingEnabled && (
-              <TouchableOpacity 
-                style={styles.shareButton}
-                onPress={() => handleShare(item)}
-              >
-                <MaterialIcons name="share" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
-            )}
-            <MoreOptionsMenu onDelete={() => handleDeleteLocation(item.id)} />
+            <MoreOptionsMenu 
+              onDelete={() => handleDeleteLocation(item.id)}
+              onShare={() => handleShare(item)}
+            />
           </View>
           <View style={styles.locationHeader}>
             <View style={styles.locationInfo}>

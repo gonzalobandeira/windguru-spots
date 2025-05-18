@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Animated } from 'react-native';
+import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/Styles';
 import { styles } from '../styles/MoreOptionsMenu.styles';
 
-const MoreOptionsMenu = ({ onDelete }) => {
+const MoreOptionsMenu = ({ onDelete, onShare }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const menuAnimation = useRef(new Animated.Value(0)).current;
-  const menuRef = useRef(null);
 
   useEffect(() => {
     if (isMenuVisible) {
@@ -31,27 +30,21 @@ const MoreOptionsMenu = ({ onDelete }) => {
     onDelete();
   };
 
+  const handleShare = () => {
+    setIsMenuVisible(false);
+    onShare();
+  };
+
   const toggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
   };
 
-  const handlePressOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
-      setIsMenuVisible(false);
-    }
+  const handlePressOutside = () => {
+    setIsMenuVisible(false);
   };
 
-  useEffect(() => {
-    if (isMenuVisible) {
-      document.addEventListener('mousedown', handlePressOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handlePressOutside);
-    };
-  }, [isMenuVisible]);
-
   return (
-    <View ref={menuRef} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity 
         style={styles.menuButton}
         onPress={toggleMenu}
@@ -60,28 +53,43 @@ const MoreOptionsMenu = ({ onDelete }) => {
       </TouchableOpacity>
 
       {isMenuVisible && (
-        <Animated.View 
-          style={[
-            styles.menuContainer,
-            {
-              opacity: menuAnimation,
-              transform: [
-                { scale: menuAnimation.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0.8, 1]
-                })}
-              ]
-            }
-          ]}
-        >
-          <TouchableOpacity 
-            style={styles.menuItem}
-            onPress={handleDelete}
-          >
-            <MaterialIcons name="delete-outline" size={20} color={Colors.error} />
-            <Text style={[styles.menuItemText, { color: Colors.error }]}>Delete</Text>
-          </TouchableOpacity>
-        </Animated.View>
+        <TouchableWithoutFeedback onPress={handlePressOutside}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback>
+              <Animated.View 
+                style={[
+                  styles.menuContainer,
+                  {
+                    opacity: menuAnimation,
+                    transform: [
+                      { scale: menuAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.8, 1]
+                      })}
+                    ]
+                  }
+                ]}
+              >
+                {onShare && (
+                  <TouchableOpacity 
+                    style={styles.menuItem}
+                    onPress={handleShare}
+                  >
+                    <MaterialIcons name="share" size={20} color={Colors.primary} />
+                    <Text style={[styles.menuItemText, { color: Colors.primary }]}>Share</Text>
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity 
+                  style={styles.menuItem}
+                  onPress={handleDelete}
+                >
+                  <MaterialIcons name="delete-outline" size={20} color={Colors.error} />
+                  <Text style={[styles.menuItemText, { color: Colors.error }]}>Delete</Text>
+                </TouchableOpacity>
+              </Animated.View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
       )}
     </View>
   );
