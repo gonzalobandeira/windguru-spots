@@ -101,4 +101,20 @@ export const getModelDescription = (modelId) => {
   return model ? model.description : '';
 };
 
-export const DEFAULT_WINDGURU_PARAMS = "WINDSPD,GUST,SMER,TMPE,CDC,APCP1s,RATING"; 
+export const DEFAULT_WINDGURU_PARAMS = "WINDSPD,GUST,SMER,TMPE,CDC,APCP1s,RATING";
+
+export const WINDGURU_PARAMS_LIST = [
+  { label: 'Wind speed', value: 'WINDSPD' },
+  { label: 'Wind gusts', value: 'GUST' },
+  { label: 'Wind direction', value: 'SMER' },
+  { label: 'Temperature', value: 'TMP' },
+  { label: '*Temperature', value: 'TMPE' },
+  { label: 'Wind chill', value: 'WCHILL' },
+  { label: '*0° isotherm (m)', value: 'FLHGT' },
+  { label: 'Cloud cover (%) high / mid / low', value: 'CDC' },
+  { label: 'Cloud cover (%)', value: 'TCDC' },
+  { label: '*Precip. (mm/1h)', value: 'APCP1s' },
+  { label: '*Pressure (hPa)', value: 'SLP' },
+  { label: 'Humidity (%)', value: 'RH' },
+  { label: 'Windguru rating', value: 'RATING' },
+]; 

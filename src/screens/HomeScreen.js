@@ -299,7 +299,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.addButton}
-            onPress={() => navigation.navigate('AddLocation')}
+            onPress={() => navigation.navigate('AddSpot')}
           >
             <Text style={styles.addButtonText}>+ Add Spot</Text>
           </TouchableOpacity>
@@ -331,7 +331,7 @@ const HomeScreen = ({ navigation }) => {
           </Text>
           <TouchableOpacity
             style={[styles.addButton, { marginTop: 28 }]}
-            onPress={() => navigation.navigate('AddLocation')}
+            onPress={() => navigation.navigate('AddSpot')}
           >
             <Text style={styles.addButtonText}>+ Add Your First Spot</Text>
           </TouchableOpacity>

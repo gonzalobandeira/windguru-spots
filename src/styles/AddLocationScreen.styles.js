@@ -215,4 +215,8 @@ export const styles = StyleSheet.create({
     height: 44,
     color: Colors.text.primary,
   },
+  backButton: {
+    marginBottom: 8,
+    alignSelf: 'flex-start',
+  },
 }); 
