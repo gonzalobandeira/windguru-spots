@@ -74,9 +74,45 @@ export const Shadow = {
     shadowRadius: Colors.shadow.radius,
     elevation: 5,
   },
+  medium: {
+    shadowColor: Colors.shadow.color,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+  },
 };
 
 // Widget Heights
 export const WidgetHeight = {
   fixed: 320,
+};
+
+// Tooltip
+export const Tooltip = {
+  container: {
+    position: 'relative',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  tooltipContainer: {
+    backgroundColor: Colors.white,
+    borderRadius: BorderRadius.md,
+    padding: Spacing.lg,
+    maxWidth: '80%',
+    ...Shadow.medium,
+  },
+  tooltipContent: {
+    marginBottom: Spacing.sm,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: Spacing.sm,
+    right: Spacing.sm,
+    padding: Spacing.xs,
+  },
 }; 

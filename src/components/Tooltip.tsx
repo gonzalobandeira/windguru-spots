@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Colors, Spacing, BorderRadius, FontSize, FontWeight, Shadow } from '../constants/Styles';
+import { Colors, Spacing, BorderRadius, FontSize, FontWeight, Shadow, Tooltip as TooltipStyles } from '../constants/Styles';
 
 type TooltipProps = {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export function Tooltip({ children, content }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={TooltipStyles.container}>
       <TouchableOpacity onPress={() => setIsVisible(true)}>
         {children}
       </TouchableOpacity>
@@ -24,16 +24,16 @@ export function Tooltip({ children, content }: TooltipProps) {
         onRequestClose={() => setIsVisible(false)}
       >
         <TouchableOpacity 
-          style={styles.overlay}
+          style={TooltipStyles.overlay}
           activeOpacity={1}
           onPress={() => setIsVisible(false)}
         >
-          <View style={styles.tooltipContainer}>
-            <View style={styles.tooltipContent}>
+          <View style={TooltipStyles.tooltipContainer}>
+            <View style={TooltipStyles.tooltipContent}>
               {content}
             </View>
             <TouchableOpacity 
-              style={styles.closeButton}
+              style={TooltipStyles.closeButton}
               onPress={() => setIsVisible(false)}
             >
               <MaterialIcons name="close" size={20} color={Colors.text.secondary} />
@@ -43,32 +43,4 @@ export function Tooltip({ children, content }: TooltipProps) {
       </Modal>
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tooltipContainer: {
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.lg,
-    maxWidth: '80%',
-    ...Shadow.medium,
-  },
-  tooltipContent: {
-    marginBottom: Spacing.sm,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: Spacing.sm,
-    right: Spacing.sm,
-    padding: Spacing.xs,
-  },
-}); 
+} 
