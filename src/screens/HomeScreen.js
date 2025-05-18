@@ -17,28 +17,14 @@ import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
 import WindguruWidget from '../components/WindguruWidget';
+import MoreOptionsMenu from '../components/MoreOptionsMenu';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
-import { Colors } from '../constants/Styles';
+import { Colors, WidgetHeight } from '../constants/Styles';
 import Constants from 'expo-constants';
 import { track } from '@amplitude/analytics-react-native';
-import { SHARE_FORECAST_MESSAGE } from '../constants/Messages';
+import { SHARE_FORECAST_MESSAGE, GITHUB_REPO_URL, WINDGURU_URL } from '../constants/Messages';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
-
-const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
-const WINDGURU_URL = 'https://www.windguru.cz';
-
-const WIDGET_FIXED_HEIGHT = 320;
-
-function getTimeAgo(date) {
-  if (!date) return '';
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-  if (diffMins < 1) return 'just now';
-  if (diffMins === 1) return '1 minute ago';
-  return `${diffMins} minutes ago`;
-}
 
 const HomeScreen = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
@@ -193,14 +179,24 @@ const HomeScreen = ({ navigation }) => {
 
     return (
       <ScaleDecorator>
-        <TouchableOpacity
-          onLongPress={drag}
-          disabled={isActive}
+        <View
           style={[
             styles.locationItem,
-            isActive && { opacity: 0.8 }
-          ]}
+            isActive && { opacity: 0.8 }]
+          }
         >
+          {/* Absolutely position the share and menu buttons at the top right of the card */}
+          <View style={styles.locationButtonsContainer}>
+            {isForecastSharingEnabled && (
+              <TouchableOpacity 
+                style={styles.shareButton}
+                onPress={() => handleShare(item)}
+              >
+                <MaterialIcons name="share" size={20} color={Colors.text.white} />
+              </TouchableOpacity>
+            )}
+            <MoreOptionsMenu onDelete={() => handleDeleteLocation(item.id)} />
+          </View>
           <View style={styles.locationHeader}>
             <View style={styles.locationInfo}>
               <Text style={styles.locationName}>{item.name}</Text>
@@ -210,26 +206,13 @@ const HomeScreen = ({ navigation }) => {
               </View>
             </View>
             <View style={styles.locationActions}>
-              {isForecastSharingEnabled && (
-                <TouchableOpacity 
-                  style={styles.shareButton}
-                  onPress={() => handleShare(item)}
-                >
-                  <MaterialIcons name="share" size={20} color={Colors.text.white} />
-                </TouchableOpacity>
-              )}
-              <TouchableOpacity 
-                style={styles.deleteButton}
-                onPress={() => handleDeleteLocation(item.id)}
-              >
-                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
+              {/* Drag handle could go here if needed */}
             </View>
           </View>
-          <View style={[styles.widgetContainer, { height: WIDGET_FIXED_HEIGHT }]}> 
+          <View style={[styles.widgetContainer, { height: WidgetHeight.fixed }]}> 
             {noParamsSelected ? (
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: Colors.text.secondary, fontStyle: 'italic' }}>
+              <View style={styles.noParamsContainer}>
+                <Text style={styles.noParamsText}>
                   No variables selected. Please edit this spot to choose at least one variable.
                 </Text>
               </View>
@@ -244,7 +227,7 @@ const HomeScreen = ({ navigation }) => {
               />
             )}
           </View>
-        </TouchableOpacity>
+        </View>
       </ScaleDecorator>
     );
   };
@@ -279,12 +262,7 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
             </View>
             <View style={styles.groupActions}>
-              <TouchableOpacity 
-                style={styles.deleteButton}
-                onPress={() => handleDeleteGroup(item.id)}
-              >
-                <MaterialIcons name="delete-outline" size={20} color={Colors.text.white} />
-              </TouchableOpacity>
+              <MoreOptionsMenu onDelete={() => handleDeleteGroup(item.id)} />
             </View>
           </TouchableOpacity>
           
