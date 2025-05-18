@@ -1,4 +1,4 @@
-import { ViewStyle } from 'react-native';
+import { ViewStyle, TextStyle } from 'react-native';
 
 // Colors
 export const Colors = {
@@ -49,8 +49,9 @@ export const FontSize = {
 
 // Font Weights
 export const FontWeight = {
-  normal: 'normal',
-  bold: 'bold',
+  normal: 'normal' as const,
+  bold: 'bold' as const,
+  medium: '500' as const,
 };
 
 // Button Heights
@@ -116,5 +117,148 @@ export const Tooltip: Record<string, ViewStyle> = {
     top: Spacing.sm,
     right: Spacing.sm,
     padding: Spacing.xs,
+  },
+}; 
+
+// Form Styles
+export const Form: Record<string, ViewStyle | TextStyle> = {
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  formContainer: {
+    flex: 1,
+    padding: Spacing.lg,
+  },
+  inputGroup: {
+    marginBottom: Spacing.lg,
+  },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.sm,
+    gap: Spacing.xs,
+  },
+  label: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+    color: Colors.text.primary,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: Colors.border,
+    borderRadius: BorderRadius.sm,
+    padding: Spacing.md,
+    fontSize: FontSize.md,
+    color: Colors.text.primary,
+    backgroundColor: Colors.white,
+  },
+  helpText: {
+    fontSize: FontSize.sm,
+    color: Colors.text.secondary,
+    lineHeight: 20,
+  },
+  submitButton: {
+    backgroundColor: Colors.primary,
+    padding: Spacing.lg,
+    borderRadius: BorderRadius.sm,
+    alignItems: 'center',
+    marginTop: Spacing.lg,
+  },
+  submitButtonDisabled: {
+    opacity: 0.5,
+  },
+  submitButtonText: {
+    color: Colors.text.white,
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+  },
+  backButton: {
+    marginBottom: Spacing.sm,
+    alignSelf: 'flex-start',
+  },
+};
+
+// Modal Styles
+export const ModalStyles: Record<string, ViewStyle | TextStyle> = {
+  container: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  content: {
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: BorderRadius.md,
+    borderTopRightRadius: BorderRadius.md,
+    padding: Spacing.md,
+    maxHeight: 400,
+  },
+  title: {
+    fontSize: FontSize.lg,
+    fontWeight: FontWeight.bold,
+    color: Colors.text.primary,
+    marginBottom: Spacing.md,
+  },
+  list: {
+    maxHeight: 300,
+  },
+  closeButton: {
+    marginTop: Spacing.md,
+    padding: Spacing.sm,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: Colors.primary,
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+  },
+  item: {
+    padding: Spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+  },
+  itemName: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+    color: Colors.text.primary,
+  },
+  itemDescription: {
+    fontSize: FontSize.sm,
+    color: Colors.text.secondary,
+    marginTop: Spacing.xs,
+  },
+  newGroupContainer: {
+    padding: Spacing.md,
+  },
+  newGroupButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: Spacing.md,
+  },
+  newGroupButton: {
+    padding: Spacing.sm,
+    marginLeft: Spacing.sm,
+  },
+  cancelButton: {
+    backgroundColor: Colors.error,
+  },
+  createButton: {
+    backgroundColor: Colors.primary,
+  },
+  cancelButtonText: {
+    color: Colors.white,
+    fontSize: FontSize.md,
+  },
+  createButtonText: {
+    color: Colors.white,
+    fontSize: FontSize.md,
+  },
+  newGroupButtonText: {
+    color: Colors.primary,
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
   },
 }; 

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Platform, Modal, FlatList, Linking } from 'react-native';
-import { styles } from '../styles/AddLocationScreen.styles';
+import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight, Shadow } from '../constants/Styles';
 import { WindguruModels, windUnitOptions, tempUnitOptions } from '../constants/Models';
 import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
-import { Colors } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
 import ModalSelector from 'react-native-modal-selector';
 import LocationService from '../services/LocationService';
@@ -11,6 +10,7 @@ import GroupService from '../services/GroupService';
 import { Tooltip } from '../components/Tooltip';
 import { DEFAULT_WINDGURU_PARAMS, WINDGURU_PARAMS_LIST } from '../constants/Models';
 import AppScreen from '../components/AppScreen';
+import { styles } from '../styles/ConfirmSpotScreen.styles';
 
 const ConfirmSpotScreen = ({ navigation, route }) => {
   const spot = route.params?.spot;
