@@ -6,8 +6,7 @@ class ShareService {
   static async shareForecast(item) {
     try {
       const shareOptions = {
-        message: SHARE_FORECAST_MESSAGE(item.spotId),
-        url: `${WINDGURU_URL}/${item.spotId}`,
+        message: SHARE_FORECAST_MESSAGE(item.spotId)
       };
       
       const result = await Share.share(shareOptions);
