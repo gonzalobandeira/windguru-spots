@@ -67,7 +67,7 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
     try {
       setIsSubmitting(true);
       await LocationService.addLocation(name.trim(), spotId.trim(), modelId, params.join(','), groupId, windUnit, tempUnit);
-      navigation.goBack();
+      navigation.navigate('Home');
     } catch (error) {
       if (error.message === `Maximum number of spots (${MAX_SPOTS}) reached`) {
         Alert.alert('Maximum Spots Reached', `You have reached the maximum limit of ${MAX_SPOTS} spots. Please delete some spots before adding new ones.`);
