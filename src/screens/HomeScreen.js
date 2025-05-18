@@ -20,26 +20,11 @@ import WindguruWidget from '../components/WindguruWidget';
 import MoreOptionsMenu from '../components/MoreOptionsMenu';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
-import { Colors } from '../constants/Styles';
+import { Colors, WidgetHeight } from '../constants/Styles';
 import Constants from 'expo-constants';
 import { track } from '@amplitude/analytics-react-native';
-import { SHARE_FORECAST_MESSAGE } from '../constants/Messages';
+import { SHARE_FORECAST_MESSAGE, GITHUB_REPO_URL, WINDGURU_URL } from '../constants/Messages';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
-
-const GITHUB_REPO_URL = 'https://github.com/gonzalobandeira/windguru-spots/blob/main/README.md';
-const WINDGURU_URL = 'https://www.windguru.cz';
-
-const WIDGET_FIXED_HEIGHT = 320;
-
-function getTimeAgo(date) {
-  if (!date) return '';
-  const now = new Date();
-  const diffMs = now - date;
-  const diffMins = Math.floor(diffMs / 60000);
-  if (diffMins < 1) return 'just now';
-  if (diffMins === 1) return '1 minute ago';
-  return `${diffMins} minutes ago`;
-}
 
 const HomeScreen = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
@@ -201,7 +186,7 @@ const HomeScreen = ({ navigation }) => {
           }
         >
           {/* Absolutely position the share and menu buttons at the top right of the card */}
-          <View style={{ position: 'absolute', top: 16, right: 16, zIndex: 2000, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <View style={styles.locationButtonsContainer}>
             {isForecastSharingEnabled && (
               <TouchableOpacity 
                 style={styles.shareButton}
@@ -224,10 +209,10 @@ const HomeScreen = ({ navigation }) => {
               {/* Drag handle could go here if needed */}
             </View>
           </View>
-          <View style={[styles.widgetContainer, { height: WIDGET_FIXED_HEIGHT }]}> 
+          <View style={[styles.widgetContainer, { height: WidgetHeight.fixed }]}> 
             {noParamsSelected ? (
-              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: Colors.text.secondary, fontStyle: 'italic' }}>
+              <View style={styles.noParamsContainer}>
+                <Text style={styles.noParamsText}>
                   No variables selected. Please edit this spot to choose at least one variable.
                 </Text>
               </View>

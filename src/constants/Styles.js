@@ -74,4 +74,9 @@ export const Shadow = {
     shadowRadius: Colors.shadow.radius,
     elevation: 5,
   },
+};
+
+// Widget Heights
+export const WidgetHeight = {
+  fixed: 320,
 }; 

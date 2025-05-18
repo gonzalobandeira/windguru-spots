@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Animated } from 'react-native';
+import { View, TouchableOpacity, Text, Animated } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Colors, Spacing, BorderRadius, ButtonHeight, FontSize, FontWeight, Shadow } from '../constants/Styles';
+import { Colors } from '../constants/Styles';
+import { styles } from '../styles/MoreOptionsMenu.styles';
 
 const MoreOptionsMenu = ({ onDelete }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -85,41 +86,5 @@ const MoreOptionsMenu = ({ onDelete }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    zIndex: 1000,
-  },
-  menuButton: {
-    backgroundColor: Colors.secondary,
-    width: ButtonHeight.sm * 0.85,
-    height: ButtonHeight.sm * 0.85,
-    borderRadius: BorderRadius.sm,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  menuContainer: {
-    position: 'absolute',
-    top: ButtonHeight.sm * 0.85 + Spacing.xs,
-    right: 0,
-    backgroundColor: Colors.white,
-    borderRadius: BorderRadius.md,
-    padding: Spacing.xs,
-    minWidth: 150,
-    ...Shadow.medium,
-    zIndex: 1001,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Spacing.sm,
-    gap: Spacing.sm,
-  },
-  menuItemText: {
-    fontSize: FontSize.md,
-    fontWeight: FontWeight.medium,
-  },
-});
 
 export default MoreOptionsMenu; 

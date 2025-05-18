@@ -271,4 +271,22 @@ export const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
   },
+  locationButtonsContainer: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    zIndex: 2000,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  noParamsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noParamsText: {
+    color: Colors.text.secondary,
+    fontStyle: 'italic',
+  },
 }); 
