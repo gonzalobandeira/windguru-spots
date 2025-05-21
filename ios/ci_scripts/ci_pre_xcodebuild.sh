@@ -49,6 +49,7 @@ mkdir -p ios/build/generated/ios
 # Run codegen specifically for iOS
 echo "Generating React Native code for iOS..."
 export PATH="/usr/local/opt/node@18/bin:$PATH"
+export CODEGEN_OUTPUT_DIR="ios/build/generated/ios"
 npx react-native codegen --platform ios
 
 # Go back to iOS directory
