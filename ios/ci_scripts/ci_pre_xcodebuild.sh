@@ -19,6 +19,21 @@ echo "Cleaning build folder..."
 rm -rf build/
 rm -rf DerivedData/
 
+# Go to project root and run codegen
+echo "Running React Native codegen..."
+cd ../..  # Go to project root
+echo "Project root directory: $(pwd)"
+
+# Create build directory if it doesn't exist
+mkdir -p ios/build/generated/ios
+
+# Run codegen
+echo "Generating React Native code..."
+npx react-native codegen
+
+# Go back to iOS directory
+cd ios
+
 # Set up build settings
 export CODE_SIGN_IDENTITY="-"
 export AD_HOC_CODE_SIGNING_ALLOWED=YES
