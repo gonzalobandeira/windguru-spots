@@ -5,6 +5,9 @@ set -e
 
 echo "Starting post-clone script..."
 
+# Print current directory for debugging
+echo "Current directory: $(pwd)"
+
 # Check if Homebrew is installed
 if ! command -v brew &> /dev/null; then
     echo "Installing Homebrew..."
@@ -36,12 +39,14 @@ echo "CocoaPods version: $(pod --version)"
 
 # Install project dependencies
 echo "Installing project dependencies..."
-cd "$CI_WORKSPACE"
+cd ../..  # Go to project root
+echo "Project root directory: $(pwd)"
 npm install
 
 # Install CocoaPods dependencies
 echo "Installing CocoaPods dependencies..."
-cd "$CI_WORKSPACE/ios"
+cd ios
+echo "iOS directory: $(pwd)"
 pod install
 
 echo "Post-clone script completed successfully"
