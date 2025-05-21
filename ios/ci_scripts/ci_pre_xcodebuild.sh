@@ -19,10 +19,6 @@ echo "Cleaning build folder..."
 rm -rf build/
 rm -rf DerivedData/
 
-# Update CocoaPods
-echo "Updating CocoaPods..."
-pod install
-
 # Set up build settings
 export CODE_SIGN_IDENTITY="-"
 export AD_HOC_CODE_SIGNING_ALLOWED=YES
