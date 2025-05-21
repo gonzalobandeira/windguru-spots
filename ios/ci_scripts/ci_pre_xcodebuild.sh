@@ -38,6 +38,11 @@ echo "Running React Native codegen..."
 cd ../..  # Go to project root
 echo "Project root directory: $(pwd)"
 
+# Install required dependencies
+echo "Installing React Native dependencies..."
+npm install --save-dev @react-native-community/cli
+npm install --save-dev react-native
+
 # Create build directory if it doesn't exist
 mkdir -p ios/build/generated/ios
 
