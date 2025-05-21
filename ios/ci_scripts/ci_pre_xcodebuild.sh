@@ -46,10 +46,10 @@ npm install --save-dev react-native
 # Create build directory if it doesn't exist
 mkdir -p ios/build/generated/ios
 
-# Run codegen
-echo "Generating React Native code..."
+# Run codegen specifically for iOS
+echo "Generating React Native code for iOS..."
 export PATH="/usr/local/opt/node@18/bin:$PATH"
-npx react-native codegen
+npx react-native codegen --platform ios
 
 # Go back to iOS directory
 cd ios
