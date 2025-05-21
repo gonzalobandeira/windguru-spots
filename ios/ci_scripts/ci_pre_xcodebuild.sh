@@ -10,6 +10,20 @@ echo "Current directory: $(pwd)"
 echo "XCODE_WORKSPACE: $XCODE_WORKSPACE"
 echo "XCODE_SCHEME: $XCODE_SCHEME"
 
+# Install Node.js if not present
+if ! command -v node &> /dev/null; then
+    echo "Installing Node.js..."
+    brew install node@18
+    echo 'export PATH="/usr/local/opt/node@18/bin:$PATH"' >> ~/.zshrc
+    source ~/.zshrc
+else
+    echo "Node.js is already installed"
+fi
+
+# Print Node.js version
+echo "Node version: $(node --version)"
+echo "NPM version: $(npm --version)"
+
 # Ensure we're in the iOS directory
 cd "$(dirname "$0")/.."
 echo "iOS directory: $(pwd)"
@@ -29,6 +43,7 @@ mkdir -p ios/build/generated/ios
 
 # Run codegen
 echo "Generating React Native code..."
+export PATH="/usr/local/opt/node@18/bin:$PATH"
 npx react-native codegen
 
 # Go back to iOS directory
