@@ -15,6 +15,7 @@ import GroupService from '../services/GroupService';
 import LocationService from '../services/LocationService';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight } from '../constants/Styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import AppScreen from '../components/AppScreen';
 import { styles } from '../styles/ExportImportScreen.styles';
 
 const ExportImportScreen = ({ navigation }) => {
@@ -188,40 +189,42 @@ const ExportImportScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Export / Import</Text>
-        <TouchableOpacity 
-          style={styles.closeButton}
-          onPress={() => navigation.goBack()}
-        >
-          <MaterialIcons name="close" size={24} color={Colors.primary} />
-        </TouchableOpacity>
-      </View>
+    <AppScreen keyboardAvoiding={true}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Export / Import</Text>
+          <TouchableOpacity 
+            style={styles.closeButton}
+            onPress={() => navigation.goBack()}
+          >
+            <MaterialIcons name="close" size={24} color={Colors.primary} />
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.content}>
-        <TouchableOpacity 
-          style={[styles.button, isExporting && styles.buttonDisabled]}
-          onPress={handleExport}
-          disabled={isExporting}
-        >
-          <Text style={styles.buttonText}>
-            {isExporting ? 'Exporting...' : 'Export Groups & Spots'}
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.content}>
+          <TouchableOpacity 
+            style={[styles.button, isExporting && styles.buttonDisabled]}
+            onPress={handleExport}
+            disabled={isExporting}
+          >
+            <Text style={styles.buttonText}>
+              {isExporting ? 'Exporting...' : 'Export Groups & Spots'}
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={[styles.button, isImporting && styles.buttonDisabled]}
-          onPress={handleImport}
-          disabled={isImporting}
-        >
-          <Text style={styles.buttonText}>
-            {isImporting ? 'Importing...' : 'Import Groups & Spots'}
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity 
+            style={[styles.button, isImporting && styles.buttonDisabled]}
+            onPress={handleImport}
+            disabled={isImporting}
+          >
+            <Text style={styles.buttonText}>
+              {isImporting ? 'Importing...' : 'Import Groups & Spots'}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </AppScreen>
   );
 };
 
-export default ExportImportScreen; 
+export default ExportImportScreen;

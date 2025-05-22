@@ -16,7 +16,7 @@ const SearchSpotScreen = ({ navigation }) => {
   };
 
   return (
-    <AppScreen>
+    <AppScreen keyboardAvoiding={true}>
       <View style={styles.container}>
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
@@ -31,4 +31,4 @@ const SearchSpotScreen = ({ navigation }) => {
   );
 };
 
-export default SearchSpotScreen; 
+export default SearchSpotScreen;

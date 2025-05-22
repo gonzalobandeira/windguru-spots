@@ -17,6 +17,7 @@ import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
 import WindguruWidget from '../components/WindguruWidget';
 import MoreOptionsMenu from '../components/MoreOptionsMenu';
+import AppScreen from '../components/AppScreen';
 import { styles } from '../styles/HomeScreen.styles';
 import { getModelName } from '../constants/Models';
 import { Colors, WidgetHeight } from '../constants/Styles';
@@ -287,92 +288,94 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Windguru Spots</Text>
-        <View style={styles.headerButtons}>
-          <TouchableOpacity 
-            style={styles.iconButton}
-            onPress={() => navigation.navigate('ExportImport')}
-          >
-            <MaterialIcons name="import-export" size={24} color={Colors.text.white} />
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={styles.addButton}
-            onPress={() => navigation.navigate('AddSpot')}
-          >
-            <Text style={styles.addButtonText}>+ Add Spot</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {loading ? (
-        <ActivityIndicator size="large" color={Colors.primary} style={styles.loader} />
-      ) : error ? (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{error}</Text>
-          <TouchableOpacity 
-            style={styles.retryButton}
-            onPress={loadData}
-          >
-            <Text style={styles.retryButtonText}>Retry</Text>
-          </TouchableOpacity>
-        </View>
-      ) : locations.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <View style={styles.emptyIconContainer}>
-            <MaterialIcons name="cloud" size={48} color={Colors.primary} />
+    <AppScreen>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Windguru Spots</Text>
+          <View style={styles.headerButtons}>
+            <TouchableOpacity 
+              style={styles.iconButton}
+              onPress={() => navigation.navigate('ExportImport')}
+            >
+              <MaterialIcons name="import-export" size={24} color={Colors.text.white} />
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.addButton}
+              onPress={() => navigation.navigate('AddSpot')}
+            >
+              <Text style={styles.addButtonText}>+ Add Spot</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.emptyText}>
-            No spots added yet
-          </Text>
-          <Text style={styles.emptySubText}>
-            Add your favorite spots to track wind conditions and forecasts.
-          </Text>
-          <TouchableOpacity
-            style={[styles.addButton, { marginTop: 28 }]}
-            onPress={() => navigation.navigate('AddSpot')}
-          >
-            <Text style={styles.addButtonText}>+ Add Your First Spot</Text>
-          </TouchableOpacity>
         </View>
-      ) : (
-        <View style={styles.content}>
-          <DraggableFlatList
-            data={groups}
-            renderItem={renderGroupItem}
-            keyExtractor={item => item.id}
-            onDragEnd={handleGroupDragEnd}
-            activationDistance={20}
-            dragItemOverflow={true}
-            ListFooterComponent={renderUngroupedLocations}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            contentContainerStyle={styles.listContainer}
-          />
-        </View>
-      )}
 
-      <View style={styles.footer}>
-        <View style={styles.footerContent}>
-          <TouchableOpacity onPress={handleWindguruPress} style={styles.footerLink}>
-            <Image 
-              source={require('../../assets/images/windguru-icon.png')} 
-              style={styles.footerIcon}
-              resizeMode="contain"
+        {loading ? (
+          <ActivityIndicator size="large" color={Colors.primary} style={styles.loader} />
+        ) : error ? (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{error}</Text>
+            <TouchableOpacity 
+              style={styles.retryButton}
+              onPress={loadData}
+            >
+              <Text style={styles.retryButtonText}>Retry</Text>
+            </TouchableOpacity>
+          </View>
+        ) : locations.length === 0 ? (
+          <View style={styles.emptyContainer}>
+            <View style={styles.emptyIconContainer}>
+              <MaterialIcons name="cloud" size={48} color={Colors.primary} />
+            </View>
+            <Text style={styles.emptyText}>
+              No spots added yet
+            </Text>
+            <Text style={styles.emptySubText}>
+              Add your favorite spots to track wind conditions and forecasts.
+            </Text>
+            <TouchableOpacity
+              style={[styles.addButton, { marginTop: 28 }]}
+              onPress={() => navigation.navigate('AddSpot')}
+            >
+              <Text style={styles.addButtonText}>+ Add Your First Spot</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.content}>
+            <DraggableFlatList
+              data={groups}
+              renderItem={renderGroupItem}
+              keyExtractor={item => item.id}
+              onDragEnd={handleGroupDragEnd}
+              activationDistance={20}
+              dragItemOverflow={true}
+              ListFooterComponent={renderUngroupedLocations}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              contentContainerStyle={styles.listContainer}
             />
-            <Text style={styles.footerText}>Powered by Windguru</Text>
-          </TouchableOpacity>
-          <Text style={styles.footerSeparator}>|</Text>
-          <Text style={styles.footerText}>v{Constants.expoConfig.version}</Text>
-          <Text style={styles.footerSeparator}>|</Text>
-          <TouchableOpacity onPress={handleGithubPress}>
-            <FontAwesome name="github" size={16} color="#000000" />
-          </TouchableOpacity>
+          </View>
+        )}
+
+        <View style={styles.footer}>
+          <View style={styles.footerContent}>
+            <TouchableOpacity onPress={handleWindguruPress} style={styles.footerLink}>
+              <Image 
+                source={require('../../assets/images/windguru-icon.png')} 
+                style={styles.footerIcon}
+                resizeMode="contain"
+              />
+              <Text style={styles.footerText}>Powered by Windguru</Text>
+            </TouchableOpacity>
+            <Text style={styles.footerSeparator}>|</Text>
+            <Text style={styles.footerText}>v{Constants.expoConfig.version}</Text>
+            <Text style={styles.footerSeparator}>|</Text>
+            <TouchableOpacity onPress={handleGithubPress}>
+              <FontAwesome name="github" size={16} color="#000000" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </AppScreen>
   );
 };
 

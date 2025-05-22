@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   Dimensions,
+  Keyboard,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import windguruSpots from '../data/windguru_spots.json';
@@ -18,6 +19,7 @@ const SpotSearch = ({ onSpotSelect }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ x: 0, y: 0, width: 0 });
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const searchInputRef = useRef(null);
 
   const searchSpots = (query) => {
@@ -75,6 +77,27 @@ const SpotSearch = ({ onSpotSelect }) => {
     </TouchableOpacity>
   );
 
+  // Add keyboard listeners
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      (e) => {
+        setKeyboardHeight(e.endCoordinates.height);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        setKeyboardHeight(0);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
+
   // Measure the absolute position of the search input
   const handleFocus = () => {
     if (searchInputRef.current) {
@@ -125,6 +148,9 @@ const SpotSearch = ({ onSpotSelect }) => {
                 left: dropdownPos.x,
                 width: dropdownPos.width,
                 maxWidth: Dimensions.get('window').width - dropdownPos.x - 8,
+                maxHeight: keyboardHeight > 0 
+                  ? Dimensions.get('window').height - dropdownPos.y - keyboardHeight - 10 
+                  : 300,
               },
             ]}
           >
@@ -142,4 +168,4 @@ const SpotSearch = ({ onSpotSelect }) => {
   );
 };
 
-export default SpotSearch; 
+export default SpotSearch;

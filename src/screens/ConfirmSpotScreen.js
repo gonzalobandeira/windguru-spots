@@ -126,7 +126,7 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
   );
 
   return (
-    <AppScreen>
+    <AppScreen keyboardAvoiding={true}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.formContainer}>
           <TouchableOpacity style={styles.backButton} onPress={() => {
@@ -363,4 +363,4 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
   );
 };
 
-export default ConfirmSpotScreen; 
+export default ConfirmSpotScreen;
