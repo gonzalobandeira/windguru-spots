@@ -2,9 +2,14 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../constants/Styles';
 
 export const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     paddingHorizontal: 24,
+    paddingBottom: 24,
     backgroundColor: '#fff',
   },
   backButton: {
@@ -26,4 +31,4 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textDecorationLine: 'underline',
   },
-}); 
+});
