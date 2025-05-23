@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
     color: Colors.text.primary,
-    marginBottom: 8,
+    marginBottom: 0, // Changed from 8 to fix alignment with the interrogation icon
   },
   input: {
     borderWidth: 1,
