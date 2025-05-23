@@ -48,6 +48,8 @@ PODS:
     - ExpoModulesCore
   - ExpoLocalization (16.1.5):
     - ExpoModulesCore
+  - ExpoLocation (18.1.5):
+    - ExpoModulesCore
   - ExpoModulesCore (2.3.13):
     - DoubleConversion
     - glog
@@ -2091,6 +2093,7 @@ DEPENDENCIES:
   - ExpoHead (from `../node_modules/expo-router/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalization (from `../node_modules/expo-localization/ios`)
+  - ExpoLocation (from `../node_modules/expo-location/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
@@ -2202,6 +2205,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoLocalization:
     :path: "../node_modules/expo-localization/ios"
+  ExpoLocation:
+    :path: "../node_modules/expo-location/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
   ExpoSplashScreen:
@@ -2372,6 +2377,7 @@ SPEC CHECKSUMS:
   ExpoHead: af044f3e9c99e7d8d21bf653b4c2f2ef53a7f082
   ExpoKeepAwake: bf0811570c8da182bfb879169437d4de298376e7
   ExpoLocalization: f6c6aaa3bfff77b666bb958bdfeb5c55df21d990
+  ExpoLocation: a319a1b2c00b82c29e8a24227e0f00d1e19662c5
   ExpoModulesCore: 5d37821c36f3781dcd0ea9a393800c90eaa6259d
   ExpoSplashScreen: f524572afd81522e40850eaa7163e2ae99cce783
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6

@@ -17,11 +17,13 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.gbe.windguruspots",
-      "buildNumber": "116",
+      "buildNumber": "1",
       "icon": "./assets/images/icon.png",
       "infoPlist": {
         "CFBundleIconName": "AppIcon",
-        "UILaunchStoryboardName": "SplashScreen"
+        "UILaunchStoryboardName": "SplashScreen",
+        "NSLocationWhenInUseUsageDescription": "We need your location to find wind spots near you",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to find wind spots near you"
       }
     },
     "android": {
