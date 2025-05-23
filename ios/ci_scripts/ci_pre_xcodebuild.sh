@@ -8,7 +8,7 @@ echo "Starting pre-xcodebuild script..."
 # Set up paths
 PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 IOS_DIR="$PROJECT_ROOT/ios"
-BUILD_DIR="$IOS_DIR/build"
+BUILD_DIR="$PROJECT_ROOT/build"
 DERIVED_DATA_DIR="$IOS_DIR/DerivedData"
 
 # Print environment for debugging
