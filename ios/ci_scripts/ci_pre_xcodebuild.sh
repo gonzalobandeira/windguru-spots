@@ -23,6 +23,7 @@ echo "XCODE_SCHEME: $XCODE_SCHEME"
 NODE_PATH="/usr/local/opt/node@22"
 export PATH="$NODE_PATH/bin:$PATH"
 export NODE_PATH="$NODE_PATH/lib/node_modules"
+export NODE_ENV=production
 
 # Verify Node.js installation and version
 if ! command -v node &> /dev/null; then
@@ -54,9 +55,10 @@ if [[ ! $NODE_VERSION =~ ^v22 ]]; then
     fi
 fi
 
-# Print versions
+# Print versions and environment
 echo "Node version: $NODE_VERSION"
 echo "NPM version: $(npm --version)"
+echo "NODE_ENV: $NODE_ENV"
 
 # Clean build artifacts
 echo "Cleaning build artifacts..."
