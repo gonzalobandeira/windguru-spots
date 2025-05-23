@@ -5,9 +5,12 @@ import * as Application from 'expo-application';
 
 // Initialize Amplitude
 export const initAmplitude = async () => {
+  // Silently return if no API key is available
   if (!AMPLITUDE_API_KEY) {
-    return;
+    console.log('Amplitude initialization skipped: No API key');
+    return true; // Return success to avoid triggering app error state
   }
+  
   const config = {
     storage: AsyncStorage,
     trackingOptions: {
@@ -20,6 +23,7 @@ export const initAmplitude = async () => {
     trackingSessionEvents: true,
     serverZone: 'EU', // EU data center
   };
+  
   try {
     init(AMPLITUDE_API_KEY, null, config);
     const userProps = {
@@ -36,7 +40,10 @@ export const initAmplitude = async () => {
       timestamp: new Date().toISOString(),
       test_event: true
     });
+    return true; // Successful initialization
   } catch (error) {
-    // Silently ignore errors
+    // Silently log errors but don't propagate them
+    console.log('Amplitude initialization error (suppressed):', error);
+    return true; // Return success despite error to avoid triggering app error state
   }
-}; 
+};

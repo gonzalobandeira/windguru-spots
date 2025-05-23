@@ -195,6 +195,7 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
               value={spotId}
               onChangeText={setSpotId}
               placeholder="Enter Windguru spot ID"
+              placeholderTextColor="#999"
               keyboardType="numeric"
             />
           </View>

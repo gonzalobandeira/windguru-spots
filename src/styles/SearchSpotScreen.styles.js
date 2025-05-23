@@ -4,31 +4,32 @@ import { Colors } from '../constants/Styles';
 export const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
   },
   container: {
     flex: 1,
     paddingHorizontal: 24,
     paddingBottom: 24,
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
   },
   backButton: {
+    marginTop: 16,
     marginBottom: 8,
     alignSelf: 'flex-start',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 24,
     color: Colors.text.primary,
   },
   manualButton: {
-    marginTop: 24,
+    marginTop: 16,
     alignItems: 'center',
   },
   manualButtonText: {
     color: Colors.primary,
     fontSize: 16,
-    textDecorationLine: 'underline',
+    fontWeight: '500',
   },
 });
