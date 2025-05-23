@@ -38,6 +38,11 @@ export default StyleSheet.create({
     fontSize: 14,
     color: Colors.text.secondary,
   },
+  spotId: {
+    fontSize: 12,
+    color: Colors.text.secondary,
+    marginTop: 2,
+  },
   distanceContainer: {
     flexDirection: 'row',
     alignItems: 'center',

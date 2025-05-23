@@ -34,19 +34,6 @@ const deg2rad = (deg) => {
 };
 
 /**
- * Normalize a spot name for comparison (remove special characters, lowercase, etc.)
- * @param {string} name - The spot name to normalize
- * @returns {string} Normalized spot name
- */
-const normalizeSpotName = (name) => {
-  return name
-    .toLowerCase()
-    .replace(/[^\w\s]/g, '') // Remove special characters
-    .replace(/\s+/g, ' ')    // Replace multiple spaces with a single space
-    .trim();                 // Remove leading/trailing spaces
-};
-
-/**
  * Get nearby spots based on user location
  * @param {Object} userLocation - User's current location {latitude, longitude}
  * @param {Object} spotsData - Object containing all spots data
@@ -65,7 +52,6 @@ export const getNearbySpots = (
   }
 
   const nearbySpots = [];
-  const normalizedNames = new Set(); // Track normalized names to avoid duplicates
 
   // Iterate through all continents, countries, and spots to find those with coordinates
   Object.entries(spotsData).forEach(([continent, countries]) => {
@@ -73,14 +59,6 @@ export const getNearbySpots = (
       Object.entries(spots).forEach(([spotName, spotData]) => {
         // Check if spot has latitude and longitude
         if (spotData.lat && spotData.lon) {
-          // Normalize the spot name
-          const normalizedName = normalizeSpotName(spotName);
-          
-          // Skip if we've already added a spot with this normalized name
-          if (normalizedNames.has(normalizedName)) {
-            return;
-          }
-          
           const distance = calculateDistance(
             userLocation.latitude,
             userLocation.longitude,
@@ -101,9 +79,6 @@ export const getNearbySpots = (
                 longitude: spotData.lon
               }
             });
-            
-            // Add the normalized name to our set to avoid duplicates
-            normalizedNames.add(normalizedName);
           }
         }
       });

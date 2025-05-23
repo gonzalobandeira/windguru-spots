@@ -65,6 +65,7 @@ const SuggestedSpots = ({ onSpotSelect }) => {
         <Text style={styles.spotLocation}>
           {item.country}, {item.continent}
         </Text>
+        <Text style={styles.spotId}>ID: {item.id}</Text>
       </View>
       <View style={styles.distanceContainer}>
         <MaterialIcons name="place" size={16} color={Colors.primary} />
