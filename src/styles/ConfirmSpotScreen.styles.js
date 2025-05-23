@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import { Colors, Spacing, FontSize, FontWeight, BorderRadius, Form, ModalStyles } from '../constants/Styles';
 
 export const styles = StyleSheet.create({
@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   ...ModalStyles,
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.white,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -28,27 +28,51 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
     color: Colors.text.primary,
+    marginBottom: 8,
   },
   input: {
     borderWidth: 1,
     borderColor: Colors.border,
-    borderRadius: BorderRadius.sm,
+    borderRadius: BorderRadius.md,
     padding: Spacing.md,
     fontSize: FontSize.md,
     color: Colors.text.primary,
     backgroundColor: Colors.white,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.shadow.color,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   helpText: {
     fontSize: FontSize.sm,
     color: Colors.text.secondary,
     lineHeight: 20,
+    marginTop: 4,
   },
   modelSelector: {
     borderWidth: 1,
     borderColor: Colors.border,
-    borderRadius: BorderRadius.sm,
+    borderRadius: BorderRadius.md,
     padding: Spacing.md,
     backgroundColor: Colors.white,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.shadow.color,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   modelSelectorText: {
     fontSize: FontSize.md,
@@ -57,9 +81,20 @@ export const styles = StyleSheet.create({
   groupSelector: {
     borderWidth: 1,
     borderColor: Colors.border,
-    borderRadius: BorderRadius.sm,
+    borderRadius: BorderRadius.md,
     padding: Spacing.md,
     backgroundColor: Colors.white,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.shadow.color,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   groupSelectorText: {
     fontSize: FontSize.md,
@@ -68,9 +103,20 @@ export const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: Colors.primary,
     padding: Spacing.lg,
-    borderRadius: BorderRadius.sm,
+    borderRadius: BorderRadius.md,
     alignItems: 'center',
     marginTop: Spacing.lg,
+    ...Platform.select({
+      ios: {
+        shadowColor: Colors.shadow.color,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   submitButtonDisabled: {
     opacity: 0.5,
@@ -149,9 +195,15 @@ export const styles = StyleSheet.create({
   },
   cancelButton: {
     backgroundColor: Colors.error,
+    borderRadius: BorderRadius.sm,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   createButton: {
     backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.sm,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   cancelButtonText: {
     color: Colors.white,
@@ -167,7 +219,14 @@ export const styles = StyleSheet.create({
     fontWeight: FontWeight.medium,
   },
   backButton: {
-    marginBottom: Spacing.sm,
+    marginTop: 16,
+    marginBottom: Spacing.md,
     alignSelf: 'flex-start',
   },
-}); 
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 24,
+    color: Colors.text.primary,
+  },
+});
