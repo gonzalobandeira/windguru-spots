@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import windguruSpots from '../data/windguru_spots.json';
 import { getNearbySpots } from '../utils/LocationUtils';
 import { Colors } from '../constants/Styles';
+import { SUGGESTED_SPOTS_CONFIG } from '../constants/SuggestedSpotsConfig';
 
 const SuggestedSpots = ({ onSpotSelect }) => {
   const [loading, setLoading] = useState(true);
@@ -29,7 +30,7 @@ const SuggestedSpots = ({ onSpotSelect }) => {
         
         // Get current location
         const location = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Balanced,
+          accuracy: Location.Accuracy[SUGGESTED_SPOTS_CONFIG.LOCATION_ACCURACY],
         });
         
         // Get nearby spots
@@ -39,8 +40,8 @@ const SuggestedSpots = ({ onSpotSelect }) => {
             longitude: location.coords.longitude,
           },
           windguruSpots,
-          100, // 100km radius
-          5 // Limit to 5 spots
+          SUGGESTED_SPOTS_CONFIG.MAX_DISTANCE_KM,
+          SUGGESTED_SPOTS_CONFIG.MAX_SPOTS_TO_DISPLAY
         );
         
         setNearbySpots(spots);
@@ -213,4 +214,3 @@ const styles = StyleSheet.create({
 });
 
 export default SuggestedSpots;
-

@@ -1,6 +1,7 @@
 /**
  * Utility functions for location-based operations
  */
+import { SUGGESTED_SPOTS_CONFIG } from '../constants/SuggestedSpotsConfig';
 
 /**
  * Calculate the distance between two coordinates in kilometers using the Haversine formula
@@ -36,11 +37,16 @@ const deg2rad = (deg) => {
  * Get nearby spots based on user location
  * @param {Object} userLocation - User's current location {latitude, longitude}
  * @param {Object} spotsData - Object containing all spots data
- * @param {number} maxDistance - Maximum distance in kilometers (default: 100)
- * @param {number} limit - Maximum number of spots to return (default: 5)
+ * @param {number} maxDistance - Maximum distance in kilometers (default: from config)
+ * @param {number} limit - Maximum number of spots to return (default: from config)
  * @returns {Array} Array of nearby spots sorted by distance
  */
-export const getNearbySpots = (userLocation, spotsData, maxDistance = 100, limit = 5) => {
+export const getNearbySpots = (
+  userLocation, 
+  spotsData, 
+  maxDistance = SUGGESTED_SPOTS_CONFIG.MAX_DISTANCE_KM, 
+  limit = SUGGESTED_SPOTS_CONFIG.MAX_SPOTS_TO_DISPLAY
+) => {
   if (!userLocation || !userLocation.latitude || !userLocation.longitude) {
     return [];
   }
@@ -91,4 +97,3 @@ export const getNearbySpots = (userLocation, spotsData, maxDistance = 100, limit
     .sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance))
     .slice(0, limit);
 };
-
