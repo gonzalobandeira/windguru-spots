@@ -1,0 +1,26 @@
+{
+  "name": "Test Release Workflow",
+  "description": "Test workflow that simulates a release build for the current branch",
+  "trigger": {
+    "source": "github",
+    "event": "push",
+    "branches": ["ban-61-setup-xcode-cloud-for-automatic-releasesuploads"]
+  },
+  "actions": {
+    "build": {
+      "scheme": "WindguruSpots",
+      "platform": "iOS",
+      "configuration": "Release",
+      "destination": "appstore"
+    }
+  },
+  "environment": {
+    "xcode": {
+      "version": "latest"
+    },
+    "macOS": {
+      "version": "latest"
+    }
+  }
+}
+

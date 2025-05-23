@@ -1,0 +1,26 @@
+{
+  "name": "Release Workflow",
+  "description": "Automatically builds and uploads the app when there is a new release in GitHub",
+  "trigger": {
+    "source": "github",
+    "event": "release",
+    "branches": ["main"]
+  },
+  "actions": {
+    "build": {
+      "scheme": "WindguruSpots",
+      "platform": "iOS",
+      "configuration": "Release",
+      "destination": "appstore"
+    }
+  },
+  "environment": {
+    "xcode": {
+      "version": "latest"
+    },
+    "macOS": {
+      "version": "latest"
+    }
+  }
+}
+
