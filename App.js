@@ -16,12 +16,21 @@ export default function App() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        // Initialize any required services here
+        // Initialize Amplitude - errors are handled internally and won't throw
         await initAmplitude();
+        
+        // Check for app updates - this could still cause errors
+        try {
+          await checkForAppUpdate();
+        } catch (updateError) {
+          console.error('Error checking for updates:', updateError);
+          // Don't set hasError for update check failures
+        }
+        
+        // Complete initialization
         setIsInitializing(false);
-        await checkForAppUpdate();
       } catch (error) {
-        console.error('Error initializing app:', error);
+        console.error('Critical error initializing app:', error);
         setHasError(true);
         setIsInitializing(false);
       }
