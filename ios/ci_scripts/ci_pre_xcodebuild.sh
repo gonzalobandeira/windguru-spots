@@ -5,18 +5,16 @@ set -e
 
 echo "Starting pre-xcodebuild script..."
 
-<<<<<<< Updated upstream
 # Set up paths
 PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 IOS_DIR="$PROJECT_ROOT/ios"
 BUILD_DIR="$PROJECT_ROOT/build"
 DERIVED_DATA_DIR="$IOS_DIR/DerivedData"
-=======
+
 # Normalize environment variables to lowercase
 if [ "$CI" = "TRUE" ]; then
     export CI="true"
 fi
->>>>>>> Stashed changes
 
 # Print environment for debugging
 echo "Current directory: $(pwd)"
