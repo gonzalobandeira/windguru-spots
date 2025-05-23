@@ -19,16 +19,39 @@ echo "Build directory: $BUILD_DIR"
 echo "XCODE_WORKSPACE: $XCODE_WORKSPACE"
 echo "XCODE_SCHEME: $XCODE_SCHEME"
 
+# Set up Node.js environment
+NODE_PATH="/usr/local/opt/node@22"
+export PATH="$NODE_PATH/bin:$PATH"
+export NODE_PATH="$NODE_PATH/lib/node_modules"
+
 # Verify Node.js installation and version
 if ! command -v node &> /dev/null; then
-    echo "Error: Node.js is not installed"
-    exit 1
+    echo "Node.js not found in PATH, attempting to install..."
+    if ! command -v brew &> /dev/null; then
+        echo "Error: Homebrew is not installed"
+        exit 1
+    fi
+    brew install node@22
+    export PATH="$NODE_PATH/bin:$PATH"
+    export NODE_PATH="$NODE_PATH/lib/node_modules"
 fi
 
+# Verify Node.js version
 NODE_VERSION=$(node --version)
 if [[ ! $NODE_VERSION =~ ^v22 ]]; then
-    echo "Error: Expected Node.js v22, but found $NODE_VERSION"
-    exit 1
+    echo "Warning: Expected Node.js v22, but found $NODE_VERSION"
+    echo "Attempting to switch to Node.js v22..."
+    brew unlink node
+    brew link node@22
+    export PATH="$NODE_PATH/bin:$PATH"
+    export NODE_PATH="$NODE_PATH/lib/node_modules"
+    
+    # Verify version again
+    NODE_VERSION=$(node --version)
+    if [[ ! $NODE_VERSION =~ ^v22 ]]; then
+        echo "Error: Failed to switch to Node.js v22"
+        exit 1
+    fi
 fi
 
 # Print versions

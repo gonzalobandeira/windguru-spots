@@ -25,7 +25,14 @@ fi
 # Install Node.js 22 using Homebrew
 echo "Installing Node.js 22..."
 brew install node@22
-export PATH="/usr/local/opt/node@22/bin:$PATH"
+
+# Set up Node.js environment
+NODE_PATH="/usr/local/opt/node@22"
+export PATH="$NODE_PATH/bin:$PATH"
+export NODE_PATH="$NODE_PATH/lib/node_modules"
+
+# Create a .node-version file for version tracking
+echo "v22.15.0" > "$PROJECT_ROOT/.node-version"
 
 # Verify Node.js installation
 if ! command -v node &> /dev/null; then
