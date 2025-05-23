@@ -120,7 +120,7 @@ const SuggestedSpots = ({ onSpotSelect }) => {
       <FlatList
         data={nearbySpots}
         renderItem={renderSpotItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => `${item.id}-${Math.random().toString(36).substr(2, 9)}`}
         style={styles.spotsList}
         scrollEnabled={false}
       />

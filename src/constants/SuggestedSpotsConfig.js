@@ -7,7 +7,7 @@ export const SUGGESTED_SPOTS_CONFIG = {
   MAX_DISTANCE_KM: 100,
   
   // Maximum number of spots to display in the suggested spots list
-  MAX_SPOTS_TO_DISPLAY: 5,
+  MAX_SPOTS_TO_DISPLAY: 10,
   
   // Location accuracy level for getting user's position
   LOCATION_ACCURACY: 'Balanced',

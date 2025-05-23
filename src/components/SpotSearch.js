@@ -157,7 +157,7 @@ const SpotSearch = ({ onSpotSelect }) => {
             <FlatList
               data={searchResults}
               renderItem={renderSpotItem}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => `${item.id}-${Math.random().toString(36).substr(2, 9)}`}
               style={styles.resultsList}
               keyboardShouldPersistTaps="handled"
             />
