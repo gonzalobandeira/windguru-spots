@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="375" height="812" viewBox="0 0 375 812" xmlns="http://www.w3.org/2000/svg">
+  <rect width="375" height="812" fill="#ffffff"/>
+  
+  <!-- Back Button -->
+  <text x="20" y="40" font-family="sans-serif" font-size="24" fill="#0066cc">←</text>
+  
+  <!-- Title -->
+  <text x="20" y="80" font-family="sans-serif" font-size="28" font-weight="bold" fill="#333333">Search a Spot</text>
+  
+  <!-- Search Box -->
+  <rect x="20" y="100" width="335" height="50" rx="8" ry="8" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="50" y="130" font-family="sans-serif" font-size="16" fill="#999999">Search for a spot...</text>
+  <text x="30" y="130" font-family="sans-serif" font-size="20" fill="#666666">🔍</text>
+  
+  <!-- Manual Button -->
+  <text x="120" y="180" font-family="sans-serif" font-size="16" font-weight="500" fill="#0066cc">Can't find your spot? Add manually</text>
+  
+  <!-- Nearby Spots Section -->
+  <text x="20" y="220" font-family="sans-serif" font-size="22" font-weight="bold" fill="#333333">Nearby Spots</text>
+  
+  <!-- Spot Item 1 -->
+  <rect x="20" y="240" width="335" height="90" rx="12" ry="12" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="35" y="265" font-family="sans-serif" font-size="16" font-weight="600" fill="#333333">Daganzo de Arriba, Meteodaganzo</text>
+  <text x="35" y="285" font-family="sans-serif" font-size="14" fill="#666666">Spain, Europe</text>
+  <text x="35" y="305" font-family="sans-serif" font-size="12" fill="#666666">ID: 1247217</text>
+  
+  <rect x="260" y="265" width="80" height="30" rx="15" ry="15" fill="#f0f7ff"/>
+  <text x="270" y="285" font-family="sans-serif" font-size="14" font-weight="500" fill="#0066cc">📍 24,2 km</text>
+  
+  <!-- Spot Item 2 -->
+  <rect x="20" y="345" width="335" height="90" rx="12" ry="12" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="35" y="370" font-family="sans-serif" font-size="16" font-weight="600" fill="#333333">Daganzo de Arriba, MeteoDaganzo</text>
+  <text x="35" y="390" font-family="sans-serif" font-size="14" fill="#666666">Spain, Europe</text>
+  <text x="35" y="410" font-family="sans-serif" font-size="12" fill="#666666">ID: 8211345</text>
+  
+  <rect x="260" y="370" width="80" height="30" rx="15" ry="15" fill="#f0f7ff"/>
+  <text x="270" y="390" font-family="sans-serif" font-size="14" font-weight="500" fill="#0066cc">📍 24,3 km</text>
+  
+  <!-- Spot Item 3 -->
+  <rect x="20" y="450" width="335" height="90" rx="12" ry="12" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="35" y="475" font-family="sans-serif" font-size="16" font-weight="600" fill="#333333">Valmayor (Madrid)</text>
+  <text x="35" y="495" font-family="sans-serif" font-size="14" fill="#666666">Spain, Europe</text>
+  <text x="35" y="515" font-family="sans-serif" font-size="12" fill="#666666">ID: 3619</text>
+  
+  <rect x="260" y="475" width="80" height="30" rx="15" ry="15" fill="#f0f7ff"/>
+  <text x="270" y="495" font-family="sans-serif" font-size="14" font-weight="500" fill="#0066cc">📍 24,4 km</text>
+  
+  <!-- Spot Item 4 -->
+  <rect x="20" y="555" width="335" height="90" rx="12" ry="12" fill="#ffffff" stroke="#e0e0e0" stroke-width="1"/>
+  <text x="35" y="580" font-family="sans-serif" font-size="16" font-weight="600" fill="#333333">Alovera, Alovera Las Suertes</text>
+  <text x="35" y="600" font-family="sans-serif" font-size="14" fill="#666666">Spain, Europe</text>
+  <text x="35" y="620" font-family="sans-serif" font-size="12" fill="#666666">ID: 3619</text>
+  
+  <rect x="260" y="580" width="80" height="30" rx="15" ry="15" fill="#f0f7ff"/>
+  <text x="270" y="600" font-family="sans-serif" font-size="14" font-weight="500" fill="#0066cc">📍 42,5 km</text>
+</svg>
+

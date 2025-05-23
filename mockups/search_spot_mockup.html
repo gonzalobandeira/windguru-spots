@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Spot Screen Mockup</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            background-color: #ffffff;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 10px solid #333;
+        }
+        .screen {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .back-button {
+            color: #0066cc;
+            font-size: 24px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #333333;
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+        }
+        .search-icon {
+            color: #666666;
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        .search-input {
+            flex: 1;
+            border: none;
+            font-size: 16px;
+            color: #333333;
+            outline: none;
+        }
+        .manual-button {
+            text-align: center;
+            margin-top: 16px;
+            margin-bottom: 32px;
+        }
+        .manual-button-text {
+            color: #0066cc;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #333333;
+        }
+        .spot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+        }
+        .spot-info {
+            flex: 1;
+        }
+        .spot-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 4px;
+        }
+        .spot-location {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 2px;
+        }
+        .spot-id {
+            font-size: 12px;
+            color: #666666;
+        }
+        .distance-container {
+            display: flex;
+            align-items: center;
+            background-color: #f0f7ff;
+            padding: 6px 10px;
+            border-radius: 16px;
+        }
+        .distance-icon {
+            color: #0066cc;
+            margin-right: 4px;
+        }
+        .distance {
+            font-size: 14px;
+            color: #0066cc;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="back-button">←</div>
+            <h1 class="title">Search a Spot</h1>
+            
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-input" placeholder="Search for a spot...">
+            </div>
+            
+            <div class="manual-button">
+                <span class="manual-button-text">Can't find your spot? Add manually</span>
+            </div>
+            
+            <h2 class="section-title">Nearby Spots</h2>
+            
+            <div class="spot-item">
+                <div class="spot-info">
+                    <div class="spot-name">Daganzo de Arriba, Meteodaganzo</div>
+                    <div class="spot-location">Spain, Europe</div>
+                    <div class="spot-id">ID: 1247217</div>
+                </div>
+                <div class="distance-container">
+                    <span class="distance-icon">📍</span>
+                    <span class="distance">24,2 km</span>
+                </div>
+            </div>
+            
+            <div class="spot-item">
+                <div class="spot-info">
+                    <div class="spot-name">Daganzo de Arriba, MeteoDaganzo</div>
+                    <div class="spot-location">Spain, Europe</div>
+                    <div class="spot-id">ID: 8211345</div>
+                </div>
+                <div class="distance-container">
+                    <span class="distance-icon">📍</span>
+                    <span class="distance">24,3 km</span>
+                </div>
+            </div>
+            
+            <div class="spot-item">
+                <div class="spot-info">
+                    <div class="spot-name">Valmayor (Madrid)</div>
+                    <div class="spot-location">Spain, Europe</div>
+                    <div class="spot-id">ID: 3619</div>
+                </div>
+                <div class="distance-container">
+                    <span class="distance-icon">📍</span>
+                    <span class="distance">24,4 km</span>
+                </div>
+            </div>
+            
+            <div class="spot-item">
+                <div class="spot-info">
+                    <div class="spot-name">Alovera, Alovera Las Suertes</div>
+                    <div class="spot-location">Spain, Europe</div>
+                    <div class="spot-id">ID: 3619</div>
+                </div>
+                <div class="distance-container">
+                    <span class="distance-icon">📍</span>
+                    <span class="distance">42,5 km</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
