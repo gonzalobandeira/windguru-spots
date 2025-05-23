@@ -11,10 +11,11 @@ IOS_DIR="$PROJECT_ROOT/ios"
 BUILD_DIR="$PROJECT_ROOT/build"
 DERIVED_DATA_DIR="$IOS_DIR/DerivedData"
 
-# Normalize environment variables to lowercase
-if [ "$CI" = "TRUE" ]; then
-    export CI="true"
-fi
+# Set environment variables for Expo/React Native
+export CI=true
+export EXPO_USE_COMMUNITY_AUTOLINKING=1
+export EXPO_DEV_CLIENT_NETWORK_INSPECTOR=true
+export NODE_ENV=production
 
 # Print environment for debugging
 echo "Current directory: $(pwd)"
@@ -24,12 +25,13 @@ echo "Build directory: $BUILD_DIR"
 echo "XCODE_WORKSPACE: $XCODE_WORKSPACE"
 echo "XCODE_SCHEME: $XCODE_SCHEME"
 echo "CI: $CI"
+echo "EXPO_USE_COMMUNITY_AUTOLINKING: $EXPO_USE_COMMUNITY_AUTOLINKING"
+echo "EXPO_DEV_CLIENT_NETWORK_INSPECTOR: $EXPO_DEV_CLIENT_NETWORK_INSPECTOR"
 
 # Set up Node.js environment
 NODE_PATH="/usr/local/opt/node@22"
 export PATH="$NODE_PATH/bin:$PATH"
 export NODE_PATH="$NODE_PATH/lib/node_modules"
-export NODE_ENV=production
 
 # Verify Node.js installation and version
 if ! command -v node &> /dev/null; then
