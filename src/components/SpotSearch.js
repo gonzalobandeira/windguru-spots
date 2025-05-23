@@ -31,7 +31,7 @@ const SpotSearch = ({ onSpotSelect }) => {
     const searchLower = query.toLowerCase();
     Object.entries(windguruSpots).forEach(([continent, countries]) => {
       Object.entries(countries).forEach(([country, spots]) => {
-        Object.entries(spots).forEach(([spotName, spotId]) => {
+        Object.entries(spots).forEach(([spotName, spotData]) => {
           if (
             spotName.toLowerCase().includes(searchLower) ||
             country.toLowerCase().includes(searchLower)
@@ -40,7 +40,7 @@ const SpotSearch = ({ onSpotSelect }) => {
               name: spotName,
               country,
               continent,
-              id: spotId,
+              id: spotData.id
             });
           }
         });
