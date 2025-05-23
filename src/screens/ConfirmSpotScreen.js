@@ -4,7 +4,6 @@ import { Colors, Spacing, FontSize, FontWeight, BorderRadius, ButtonHeight, Shad
 import { WindguruModels, windUnitOptions, tempUnitOptions } from '../constants/Models';
 import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
 import { MaterialIcons } from '@expo/vector-icons';
-import ModalSelector from 'react-native-modal-selector';
 import LocationService from '../services/LocationService';
 import GroupService from '../services/GroupService';
 import { Tooltip } from '../components/Tooltip';
@@ -21,6 +20,8 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showModelSelector, setShowModelSelector] = useState(false);
   const [showGroupSelector, setShowGroupSelector] = useState(false);
+  const [showWindUnitSelector, setShowWindUnitSelector] = useState(false);
+  const [showTempUnitSelector, setShowTempUnitSelector] = useState(false);
   const [groups, setGroups] = useState([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [showNewGroupInput, setShowNewGroupInput] = useState(false);
@@ -122,6 +123,30 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
       }}
     >
       <Text style={styles.groupName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderWindUnitItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.modelItem}
+      onPress={() => {
+        setWindUnit(item.key);
+        setShowWindUnitSelector(false);
+      }}
+    >
+      <Text style={styles.modelName}>{item.label}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderTempUnitItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.modelItem}
+      onPress={() => {
+        setTempUnit(item.key);
+        setShowTempUnitSelector(false);
+      }}
+    >
+      <Text style={styles.modelName}>{item.label}</Text>
     </TouchableOpacity>
   );
 
@@ -235,25 +260,25 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
                 </View>
                 <View style={{ marginBottom: 20 }}>
                   <Text style={styles.label}>Wind units</Text>
-                  <ModalSelector
-                    data={windUnitOptions}
-                    initValue={windUnitOptions.find(o => o.key === windUnit)?.label}
-                    onChange={option => setWindUnit(option.key)}
-                    style={{ width: 160, marginBottom: 12 }}
-                    initValueTextStyle={{ fontSize: 16, color: '#222' }}
-                    selectTextStyle={{ fontSize: 16, color: '#222' }}
-                  />
+                  <TouchableOpacity 
+                    style={styles.modelSelector}
+                    onPress={() => setShowWindUnitSelector(true)}
+                  >
+                    <Text style={styles.modelSelectorText}>
+                      {windUnitOptions.find(o => o.key === windUnit)?.label}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={{ marginBottom: 20 }}>
                   <Text style={styles.label}>Temperature units</Text>
-                  <ModalSelector
-                    data={tempUnitOptions}
-                    initValue={tempUnitOptions.find(o => o.key === tempUnit)?.label}
-                    onChange={option => setTempUnit(option.key)}
-                    style={{ width: 160, marginBottom: 12 }}
-                    initValueTextStyle={{ fontSize: 16, color: '#222' }}
-                    selectTextStyle={{ fontSize: 16, color: '#222' }}
-                  />
+                  <TouchableOpacity 
+                    style={styles.modelSelector}
+                    onPress={() => setShowTempUnitSelector(true)}
+                  >
+                    <Text style={styles.modelSelectorText}>
+                      {tempUnitOptions.find(o => o.key === tempUnit)?.label}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             )}
@@ -352,6 +377,56 @@ const ConfirmSpotScreen = ({ navigation, route }) => {
               <TouchableOpacity 
                 style={styles.modalCloseButton}
                 onPress={() => setShowGroupSelector(false)}
+              >
+                <Text style={styles.modalCloseButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        {/* Wind Unit Selector Modal */}
+        <Modal
+          visible={showWindUnitSelector}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setShowWindUnitSelector(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Wind Unit</Text>
+              <FlatList
+                data={windUnitOptions}
+                renderItem={renderWindUnitItem}
+                keyExtractor={item => item.key}
+                style={styles.modalList}
+              />
+              <TouchableOpacity 
+                style={styles.modalCloseButton}
+                onPress={() => setShowWindUnitSelector(false)}
+              >
+                <Text style={styles.modalCloseButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        {/* Temperature Unit Selector Modal */}
+        <Modal
+          visible={showTempUnitSelector}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setShowTempUnitSelector(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>Select Temperature Unit</Text>
+              <FlatList
+                data={tempUnitOptions}
+                renderItem={renderTempUnitItem}
+                keyExtractor={item => item.key}
+                style={styles.modalList}
+              />
+              <TouchableOpacity 
+                style={styles.modalCloseButton}
+                onPress={() => setShowTempUnitSelector(false)}
               >
                 <Text style={styles.modalCloseButtonText}>Close</Text>
               </TouchableOpacity>
