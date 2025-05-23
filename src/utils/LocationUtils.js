@@ -53,47 +53,40 @@ export const getNearbySpots = (
 
   const nearbySpots = [];
 
-  // Process the spots data
+  // Iterate through all continents, countries, and spots to find those with coordinates
   Object.entries(spotsData).forEach(([continent, countries]) => {
     Object.entries(countries).forEach(([country, spots]) => {
-      Object.entries(spots).forEach(([spotName, spotId]) => {
-        // Get spot coordinates from the spotId
-        // Note: This is a simplified approach. In a real app, you would have
-        // actual coordinates for each spot in your database.
-        // For this example, we'll extract coordinates from the spotId
-        // assuming the format includes lat/lon information
-        
-        // This is a placeholder. In reality, you would have a proper way to get coordinates
-        // For demonstration, we'll generate random coordinates near the user
-        const spotLat = userLocation.latitude + (Math.random() - 0.5) * 2;
-        const spotLon = userLocation.longitude + (Math.random() - 0.5) * 2;
-        
-        const distance = calculateDistance(
-          userLocation.latitude,
-          userLocation.longitude,
-          spotLat,
-          spotLon
-        );
+      Object.entries(spots).forEach(([spotName, spotData]) => {
+        // Check if spot has latitude and longitude
+        if (spotData.lat && spotData.lon) {
+          const distance = calculateDistance(
+            userLocation.latitude,
+            userLocation.longitude,
+            spotData.lat,
+            spotData.lon
+          );
 
-        if (distance <= maxDistance) {
-          nearbySpots.push({
-            name: spotName,
-            country,
-            continent,
-            id: spotId,
-            distance: distance.toFixed(1),
-            coordinates: {
-              latitude: spotLat,
-              longitude: spotLon,
-            },
-          });
+          // Add spot to nearby spots if within maxDistance
+          if (distance <= maxDistance) {
+            nearbySpots.push({
+              id: spotData.id,
+              name: spotName,
+              country: country,
+              continent: continent,
+              distance: Math.round(distance * 10) / 10, // Round to 1 decimal place
+              coordinates: {
+                latitude: spotData.lat,
+                longitude: spotData.lon
+              }
+            });
+          }
         }
       });
     });
   });
 
-  // Sort by distance and limit the results
+  // Sort spots by distance (closest first) and limit the number of results
   return nearbySpots
-    .sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance))
+    .sort((a, b) => a.distance - b.distance)
     .slice(0, limit);
 };
