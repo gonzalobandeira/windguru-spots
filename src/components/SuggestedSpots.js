@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import windguruSpots from '../data/windguru_spots.json';
 import { getNearbySpots } from '../utils/LocationUtils';
 import { Colors } from '../constants/Styles';
 import { SUGGESTED_SPOTS_CONFIG } from '../constants/SuggestedSpotsConfig';
+import styles from '../styles/SuggestedSpots.styles';
 
 const SuggestedSpots = ({ onSpotSelect }) => {
   const [loading, setLoading] = useState(true);
@@ -126,91 +127,5 @@ const SuggestedSpots = ({ onSpotSelect }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 24,
-    paddingHorizontal: 4,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    color: Colors.text.primary,
-  },
-  spotsList: {
-    marginBottom: 8,
-  },
-  spotItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: Colors.background.secondary,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  spotInfo: {
-    flex: 1,
-  },
-  spotName: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Colors.text.primary,
-    marginBottom: 4,
-  },
-  spotLocation: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-  },
-  distanceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.background.tertiary,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  distance: {
-    fontSize: 14,
-    color: Colors.primary,
-    marginLeft: 4,
-  },
-  loadingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-    backgroundColor: Colors.background.secondary,
-    borderRadius: 8,
-  },
-  loadingText: {
-    marginLeft: 8,
-    fontSize: 14,
-    color: Colors.text.secondary,
-  },
-  permissionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-    backgroundColor: Colors.background.secondary,
-    borderRadius: 8,
-  },
-  permissionText: {
-    marginLeft: 8,
-    fontSize: 14,
-    color: Colors.primary,
-  },
-  noSpotsText: {
-    textAlign: 'center',
-    padding: 16,
-    fontSize: 14,
-    color: Colors.text.secondary,
-    backgroundColor: Colors.background.secondary,
-    borderRadius: 8,
-  },
-});
 
 export default SuggestedSpots;
