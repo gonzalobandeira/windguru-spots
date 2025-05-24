@@ -22,6 +22,7 @@ export default function App() {
         // Check for app updates - this could still cause errors
         try {
           await checkForAppUpdate();
+          console.log('App update check complete');
         } catch (updateError) {
           console.error('Error checking for updates:', updateError);
           // Don't set hasError for update check failures

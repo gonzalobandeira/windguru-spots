@@ -11,7 +11,13 @@
       "scheme": "WindguruSpots",
       "platform": "iOS",
       "configuration": "Release",
-      "destination": "appstore"
+      "destination": "appstore",
+      "environment": {
+        "CI": "true",
+        "EXPO_USE_COMMUNITY_AUTOLINKING": "1",
+        "EXPO_DEV_CLIENT_NETWORK_INSPECTOR": "true",
+        "NODE_ENV": "production"
+      }
     }
   },
   "environment": {
