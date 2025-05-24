@@ -42,4 +42,13 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
   },
-}); 
+  menuItemTextWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  windguruIcon: {
+    width: 60,
+    height: 16,
+    marginLeft: 2,
+  },
+});
