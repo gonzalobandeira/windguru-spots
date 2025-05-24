@@ -45,8 +45,15 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
   const toggleMenu = () => {
     buttonRef.current?.measureInWindow((x, y, width, height) => {
       setButtonPosition({ x, y, width, height });
+      setIsMenuVisible(!isMenuVisible);
+      
+      // Start animation
+      Animated.spring(menuAnimation, {
+        toValue: isMenuVisible ? 0 : 1,
+        useNativeDriver: true,
+        friction: 8,
+      }).start();
     });
-    setIsMenuVisible(!isMenuVisible);
   };
 
   return (
