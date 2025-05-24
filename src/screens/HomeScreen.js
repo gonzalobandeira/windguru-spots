@@ -9,8 +9,10 @@ import {
   Linking,
   Image,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
+import { 
+  MaterialIcons, 
+  FontAwesome 
+} from '@expo/vector-icons';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
@@ -205,7 +207,7 @@ const HomeScreen = ({ navigation }) => {
     // Create a custom header component for the group
     const GroupHeader = () => (
       <TouchableOpacity
-        onLongPress={drag}
+        onLongPress={isExpanded ? null : drag} // Only allow dragging when collapsed
         disabled={isActive}
         style={[
           styles.groupHeader,
@@ -237,25 +239,30 @@ const HomeScreen = ({ navigation }) => {
           {!isExpanded ? (
             <GroupHeader />
           ) : (
-            <>
+            <View style={{ flex: 1 }}>
               <View style={styles.stickyGroupHeaderContainer}>
                 <GroupHeader />
               </View>
               <View style={styles.groupContent}>
-                <DraggableFlatList
-                  data={groupLocations}
-                  renderItem={renderLocationItem}
-                  keyExtractor={item => item.id}
-                  onDragEnd={handleDragEnd}
-                  activationDistance={20}
-                  dragItemOverflow={true}
-                  contentContainerStyle={[
-                    styles.listContainer,
-                    { paddingTop: 0 } // Remove top padding as the header is fixed
-                  ]}
-                />
+                {groupLocations.length > 0 ? (
+                  <DraggableFlatList
+                    data={groupLocations}
+                    renderItem={renderLocationItem}
+                    keyExtractor={item => item.id}
+                    onDragEnd={handleDragEnd}
+                    activationDistance={20}
+                    dragItemOverflow={true}
+                    contentContainerStyle={styles.listContainer}
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                  />
+                ) : (
+                  <Text style={styles.emptySubText}>
+                    No spots in this group. Add spots or drag existing spots here.
+                  </Text>
+                )}
               </View>
-            </>
+            </View>
           )}
         </View>
       </ScaleDecorator>

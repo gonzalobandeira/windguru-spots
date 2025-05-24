@@ -147,6 +147,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: BorderRadius.md,
     borderTopRightRadius: BorderRadius.md,
     ...Shadow.small,
+    elevation: 4, // For Android
   },
   expandButton: {
     padding: Spacing.xs,
@@ -175,6 +176,7 @@ export const styles = StyleSheet.create({
   },
   groupContent: {
     padding: Spacing.lg,
+    paddingTop: 0, // Remove top padding as the header is already positioned
   },
   stickyHeaderSpacer: {
     height: 0, // No additional space needed as the header is already positioned
