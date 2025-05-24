@@ -89,13 +89,6 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                   <>
                     <TouchableOpacity 
                       style={styles.menuItem}
-                      onPress={handleShare}
-                    >
-                      <MaterialIcons name="share" size={20} color={Colors.primary} />
-                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Share</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                      style={styles.menuItem}
                       onPress={handleOpenInWindguru}
                     >
                       <MaterialIcons name="open-in-browser" size={20} color={Colors.primary} />
@@ -107,6 +100,13 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                           resizeMode="contain"
                         />
                       </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.menuItem}
+                      onPress={handleShare}
+                    >
+                      <MaterialIcons name="share" size={20} color={Colors.primary} />
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Share</Text>
                     </TouchableOpacity>
                   </>
                 )}
