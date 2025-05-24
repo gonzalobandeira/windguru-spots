@@ -9,8 +9,10 @@ import {
   Linking,
   Image,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
+import { 
+  MaterialIcons, 
+  FontAwesome 
+} from '@expo/vector-icons';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import { useIsFocused } from '@react-navigation/native';
 import LocationService from '../services/LocationService';
@@ -202,46 +204,64 @@ const HomeScreen = ({ navigation }) => {
     const groupLocations = locations.filter(loc => loc.groupId === item.id);
     const isExpanded = expandedGroups[item.id];
 
+    // Create a custom header component for the group
+    const GroupHeader = () => (
+      <TouchableOpacity
+        onLongPress={isExpanded ? null : drag} // Only allow dragging when collapsed
+        disabled={isActive}
+        style={[
+          styles.groupHeader,
+          isActive && { opacity: 0.8 }
+        ]}
+        onPress={() => toggleGroup(item.id)}
+      >
+        <TouchableOpacity 
+          style={styles.expandButton}
+          onPress={() => toggleGroup(item.id)}
+        >
+          <Text style={styles.expandButtonText}>
+            {isExpanded ? '\u25bc' : '\u25b6'}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.groupInfo}>
+          <Text style={styles.groupName}>{item.name}</Text>
+          <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
+        </View>
+        <View style={styles.groupActions}>
+          <MoreOptionsMenu onDelete={() => handleDeleteGroup(item.id)} />
+        </View>
+      </TouchableOpacity>
+    );
+
     return (
       <ScaleDecorator>
         <View style={styles.groupItem}>
-          <TouchableOpacity
-            onLongPress={drag}
-            disabled={isActive}
-            style={[
-              styles.groupHeader,
-              isActive && { opacity: 0.8 }
-            ]}
-            onPress={() => toggleGroup(item.id)}
-          >
-            <TouchableOpacity 
-              style={styles.expandButton}
-              onPress={() => toggleGroup(item.id)}
-            >
-              <Text style={styles.expandButtonText}>
-                {isExpanded ? '▼' : '▶'}
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.groupInfo}>
-              <Text style={styles.groupName}>{item.name}</Text>
-              <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
-            </View>
-            <View style={styles.groupActions}>
-              <MoreOptionsMenu onDelete={() => handleDeleteGroup(item.id)} />
-            </View>
-          </TouchableOpacity>
-          
-          {isExpanded && (
-            <View style={styles.groupContent}>
-              <DraggableFlatList
-                data={groupLocations}
-                renderItem={renderLocationItem}
-                keyExtractor={item => item.id}
-                onDragEnd={handleDragEnd}
-                activationDistance={20}
-                dragItemOverflow={true}
-                contentContainerStyle={styles.listContainer}
-              />
+          {!isExpanded ? (
+            <GroupHeader />
+          ) : (
+            <View style={{ flex: 1 }}>
+              <View style={styles.stickyGroupHeaderContainer}>
+                <GroupHeader />
+              </View>
+              <View style={styles.groupContent}>
+                {groupLocations.length > 0 ? (
+                  <DraggableFlatList
+                    data={groupLocations}
+                    renderItem={renderLocationItem}
+                    keyExtractor={item => item.id}
+                    onDragEnd={handleDragEnd}
+                    activationDistance={20}
+                    dragItemOverflow={true}
+                    contentContainerStyle={styles.listContainer}
+                    scrollEnabled={true}
+                    nestedScrollEnabled={true}
+                  />
+                ) : (
+                  <Text style={styles.emptySubText}>
+                    No spots in this group. Add spots or drag existing spots here.
+                  </Text>
+                )}
+              </View>
             </View>
           )}
         </View>
