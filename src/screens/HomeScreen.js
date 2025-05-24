@@ -270,23 +270,26 @@ const HomeScreen = ({ navigation }) => {
     );
   };
 
-  const handleGithubPress = async () => {
+  const handleOpenURL = async (url, errorMessage, errorLogPrefix) => {
     try {
-      await Linking.openURL(GITHUB_REPO_URL);
+      await Linking.openURL(url);
     } catch (error) {
-      Alert.alert('Error', 'Could not open GitHub repository');
-      console.error('Error opening GitHub:', error);
+      Alert.alert('Error', errorMessage);
+      console.error(`${errorLogPrefix}:`, error);
     }
   };
 
-  const handleWindguruPress = async () => {
-    try {
-      await Linking.openURL(WINDGURU_URL);
-    } catch (error) {
-      Alert.alert('Error', 'Could not open Windguru website');
-      console.error('Error opening Windguru:', error);
-    }
-  };
+  const handleGithubPress = () => handleOpenURL(
+    GITHUB_REPO_URL, 
+    'Could not open GitHub repository',
+    'Error opening GitHub'
+  );
+
+  const handleWindguruPress = () => handleOpenURL(
+    WINDGURU_URL, 
+    'Could not open Windguru website',
+    'Error opening Windguru'
+  );
 
   return (
     <AppScreen>
