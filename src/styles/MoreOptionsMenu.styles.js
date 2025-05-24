@@ -28,9 +28,10 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: BorderRadius.md,
     padding: Spacing.xs,
-    minWidth: 150,
     ...Shadow.medium,
     transform: [{ translateY: 0 }],
+    alignSelf: 'flex-start',
+    width: 'auto',
   },
   menuItem: {
     flexDirection: 'row',
@@ -42,4 +43,13 @@ export const styles = StyleSheet.create({
     fontSize: FontSize.md,
     fontWeight: FontWeight.medium,
   },
-}); 
+  menuItemTextWithIcon: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  windguruIcon: {
+    width: 60,
+    height: 16,
+    marginLeft: 2,
+  },
+});
