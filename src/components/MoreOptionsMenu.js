@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal, Linking, Image } from 'react-native';
+import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal, Linking } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/Styles';
 import { styles } from '../styles/MoreOptionsMenu.styles';
@@ -89,24 +89,17 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                   <>
                     <TouchableOpacity 
                       style={styles.menuItem}
-                      onPress={handleOpenInWindguru}
-                    >
-                      <MaterialIcons name="open-in-browser" size={20} color={Colors.primary} />
-                      <View style={styles.menuItemTextWithIcon}>
-                        <Text style={[styles.menuItemText, { color: Colors.primary }]}>Open in </Text>
-                        <Image 
-                          source={require('../../assets/images/windguru-icon.png')} 
-                          style={styles.windguruIcon}
-                          resizeMode="contain"
-                        />
-                      </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                      style={styles.menuItem}
                       onPress={handleShare}
                     >
                       <MaterialIcons name="share" size={20} color={Colors.primary} />
                       <Text style={[styles.menuItemText, { color: Colors.primary }]}>Share</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.menuItem}
+                      onPress={handleOpenInWindguru}
+                    >
+                      <MaterialIcons name="open-in-browser" size={20} color={Colors.primary} />
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Open</Text>
                     </TouchableOpacity>
                   </>
                 )}
