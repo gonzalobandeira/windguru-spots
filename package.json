@@ -1,5 +1,5 @@
 {
-  "name": "windguru-spots",
+  "name": "windguru-spots-app",
   "version": "1.4.7",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
