@@ -15,6 +15,20 @@ A React Native application built with Expo that allows users to check their pref
 - Sticky group headers while scrolling through spots
 - Cross-platform support for iOS and Android (on the roadmap)
 
+## User Experience Features
+
+- **Spot Organization**: Create custom groups to organize your spots by location, activity type, or any other criteria
+- **Drag and Drop Reordering**: Easily reorder your spots and groups with intuitive drag and drop functionality
+- **Sticky Group Headers**: Group headers remain visible at the top while scrolling through spots, allowing you to:
+  - Keep context of which group you're viewing
+  - Toggle fold/unfold from anywhere in the list
+  - Easily navigate between spots in the same group
+- **Custom Naming**: Give your spots meaningful names that make sense to you
+- **Model Selection**: Choose from different Windguru forecast models (WRF, GFS, ICON, etc.)
+- **Parameter Selection**: Select which parameters to display for each spot (wind, waves, temperature, etc.)
+- **Unit Customization**: Choose your preferred units for wind speed (knots, m/s, etc.) and temperature (°C, °F)
+- **Data Backup**: Export and import your spots and groups for backup or sharing
+
 ## Download the App
 
 Get Windguru Spots on your device:
