@@ -202,47 +202,60 @@ const HomeScreen = ({ navigation }) => {
     const groupLocations = locations.filter(loc => loc.groupId === item.id);
     const isExpanded = expandedGroups[item.id];
 
+    // Create a custom header component for the group
+    const GroupHeader = () => (
+      <TouchableOpacity
+        onLongPress={drag}
+        disabled={isActive}
+        style={[
+          styles.groupHeader,
+          isActive && { opacity: 0.8 }
+        ]}
+        onPress={() => toggleGroup(item.id)}
+      >
+        <TouchableOpacity 
+          style={styles.expandButton}
+          onPress={() => toggleGroup(item.id)}
+        >
+          <Text style={styles.expandButtonText}>
+            {isExpanded ? '\u25bc' : '\u25b6'}
+          </Text>
+        </TouchableOpacity>
+        <View style={styles.groupInfo}>
+          <Text style={styles.groupName}>{item.name}</Text>
+          <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
+        </View>
+        <View style={styles.groupActions}>
+          <MoreOptionsMenu onDelete={() => handleDeleteGroup(item.id)} />
+        </View>
+      </TouchableOpacity>
+    );
+
     return (
       <ScaleDecorator>
         <View style={styles.groupItem}>
-          <TouchableOpacity
-            onLongPress={drag}
-            disabled={isActive}
-            style={[
-              styles.groupHeader,
-              isActive && { opacity: 0.8 }
-            ]}
-            onPress={() => toggleGroup(item.id)}
-          >
-            <TouchableOpacity 
-              style={styles.expandButton}
-              onPress={() => toggleGroup(item.id)}
-            >
-              <Text style={styles.expandButtonText}>
-                {isExpanded ? '▼' : '▶'}
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.groupInfo}>
-              <Text style={styles.groupName}>{item.name}</Text>
-              <Text style={styles.groupCount}>{groupLocations.length} spots</Text>
-            </View>
-            <View style={styles.groupActions}>
-              <MoreOptionsMenu onDelete={() => handleDeleteGroup(item.id)} />
-            </View>
-          </TouchableOpacity>
-          
-          {isExpanded && (
-            <View style={styles.groupContent}>
-              <DraggableFlatList
-                data={groupLocations}
-                renderItem={renderLocationItem}
-                keyExtractor={item => item.id}
-                onDragEnd={handleDragEnd}
-                activationDistance={20}
-                dragItemOverflow={true}
-                contentContainerStyle={styles.listContainer}
-              />
-            </View>
+          {!isExpanded ? (
+            <GroupHeader />
+          ) : (
+            <>
+              <View style={styles.stickyGroupHeaderContainer}>
+                <GroupHeader />
+              </View>
+              <View style={styles.groupContent}>
+                <DraggableFlatList
+                  data={groupLocations}
+                  renderItem={renderLocationItem}
+                  keyExtractor={item => item.id}
+                  onDragEnd={handleDragEnd}
+                  activationDistance={20}
+                  dragItemOverflow={true}
+                  contentContainerStyle={[
+                    styles.listContainer,
+                    { paddingTop: 0 } // Remove top padding as the header is fixed
+                  ]}
+                />
+              </View>
+            </>
           )}
         </View>
       </ScaleDecorator>

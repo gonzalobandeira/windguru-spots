@@ -124,6 +124,7 @@ export const styles = StyleSheet.create({
     borderRadius: BorderRadius.md,
     marginBottom: Spacing.lg,
     ...Shadow.small,
+    overflow: 'hidden',
   },
   groupHeader: {
     flexDirection: 'row',
@@ -133,6 +134,19 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
     position: 'relative',
+    backgroundColor: Colors.white,
+    zIndex: 1000,
+    borderTopLeftRadius: BorderRadius.md,
+    borderTopRightRadius: BorderRadius.md,
+  },
+  stickyGroupHeaderContainer: {
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+    backgroundColor: Colors.white,
+    borderTopLeftRadius: BorderRadius.md,
+    borderTopRightRadius: BorderRadius.md,
+    ...Shadow.small,
   },
   expandButton: {
     padding: Spacing.xs,
@@ -162,9 +176,21 @@ export const styles = StyleSheet.create({
   groupContent: {
     padding: Spacing.lg,
   },
+  stickyHeaderSpacer: {
+    height: 0, // No additional space needed as the header is already positioned
+  },
+  stickyHeader: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+  },
+  
   ungroupedSection: {
     marginTop: Spacing.lg,
   },
+  
   ungroupedTitle: {
     fontSize: FontSize.lg,
     fontWeight: FontWeight.bold,
@@ -289,4 +315,4 @@ export const styles = StyleSheet.create({
     color: Colors.text.secondary,
     fontStyle: 'italic',
   },
-}); 
+});

@@ -12,6 +12,7 @@ A React Native application built with Expo that allows users to check their pref
 - Choose from different forecast models
 - Delete locations and groups
 - Export and import your spots and groups
+- Sticky group headers while scrolling through spots
 - Cross-platform support for iOS and Android (on the roadmap)
 
 ## Download the App
