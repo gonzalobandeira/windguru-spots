@@ -5,61 +5,134 @@ set -e
 
 echo "Starting pre-xcodebuild script..."
 
+# Set up paths
+PROJECT_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+IOS_DIR="$PROJECT_ROOT/ios"
+BUILD_DIR="$PROJECT_ROOT/build"
+DERIVED_DATA_DIR="$IOS_DIR/DerivedData"
+
+# Set environment variables for Expo/React Native
+export CI=true
+export EXPO_USE_COMMUNITY_AUTOLINKING=1
+export EXPO_DEV_CLIENT_NETWORK_INSPECTOR=true
+export NODE_ENV=production
+
 # Print environment for debugging
 echo "Current directory: $(pwd)"
+echo "Project root: $PROJECT_ROOT"
+echo "iOS directory: $IOS_DIR"
+echo "Build directory: $BUILD_DIR"
 echo "XCODE_WORKSPACE: $XCODE_WORKSPACE"
 echo "XCODE_SCHEME: $XCODE_SCHEME"
+echo "CI: $CI"
+echo "EXPO_USE_COMMUNITY_AUTOLINKING: $EXPO_USE_COMMUNITY_AUTOLINKING"
+echo "EXPO_DEV_CLIENT_NETWORK_INSPECTOR: $EXPO_DEV_CLIENT_NETWORK_INSPECTOR"
 
-# Install Node.js if not present
+# Set up Node.js environment
+NODE_PATH="/usr/local/opt/node@22"
+export PATH="$NODE_PATH/bin:$PATH"
+export NODE_PATH="$NODE_PATH/lib/node_modules"
+
+# Verify Node.js installation and version
 if ! command -v node &> /dev/null; then
-    echo "Installing Node.js..."
-    brew install node@18
-    echo 'export PATH="/usr/local/opt/node@18/bin:$PATH"' >> ~/.zshrc
-    source ~/.zshrc
-else
-    echo "Node.js is already installed"
+    echo "Node.js not found in PATH, attempting to install..."
+    if ! command -v brew &> /dev/null; then
+        echo "Error: Homebrew is not installed"
+        exit 1
+    fi
+    brew install node@22
+    export PATH="$NODE_PATH/bin:$PATH"
+    export NODE_PATH="$NODE_PATH/lib/node_modules"
 fi
 
-# Print Node.js version
-echo "Node version: $(node --version)"
+# Verify Node.js version
+NODE_VERSION=$(node --version)
+if [[ ! $NODE_VERSION =~ ^v22 ]]; then
+    echo "Warning: Expected Node.js v22, but found $NODE_VERSION"
+    echo "Attempting to switch to Node.js v22..."
+    brew unlink node
+    brew link node@22
+    export PATH="$NODE_PATH/bin:$PATH"
+    export NODE_PATH="$NODE_PATH/lib/node_modules"
+    
+    # Verify version again
+    NODE_VERSION=$(node --version)
+    if [[ ! $NODE_VERSION =~ ^v22 ]]; then
+        echo "Error: Failed to switch to Node.js v22"
+        exit 1
+    fi
+fi
+
+# Print versions and environment
+echo "Node version: $NODE_VERSION"
 echo "NPM version: $(npm --version)"
+echo "NODE_ENV: $NODE_ENV"
 
-# Ensure we're in the iOS directory
-cd "$(dirname "$0")/.."
-echo "iOS directory: $(pwd)"
+# Clean build artifacts
+echo "Cleaning build artifacts..."
+if [ -d "$BUILD_DIR" ]; then
+    rm -rf "$BUILD_DIR"
+fi
+if [ -d "$DERIVED_DATA_DIR" ]; then
+    rm -rf "$DERIVED_DATA_DIR"
+fi
 
-# Clean build folder
-echo "Cleaning build folder..."
-rm -rf build/
-rm -rf DerivedData/
+# Create build directory
+echo "Creating build directory..."
+mkdir -p "$BUILD_DIR/generated/ios"
 
-# Go to project root and run codegen
-echo "Running React Native codegen..."
-cd ../..  # Go to project root
-echo "Project root directory: $(pwd)"
-
-# Install required dependencies
+# Install dependencies
 echo "Installing React Native dependencies..."
-npm install --save-dev @react-native-community/cli
-npm install --save-dev react-native
+cd "$PROJECT_ROOT"
+if ! npm install --save-dev @react-native-community/cli react-native; then
+    echo "Error: Failed to install React Native dependencies"
+    exit 1
+fi
 
-# Create build directory if it doesn't exist
-mkdir -p ios/build/generated/ios
-
-# Run codegen specifically for iOS
+# Run codegen with error handling
 echo "Generating React Native code for iOS..."
-export PATH="/usr/local/opt/node@18/bin:$PATH"
-export CODEGEN_OUTPUT_DIR="ios/build/generated/ios"
-npx react-native codegen --platform ios
+export CODEGEN_OUTPUT_DIR="$BUILD_DIR/generated/ios"
 
-# Go back to iOS directory
-cd ios
+# Run codegen and capture its output
+if ! npx react-native codegen --platform ios; then
+    echo "Codegen failed, but continuing with build..."
+    # Check if essential files were generated
+    ESSENTIAL_FILES=(
+        "$BUILD_DIR/generated/ios/RCTThirdPartyComponentsProvider.h"
+        "$BUILD_DIR/generated/ios/RCTModuleProviders.h"
+        "$BUILD_DIR/generated/ios/RCTAppDependencyProvider.h"
+    )
+    
+    MISSING_FILES=0
+    for file in "${ESSENTIAL_FILES[@]}"; do
+        if [ ! -f "$file" ]; then
+            echo "Error: Missing essential file: $file"
+            MISSING_FILES=1
+        fi
+    done
+    
+    if [ $MISSING_FILES -eq 1 ]; then
+        echo "Error: Critical codegen files are missing, aborting build"
+        exit 1
+    else
+        echo "Essential codegen files were generated, proceeding with build..."
+    fi
+fi
 
 # Set up build settings
+echo "Setting up build environment..."
 export CODE_SIGN_IDENTITY="-"
 export AD_HOC_CODE_SIGNING_ALLOWED=YES
 export CODE_SIGN_STYLE=Automatic
 export DEVELOPMENT_TEAM=4R3JX54K82
 export COMPILER_INDEX_STORE_ENABLE=NO
+
+# Verify workspace and scheme
+if [ -z "$XCODE_WORKSPACE" ]; then
+    echo "Warning: XCODE_WORKSPACE is not set"
+fi
+if [ -z "$XCODE_SCHEME" ]; then
+    echo "Warning: XCODE_SCHEME is not set"
+fi
 
 echo "Pre-xcodebuild script completed successfully" 
