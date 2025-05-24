@@ -89,11 +89,11 @@ android {
 
     namespace 'com.gbe.windguruspots'
     defaultConfig {
-        applicationId 'com.gbe.windguruspots'
+        applicationId "com.gbe.windguruspots"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.4.7"
+        versionName "1.4.8"
     }
     signingConfigs {
         debug {
