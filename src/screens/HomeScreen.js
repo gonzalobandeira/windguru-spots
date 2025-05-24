@@ -23,6 +23,7 @@ import { getModelName } from '../constants/Models';
 import { Colors, WidgetHeight } from '../constants/Styles';
 import Constants from 'expo-constants';
 import { isFeatureEnabled } from '../constants/FeatureFlags';
+import { GITHUB_REPO_URL, WINDGURU_URL } from '../constants/Messages';
 
 const HomeScreen = ({ navigation }) => {
   const [locations, setLocations] = useState([]);
