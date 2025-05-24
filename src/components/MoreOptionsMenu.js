@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal } from 'react-native';
+import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal, Linking } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/Styles';
 import { styles } from '../styles/MoreOptionsMenu.styles';
 import ShareService from '../services/ShareService';
+import { WINDGURU_URL } from '../constants/Messages';
 
 const MoreOptionsMenu = ({ onDelete, item }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -27,6 +28,17 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
       await ShareService.shareForecast(item);
     } catch (error) {
       // Error is already handled in ShareService
+    }
+  };
+
+  const handleOpenInWindguru = async () => {
+    try {
+      setIsMenuVisible(false);
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const url = `${WINDGURU_URL}/${item.spotId}`;
+      await Linking.openURL(url);
+    } catch (error) {
+      console.error('Error opening Windguru:', error);
     }
   };
 
@@ -74,13 +86,22 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                 ]}
               >
                 {isSpot && (
-                  <TouchableOpacity 
-                    style={styles.menuItem}
-                    onPress={handleShare}
-                  >
-                    <MaterialIcons name="share" size={20} color={Colors.primary} />
-                    <Text style={[styles.menuItemText, { color: Colors.primary }]}>Share</Text>
-                  </TouchableOpacity>
+                  <>
+                    <TouchableOpacity 
+                      style={styles.menuItem}
+                      onPress={handleShare}
+                    >
+                      <MaterialIcons name="share" size={20} color={Colors.primary} />
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Share</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.menuItem}
+                      onPress={handleOpenInWindguru}
+                    >
+                      <MaterialIcons name="open-in-browser" size={20} color={Colors.primary} />
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Open in Windguru</Text>
+                    </TouchableOpacity>
+                  </>
                 )}
                 <TouchableOpacity 
                   style={styles.menuItem}
@@ -101,4 +122,4 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
   );
 };
 
-export default MoreOptionsMenu; 
+export default MoreOptionsMenu;
