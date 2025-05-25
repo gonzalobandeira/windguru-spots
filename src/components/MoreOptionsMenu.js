@@ -6,6 +6,7 @@ import { styles } from '../styles/MoreOptionsMenu.styles';
 import ShareService from '../services/ShareService';
 import { WINDGURU_URL } from '../constants/Messages';
 import WindguruService from '../services/WindguruService';
+import LocationService from '../services/LocationService';
 import { NavigationApps, NavigationUrls, NavigationAppNames } from '../constants/Navigation';
 
 const MoreOptionsMenu = ({ onDelete, item }) => {
@@ -77,9 +78,14 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
         try {
           // Get coordinates from Windguru service
           coordinates = await WindguruService.getSpotCoordinates(item.spotId);
-          console.log('Spot data:', coordinates);
           if (coordinates) {
-            // Save coordinates for future use
+            // Save coordinates for future use using LocationService
+            const updatedLocation = {
+              ...item,
+              coordinates
+            };
+            await LocationService.updateLocation(item.id, updatedLocation);
+            // Update the local item reference
             item.coordinates = coordinates;
           }
         } catch (error) {

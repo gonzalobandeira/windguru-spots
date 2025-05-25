@@ -41,11 +41,8 @@ class LocationService {
         tempUnit,
         coordinates
       );
-      
-      console.log('New location:', newLocation);
 
       const updatedLocations = [...locations, newLocation];
-      console.log(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
       await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
       
       return newLocation;
