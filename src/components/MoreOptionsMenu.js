@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal, Linking } from 'react-native';
+import { View, TouchableOpacity, Text, Animated, TouchableWithoutFeedback, Modal, Linking, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Colors } from '../constants/Styles';
 import { styles } from '../styles/MoreOptionsMenu.styles';
 import ShareService from '../services/ShareService';
 import { WINDGURU_URL } from '../constants/Messages';
+import { getSpotCoordinates } from '../utils/LocationUtils';
+import windguruSpots from '../data/windguru_spots.json';
 
 const MoreOptionsMenu = ({ onDelete, item }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -39,6 +41,72 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
       await Linking.openURL(url);
     } catch (error) {
       console.error('Error opening Windguru:', error);
+    }
+  };
+
+  const handleDriveTo = () => {
+    setIsMenuVisible(false);
+    
+    // Ask user which navigation app they want to use
+    Alert.alert(
+      'Get Directions',
+      'Choose your preferred navigation app',
+      [
+        {
+          text: 'Google Maps',
+          onPress: () => openInMaps('google'),
+        },
+        {
+          text: 'Waze',
+          onPress: () => openInMaps('waze'),
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const openInMaps = async (app) => {
+    try {
+      // Get the spot coordinates using the spotId
+      const coordinates = getSpotCoordinates(item.spotId, windguruSpots);
+      let url;
+      
+      if (coordinates) {
+        // If we have coordinates for the spot
+        if (app === 'google') {
+          url = `https://www.google.com/maps/dir/?api=1&destination=${coordinates.latitude},${coordinates.longitude}`;
+        } else if (app === 'waze') {
+          url = `https://waze.com/ul?ll=${coordinates.latitude},${coordinates.longitude}&navigate=yes`;
+        }
+      } else {
+        // If we don't have coordinates, we can open the spot in the browser
+        Alert.alert(
+          'Location Information Missing',
+          'Could not find coordinates for this spot. Please try opening it in Windguru instead.',
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+      
+      if (url) {
+        const canOpen = await Linking.canOpenURL(url);
+        if (canOpen) {
+          await Linking.openURL(url);
+        } else {
+          Alert.alert(
+            'Navigation App Not Found',
+            `Could not open ${app === 'google' ? 'Google Maps' : 'Waze'}. Please make sure it's installed on your device.`,
+            [{ text: 'OK' }]
+          );
+        }
+      }
+    } catch (error) {
+      console.error('Error opening maps:', error);
+      Alert.alert('Error', 'Could not open navigation app');
     }
   };
 
@@ -107,6 +175,13 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                     >
                       <MaterialIcons name="open-in-browser" size={20} color={Colors.primary} />
                       <Text style={[styles.menuItemText, { color: Colors.primary }]}>Open</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                      style={styles.menuItem}
+                      onPress={handleDriveTo}
+                    >
+                      <MaterialIcons name="directions" size={20} color={Colors.primary} />
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Drive to</Text>
                     </TouchableOpacity>
                   </>
                 )}
