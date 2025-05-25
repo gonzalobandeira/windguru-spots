@@ -34,34 +34,6 @@ const deg2rad = (deg) => {
 };
 
 /**
- * Get coordinates for a spot by its spotId
- * @param {string} spotId - The Windguru spot ID
- * @param {Object} spotsData - Object containing all spots data
- * @returns {Object|null} Object with latitude and longitude, or null if not found
- */
-export const getSpotCoordinates = (spotId, spotsData) => {
-  if (!spotId || !spotsData) {
-    return null;
-  }
-
-  // Iterate through all continents, countries, and spots to find the matching spotId
-  for (const [continent, countries] of Object.entries(spotsData)) {
-    for (const [country, spots] of Object.entries(countries)) {
-      for (const [spotName, spotData] of Object.entries(spots)) {
-        if (spotData.id === spotId && spotData.lat && spotData.lon) {
-          return {
-            latitude: spotData.lat,
-            longitude: spotData.lon
-          };
-        }
-      }
-    }
-  }
-
-  return null;
-};
-
-/**
  * Get nearby spots based on user location
  * @param {Object} userLocation - User's current location {latitude, longitude}
  * @param {Object} spotsData - Object containing all spots data

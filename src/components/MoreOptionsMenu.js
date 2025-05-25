@@ -5,8 +5,8 @@ import { Colors } from '../constants/Styles';
 import { styles } from '../styles/MoreOptionsMenu.styles';
 import ShareService from '../services/ShareService';
 import { WINDGURU_URL } from '../constants/Messages';
-import { getSpotCoordinates } from '../utils/LocationUtils';
-import windguruSpots from '../data/windguru_spots.json';
+import WindguruService from '../services/WindguruService';
+import { NavigationApps, NavigationUrls, NavigationAppNames } from '../constants/Navigation';
 
 const MoreOptionsMenu = ({ onDelete, item }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -49,16 +49,16 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
     
     // Ask user which navigation app they want to use
     Alert.alert(
-      'Get Directions',
-      'Choose your preferred navigation app',
+      'Open Location',
+      'Choose your preferred app',
       [
         {
-          text: 'Google Maps',
-          onPress: () => openInMaps('google'),
+          text: NavigationAppNames[NavigationApps.GOOGLE_MAPS],
+          onPress: () => openInMaps(NavigationApps.GOOGLE_MAPS),
         },
         {
-          text: 'Waze',
-          onPress: () => openInMaps('waze'),
+          text: NavigationAppNames[NavigationApps.WAZE],
+          onPress: () => openInMaps(NavigationApps.WAZE),
         },
         {
           text: 'Cancel',
@@ -71,17 +71,26 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
 
   const openInMaps = async (app) => {
     try {
-      // Get the spot coordinates using the spotId
-      const coordinates = getSpotCoordinates(item.spotId, windguruSpots);
+      // Use the stored coordinates
+      let coordinates = item.coordinates;
+      if (!coordinates) {
+        try {
+          // Get coordinates from Windguru service
+          coordinates = await WindguruService.getSpotCoordinates(item.spotId);
+          console.log('Spot data:', coordinates);
+          if (coordinates) {
+            // Save coordinates for future use
+            item.coordinates = coordinates;
+          }
+        } catch (error) {
+          console.error('Error fetching spot coordinates:', error);
+        }
+      }
       let url;
       
       if (coordinates) {
         // If we have coordinates for the spot
-        if (app === 'google') {
-          url = `https://www.google.com/maps/dir/?api=1&destination=${coordinates.latitude},${coordinates.longitude}`;
-        } else if (app === 'waze') {
-          url = `https://waze.com/ul?ll=${coordinates.latitude},${coordinates.longitude}&navigate=yes`;
-        }
+        url = NavigationUrls[app](coordinates.latitude, coordinates.longitude);
       } else {
         // If we don't have coordinates, we can open the spot in the browser
         Alert.alert(
@@ -99,7 +108,7 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
         } else {
           Alert.alert(
             'Navigation App Not Found',
-            `Could not open ${app === 'google' ? 'Google Maps' : 'Waze'}. Please make sure it's installed on your device.`,
+            `Could not open ${NavigationAppNames[app]}. Please make sure it's installed on your device.`,
             [{ text: 'OK' }]
           );
         }
@@ -180,8 +189,8 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                       style={styles.menuItem}
                       onPress={handleDriveTo}
                     >
-                      <MaterialIcons name="directions" size={20} color={Colors.primary} />
-                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Drive to</Text>
+                      <MaterialIcons name="location-on" size={20} color={Colors.primary} />
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Location</Text>
                     </TouchableOpacity>
                   </>
                 )}

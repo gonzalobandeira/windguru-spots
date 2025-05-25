@@ -1,56 +1,51 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Location from '../models/Location';
-import { DEFAULT_WINDGURU_PARAMS } from '../constants/Models';
-import { MAX_SPOTS, WindguruLimits } from '../constants/Limits';
-
-const LOCATIONS_STORAGE_KEY = '@SailingSpots:locations';
+import { Location } from '../models/Location';
+import { LOCATIONS_STORAGE_KEY, MAX_SPOTS } from '../constants/Storage';
+import WindguruService from './WindguruService';
 
 class LocationService {
-  // Get all saved locations
+  constructor(coordinatesService = WindguruService) {
+    this.coordinatesService = coordinatesService;
+  }
+
   async getLocations() {
     try {
       const locationsJson = await AsyncStorage.getItem(LOCATIONS_STORAGE_KEY);
-      if (locationsJson) {
-        return JSON.parse(locationsJson);
-      }
-      return [];
+      return locationsJson ? JSON.parse(locationsJson) : [];
     } catch (error) {
-      console.error('Error loading locations:', error);
+      console.error('Error getting locations:', error);
       return [];
     }
   }
 
-  // Get locations by group ID
-  async getLocationsByGroup(groupId) {
-    try {
-      const locations = await this.getLocations();
-      return locations.filter(location => location.groupId === groupId);
-    } catch (error) {
-      console.error('Error loading locations by group:', error);
-      return [];
-    }
-  }
-
-  // Add a new location
-  async addLocation(name, spotId, modelId = WindguruLimits.DEFAULT_MODEL_ID, params = DEFAULT_WINDGURU_PARAMS, groupId = null, windUnit = 'knots', tempUnit = 'celsius') {
+  async addLocation(spotName, spotId, modelId, params = '', groupId = null, windUnit = 'knots', tempUnit = 'c') {
     try {
       const locations = await this.getLocations();
       
-      // Check if we've reached the maximum number of spots
       if (locations.length >= MAX_SPOTS) {
         throw new Error(`Maximum number of spots (${MAX_SPOTS}) reached`);
       }
+
+      const coordinates = await this.coordinatesService.getSpotCoordinates(spotId);
       
-      // Create a unique ID
       const id = Date.now().toString();
+
+      const newLocation = new Location(
+        id, 
+        spotName,
+        spotId,
+        modelId,
+        params,
+        groupId,
+        windUnit,
+        tempUnit,
+        coordinates
+      );
       
-      // Create new location object
-      const newLocation = new Location(id, name, spotId, modelId, params, groupId, windUnit, tempUnit);
-      
-      // Add to locations array
+      console.log('New location:', newLocation);
+
       const updatedLocations = [...locations, newLocation];
-      
-      // Save to storage
+      console.log(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
       await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
       
       return newLocation;
@@ -60,7 +55,6 @@ class LocationService {
     }
   }
 
-  // Delete a location by ID
   async deleteLocation(locationId) {
     try {
       const locations = await this.getLocations();
@@ -75,20 +69,35 @@ class LocationService {
     }
   }
 
-  // Update a location
-  async updateLocation(locationId, updatedData) {
+  async updateLocation(locationId, updates) {
     try {
       const locations = await this.getLocations();
-      const updatedLocations = locations.map(location => 
-        location.id === locationId ? { ...location, ...updatedData } : location
-      );
+      const locationIndex = locations.findIndex(location => location.id === locationId);
       
-      await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(updatedLocations));
+      if (locationIndex === -1) {
+        throw new Error('Location not found');
+      }
+
+      const updatedLocation = { ...locations[locationIndex], ...updates };
+      locations[locationIndex] = updatedLocation;
       
-      return updatedLocations;
+      await AsyncStorage.setItem(LOCATIONS_STORAGE_KEY, JSON.stringify(locations));
+      
+      return updatedLocation;
     } catch (error) {
       console.error('Error updating location:', error);
       throw error;
+    }
+  }
+
+  // Get locations by group ID
+  async getLocationsByGroup(groupId) {
+    try {
+      const locations = await this.getLocations();
+      return locations.filter(location => location.groupId === groupId);
+    } catch (error) {
+      console.error('Error loading locations by group:', error);
+      return [];
     }
   }
 
