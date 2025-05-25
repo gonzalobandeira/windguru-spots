@@ -196,7 +196,7 @@ const MoreOptionsMenu = ({ onDelete, item }) => {
                       onPress={handleDriveTo}
                     >
                       <MaterialIcons name="location-on" size={20} color={Colors.primary} />
-                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Location</Text>
+                      <Text style={[styles.menuItemText, { color: Colors.primary }]}>Navigate</Text>
                     </TouchableOpacity>
                   </>
                 )}
